@@ -2589,7 +2589,7 @@ function handleIntersectionResults(result: ParsePayload, left: ParsePayload, rig
   const merged = mergeValues(left.value, right.value);
 
   if (!merged.valid) {
-    throw new Error(`Unmergable intersection. Error path: ` + `${JSON.stringify(merged.mergeErrorPath)}`);
+    throw new Error(`Unmergable intersection. Error path: ${JSON.stringify(merged.mergeErrorPath)}`);
   }
 
   result.value = merged.data;
@@ -3065,7 +3065,7 @@ export const $ZodMap: core.$constructor<$ZodMap> = /*@__PURE__*/ core.$construct
 
     for (const [key, value] of input) {
       const keyResult = def.keyType._zod.run({ value: key, issues: [] }, ctx);
-      const valueResult = def.valueType._zod.run({ value: value, issues: [] }, ctx);
+      const valueResult = def.valueType._zod.run({ value, issues: [] }, ctx);
 
       if (keyResult instanceof Promise || valueResult instanceof Promise) {
         proms.push(
@@ -3116,7 +3116,7 @@ function handleMapResult(
 
         input,
         inst,
-        key: key,
+        key,
         issues: valueResult.issues.map((iss) => util.finalizeIssue(iss, ctx, core.config())),
       });
     }

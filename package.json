@@ -89,7 +89,8 @@
     "bundle:esbuild": "esbuild --bundle ./scratch/input.ts --outfile=./scratch/out_esbuild.js --bundle --format=esm",
     "check:semver": "tsx scripts/check-versions.ts",
     "check:circular": "madge --circular --extensions ts --exclude '(v4/core|v3)' packages/zod/src",
-    "build:benchmark": "pnpm --filter zod run build:benchmark"
+    "build:benchmark": "pnpm --filter zod run build:benchmark",
+    "fix:benchmark": "pnpm --filter zod run fix:benchmark"
   },
   "pnpm": {
     "overrides": {

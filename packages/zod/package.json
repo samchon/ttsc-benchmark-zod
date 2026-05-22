@@ -129,8 +129,14 @@
     "build": "zshy --project tsconfig.build.json",
     "postbuild": "tsx ../../scripts/write-stub-package-jsons.ts && pnpm biome check --write .",
     "build:benchmark": "ttsc -p tsconfig.benchmark.json",
+    "fix:benchmark": "ttsc fix -p tsconfig.benchmark.json",
     "test:watch": "pnpm vitest",
     "test": "pnpm vitest run",
     "prepublishOnly": "tsx ../../scripts/check-versions.ts"
+  },
+  "devDependencies": {
+    "@ttsc/lint": "file:/tmp/ttsc-tgz/ttsc-lint-0.12.4.tgz",
+    "@typescript/native-preview": "7.0.0-dev.20260517.1",
+    "ttsc": "file:/tmp/ttsc-tgz/ttsc-0.12.4.tgz"
   }
 }

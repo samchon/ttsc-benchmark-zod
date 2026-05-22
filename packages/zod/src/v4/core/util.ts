@@ -566,7 +566,7 @@ export function createTransparentProxy<T extends object>(getter: () => T): T {
 }
 
 export function stringifyPrimitive(value: any): string {
-  if (typeof value === "bigint") return value.toString() + "n";
+  if (typeof value === "bigint") return `${value.toString()}n`;
   if (typeof value === "string") return `"${value}"`;
   return `${value}`;
 }
