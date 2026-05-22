@@ -57,6 +57,7 @@ test("from enum", () => {
 
   const FruitEnum = z.nativeEnum(Fruits as any);
   type _FruitEnum = z.infer<typeof FruitEnum>;
+  void (0 as unknown as _FruitEnum);
   FruitEnum.parse(Fruits.Cantaloupe);
   FruitEnum.parse(Fruits.Apple);
   FruitEnum.parse("apple");
@@ -76,6 +77,7 @@ test("from const", () => {
 
   const GreekEnum = z.nativeEnum(Greek);
   type _GreekEnum = z.infer<typeof GreekEnum>;
+  void (0 as unknown as _GreekEnum);
   GreekEnum.parse("a");
   GreekEnum.parse("b");
   GreekEnum.parse(3);

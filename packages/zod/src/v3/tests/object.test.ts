@@ -431,4 +431,5 @@ test("xor", () => {
   const _Outer: z.ZodType<Outer> = z.object({
     data: z.union([z.object({ name: z.string(), a: z.number() }), z.object({ name: z.string(), b: z.number() })]),
   });
+  void _Outer;
 });

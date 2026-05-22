@@ -73,7 +73,6 @@
     "format:check": "biome check .",
     "lint": "biome lint --write .",
     "lint:check": "biome lint .",
-    "build:benchmark": "pnpm --filter zod run build:benchmark",
     "eslint": "eslint .",
     "eslint:fix": "eslint . --fix",
     "clean": "pnpm run -r clean",

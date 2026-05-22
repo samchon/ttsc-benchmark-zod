@@ -167,6 +167,10 @@ test("checks", () => {
   const _b: z.core.$ZodCheck = {} as any as z.core.$ZodStringFormatChecks;
   const _c: z.core.$ZodType = {} as any as z.core.$ZodTypes;
   const _d: z.core.$ZodType = {} as any as z.core.$ZodStringFormatTypes;
+  void _a;
+  void _b;
+  void _c;
+  void _d;
 });
 
 test("assignability to $ZodType", () => {
@@ -193,6 +197,7 @@ test("assignability with narrowing", () => {
     : T extends z.ZodType<object>
       ? RefinedTypeSchema<z.output<T>> // <-- Type instantiation is excessively deep and possibly infinite.
       : never;
+  void (0 as unknown as _RefinedSchema<z.ZodType<object>>);
 
   type RefinedTypeSchema<T extends object> = T;
 
