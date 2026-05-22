@@ -3,12 +3,7 @@ import type { ITtscLintConfig } from "@ttsc/lint";
 // @ttsc/lint config for the ttsc benchmark (ttsc-lint branch): the 12 shared
 // lint rules, matching the legacy branch's eslint.config.mjs `rules` block.
 export default {
-  ignores: [
-    "src/**/tests/**",
-    "src/**/benchmarks/**",
-    "src/**/*.test.ts",
-    "src/**/*.source.ts",
-  ],
+  ignores: ["src/**/tests/**", "src/**/benchmarks/**", "src/**/*.test.ts", "src/**/*.source.ts"],
   rules: {
     "no-var": "error",
     "prefer-const": "error",

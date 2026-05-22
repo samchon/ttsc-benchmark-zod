@@ -122,6 +122,7 @@ test("assignability with type narrowing", () => {
     : T extends z.ZodMiniType<object>
       ? RefinedTypeSchema<z.output<T>> // <-- Type instantiation is excessively deep and possibly infinite.
       : never;
+  void (0 as unknown as _RefinedSchema<z.ZodMiniType<object>>);
 
   type RefinedTypeSchema<T extends object> = T;
 
