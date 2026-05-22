@@ -44,6 +44,7 @@
     "tsdown": "^0.21.10",
     "tslib": "^2.8.1",
     "tsx": "^4.19.3",
+    "@ttsc/lint": "file:/tmp/ttsc-tgz/ttsc-lint-0.12.4.tgz",
     "ttsc": "file:/tmp/ttsc-tgz/ttsc-0.12.4.tgz",
     "typescript": "~5.5.4",
     "@typescript/native-preview": "7.0.0-dev.20260517.1",
@@ -88,8 +89,7 @@
     "bundle:rollup": "rollup -c",
     "bundle:esbuild": "esbuild --bundle ./scratch/input.ts --outfile=./scratch/out_esbuild.js --bundle --format=esm",
     "check:semver": "tsx scripts/check-versions.ts",
-    "check:circular": "madge --circular --extensions ts --exclude '(v4/core|v3)' packages/zod/src",
-    "build:benchmark": "pnpm --filter zod run build:benchmark"
+    "check:circular": "madge --circular --extensions ts --exclude '(v4/core|v3)' packages/zod/src"
   },
   "pnpm": {
     "overrides": {

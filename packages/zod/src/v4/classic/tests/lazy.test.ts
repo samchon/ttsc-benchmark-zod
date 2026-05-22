@@ -204,6 +204,7 @@ test("complicated self-recursion", () => {
   });
 
   type _Category = z.output<typeof Category>;
+  void (0 as unknown as _Category);
 });
 
 test("lazy initialization", () => {

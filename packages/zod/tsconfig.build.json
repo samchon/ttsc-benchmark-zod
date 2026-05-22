@@ -4,5 +4,12 @@
     "rootDir": "src",
     "outDir": ".",
     "customConditions": ["@zod/source"],
-  }
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": [
+    "src/**/tests/**",
+    "src/**/benchmarks/**",
+    "src/**/*.test.ts",
+    "src/**/*.source.ts"
+  ]
 }

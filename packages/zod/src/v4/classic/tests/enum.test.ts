@@ -182,6 +182,8 @@ test("error map inheritance", () => {
 test("readonly in ZodEnumDef", () => {
   type _a = z.ZodEnum<{ readonly a: "a"; readonly b: "b" }>;
   type _b = z.ZodEnum<{ a: "a"; b: "b" }>;
+  void (0 as unknown as _a);
+  void (0 as unknown as _b);
 });
 
 test("enum error message, invalid enum elementstring", () => {

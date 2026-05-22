@@ -36,6 +36,7 @@ test("deep intersection", () => {
     .and(Animal);
 
   type _Cat = z.infer<typeof Cat>;
+  void (0 as unknown as _Cat);
   // const cat:Cat = 'asdf' as any;
   const cat = Cat.parse({ properties: { is_animal: true, jumped: true } });
   expect(cat.properties).toEqual({ is_animal: true, jumped: true });
