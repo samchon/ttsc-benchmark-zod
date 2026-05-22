@@ -337,7 +337,7 @@ test("async validation multiple errors 2", async () => {
                 new Promise((resolve) => {
                   setTimeout(() => resolve(false), 500);
                 })
-            : () => false
+            : () => false,
         ),
       }),
     });

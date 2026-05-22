@@ -69,7 +69,8 @@ const error: () => errors.$ZodErrorMap = () => {
         return `Neplatný vstup: očekáváno ${expected}, obdrženo ${received}`;
       }
       case "invalid_value":
-        if (issue.values.length === 1) return `Neplatný vstup: očekáváno ${util.stringifyPrimitive(issue.values[0])}`;
+        if (issue.values.length === 1)
+          return `Neplatný vstup: očekáváno ${util.stringifyPrimitive(issue.values[0])}`;
         return `Neplatná možnost: očekávána jedna z hodnot ${util.joinValues(issue.values, "|")}`;
       case "too_big": {
         const adj = issue.inclusive ? "<=" : "<";
@@ -89,10 +90,14 @@ const error: () => errors.$ZodErrorMap = () => {
       }
       case "invalid_format": {
         const _issue = issue as errors.$ZodStringFormatIssues;
-        if (_issue.format === "starts_with") return `Neplatný řetězec: musí začínat na "${_issue.prefix}"`;
-        if (_issue.format === "ends_with") return `Neplatný řetězec: musí končit na "${_issue.suffix}"`;
-        if (_issue.format === "includes") return `Neplatný řetězec: musí obsahovat "${_issue.includes}"`;
-        if (_issue.format === "regex") return `Neplatný řetězec: musí odpovídat vzoru ${_issue.pattern}`;
+        if (_issue.format === "starts_with")
+          return `Neplatný řetězec: musí začínat na "${_issue.prefix}"`;
+        if (_issue.format === "ends_with")
+          return `Neplatný řetězec: musí končit na "${_issue.suffix}"`;
+        if (_issue.format === "includes")
+          return `Neplatný řetězec: musí obsahovat "${_issue.includes}"`;
+        if (_issue.format === "regex")
+          return `Neplatný řetězec: musí odpovídat vzoru ${_issue.pattern}`;
         return `Neplatný formát ${FormatDictionary[_issue.format] ?? issue.format}`;
       }
       case "not_multiple_of":

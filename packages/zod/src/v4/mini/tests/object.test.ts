@@ -113,14 +113,21 @@ test("z.extend", () => {
     isAdmin: boolean;
   }>();
   expect(extendedSchema).toBeDefined();
-  expect(z.safeParse(extendedSchema, { name: "John", age: 30, isAdmin: true }).success).toBe(true);
+  expect(
+    z.safeParse(extendedSchema, { name: "John", age: 30, isAdmin: true })
+      .success,
+  ).toBe(true);
 });
 
 test("z.safeExtend", () => {
   const extended = z.safeExtend(userSchema, { name: z.string() });
   expect(z.safeParse(extended, { name: "John", age: 30 }).success).toBe(true);
   type Extended = z.infer<typeof extended>;
-  expectTypeOf<Extended>().toEqualTypeOf<{ name: string; age: number; email?: string | undefined }>();
+  expectTypeOf<Extended>().toEqualTypeOf<{
+    name: string;
+    age: number;
+    email?: string | undefined;
+  }>();
   // @ts-expect-error
   z.safeExtend(userSchema, { name: z.number() });
 });
@@ -128,9 +135,15 @@ test("z.safeExtend", () => {
 test("z.pick", () => {
   const pickedSchema = z.pick(userSchema, { name: true, email: true });
   type PickedUser = z.infer<typeof pickedSchema>;
-  expectTypeOf<PickedUser>().toEqualTypeOf<{ name: string; email?: string | undefined }>();
+  expectTypeOf<PickedUser>().toEqualTypeOf<{
+    name: string;
+    email?: string | undefined;
+  }>();
   expect(pickedSchema).toBeDefined();
-  expect(z.safeParse(pickedSchema, { name: "John", email: "john@example.com" }).success).toBe(true);
+  expect(
+    z.safeParse(pickedSchema, { name: "John", email: "john@example.com" })
+      .success,
+  ).toBe(true);
 });
 
 test("z.omit", () => {
@@ -141,8 +154,14 @@ test("z.omit", () => {
     email?: string | undefined;
   }>();
   expect(omittedSchema).toBeDefined();
-  expect(Reflect.ownKeys(omittedSchema._zod.def.shape)).toEqual(["name", "email"]);
-  expect(z.safeParse(omittedSchema, { name: "John", email: "john@example.com" }).success).toBe(true);
+  expect(Reflect.ownKeys(omittedSchema._zod.def.shape)).toEqual([
+    "name",
+    "email",
+  ]);
+  expect(
+    z.safeParse(omittedSchema, { name: "John", email: "john@example.com" })
+      .success,
+  ).toBe(true);
 });
 
 test("z.partial", () => {
@@ -165,7 +184,9 @@ test("z.partial with mask", () => {
     email?: string | undefined;
   }>();
   expect(z.safeParse(partialSchemaWithMask, { age: 30 }).success).toBe(true);
-  expect(z.safeParse(partialSchemaWithMask, { name: "John" }).success).toBe(false);
+  expect(z.safeParse(partialSchemaWithMask, { name: "John" }).success).toBe(
+    false,
+  );
 });
 
 test("z.pick/omit/partial/required - do not allow unknown keys", () => {
@@ -176,13 +197,21 @@ test("z.pick/omit/partial/required - do not allow unknown keys", () => {
 
   // Mixed valid + invalid keys - throws at parse time (lazy evaluation)
   // @ts-expect-error
-  expect(() => z.parse(z.pick(schema, { name: true, asdf: true }), {})).toThrow();
+  expect(() =>
+    z.parse(z.pick(schema, { name: true, asdf: true }), {}),
+  ).toThrow();
   // @ts-expect-error
-  expect(() => z.parse(z.omit(schema, { name: true, asdf: true }), {})).toThrow();
+  expect(() =>
+    z.parse(z.omit(schema, { name: true, asdf: true }), {}),
+  ).toThrow();
   // @ts-expect-error
-  expect(() => z.parse(z.partial(schema, { name: true, asdf: true }), {})).toThrow();
+  expect(() =>
+    z.parse(z.partial(schema, { name: true, asdf: true }), {}),
+  ).toThrow();
   // @ts-expect-error
-  expect(() => z.parse(z.required(schema, { name: true, asdf: true }), {})).toThrow();
+  expect(() =>
+    z.parse(z.required(schema, { name: true, asdf: true }), {}),
+  ).toThrow();
 
   // Only invalid keys
   // @ts-expect-error
@@ -202,7 +231,7 @@ test("z.catchall", () => {
       name: z.string(),
       // age: z.number(),
     }),
-    z.string()
+    z.string(),
   );
 
   type schemaIn = z.input<typeof schema>;

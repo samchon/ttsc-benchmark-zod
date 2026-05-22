@@ -13,7 +13,9 @@ describe("Hebrew localization", () => {
       const result = schema.safeParse("ab");
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe("קצר מדי: המחרוזת צריכה להכיל 3 תווים או יותר");
+        expect(result.error.issues[0].message).toBe(
+          "קצר מדי: המחרוזת צריכה להכיל 3 תווים או יותר",
+        );
       }
     });
 
@@ -22,7 +24,9 @@ describe("Hebrew localization", () => {
       const result = schema.safeParse(5);
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe("קטן מדי: המספר צריך להיות גדול או שווה ל-10");
+        expect(result.error.issues[0].message).toBe(
+          "קטן מדי: המספר צריך להיות גדול או שווה ל-10",
+        );
       }
     });
 
@@ -31,7 +35,9 @@ describe("Hebrew localization", () => {
       const result = schema.safeParse([]);
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe("קטן מדי: המערך צריך להכיל לפחות פריט אחד");
+        expect(result.error.issues[0].message).toBe(
+          "קטן מדי: המערך צריך להכיל לפחות פריט אחד",
+        );
       }
     });
 
@@ -40,7 +46,9 @@ describe("Hebrew localization", () => {
       const result = schema.safeParse(new Set(["a"]));
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe("קטן מדי: הקבוצה (Set) צריכה להכיל 2 פריטים או יותר");
+        expect(result.error.issues[0].message).toBe(
+          "קטן מדי: הקבוצה (Set) צריכה להכיל 2 פריטים או יותר",
+        );
       }
     });
   });
@@ -51,7 +59,9 @@ describe("Hebrew localization", () => {
       const result = schema.safeParse("abcde");
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe("ארוך מדי: המחרוזת צריכה להכיל 3 תווים או פחות");
+        expect(result.error.issues[0].message).toBe(
+          "ארוך מדי: המחרוזת צריכה להכיל 3 תווים או פחות",
+        );
       }
     });
 
@@ -60,7 +70,9 @@ describe("Hebrew localization", () => {
       const result = schema.safeParse(400);
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe("גדול מדי: המספר צריך להיות קטן או שווה ל-365");
+        expect(result.error.issues[0].message).toBe(
+          "גדול מדי: המספר צריך להיות קטן או שווה ל-365",
+        );
       }
     });
 
@@ -69,7 +81,9 @@ describe("Hebrew localization", () => {
       const result = schema.safeParse(["a", "b", "c"]);
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe("גדול מדי: המערך צריך להכיל 2 פריטים או פחות");
+        expect(result.error.issues[0].message).toBe(
+          "גדול מדי: המערך צריך להכיל 2 פריטים או פחות",
+        );
       }
     });
   });
@@ -80,7 +94,9 @@ describe("Hebrew localization", () => {
       const result = schema.safeParse(123);
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe("קלט לא תקין: צריך להיות מחרוזת, התקבל מספר");
+        expect(result.error.issues[0].message).toBe(
+          "קלט לא תקין: צריך להיות מחרוזת, התקבל מספר",
+        );
       }
     });
 
@@ -89,7 +105,9 @@ describe("Hebrew localization", () => {
       const result = schema.safeParse("abc");
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe("קלט לא תקין: צריך להיות מספר, התקבל מחרוזת");
+        expect(result.error.issues[0].message).toBe(
+          "קלט לא תקין: צריך להיות מספר, התקבל מחרוזת",
+        );
       }
     });
 
@@ -98,7 +116,9 @@ describe("Hebrew localization", () => {
       const result = schema.safeParse(null);
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe("קלט לא תקין: צריך להיות ערך בוליאני, התקבל ערך ריק (null)");
+        expect(result.error.issues[0].message).toBe(
+          "קלט לא תקין: צריך להיות ערך בוליאני, התקבל ערך ריק (null)",
+        );
       }
     });
 
@@ -107,7 +127,9 @@ describe("Hebrew localization", () => {
       const result = schema.safeParse({});
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe("קלט לא תקין: צריך להיות מערך, התקבל אובייקט");
+        expect(result.error.issues[0].message).toBe(
+          "קלט לא תקין: צריך להיות מערך, התקבל אובייקט",
+        );
       }
     });
 
@@ -116,7 +138,9 @@ describe("Hebrew localization", () => {
       const result = schema.safeParse([]);
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe("קלט לא תקין: צריך להיות אובייקט, התקבל מערך");
+        expect(result.error.issues[0].message).toBe(
+          "קלט לא תקין: צריך להיות אובייקט, התקבל מערך",
+        );
       }
     });
 
@@ -125,7 +149,9 @@ describe("Hebrew localization", () => {
       const result = schema.safeParse("not a function");
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe("קלט לא תקין: צריך להיות פונקציה, התקבל מחרוזת");
+        expect(result.error.issues[0].message).toBe(
+          "קלט לא תקין: צריך להיות פונקציה, התקבל מחרוזת",
+        );
       }
     });
   });
@@ -168,7 +194,9 @@ describe("Hebrew localization", () => {
       const result = schema.safeParse("b");
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe('ערך לא תקין: הערך חייב להיות "a"');
+        expect(result.error.issues[0].message).toBe(
+          'ערך לא תקין: הערך חייב להיות "a"',
+        );
       }
     });
 
@@ -177,7 +205,9 @@ describe("Hebrew localization", () => {
       const result = schema.safeParse("c");
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe('ערך לא תקין: האפשרויות המתאימות הן "a" או "b"');
+        expect(result.error.issues[0].message).toBe(
+          'ערך לא תקין: האפשרויות המתאימות הן "a" או "b"',
+        );
       }
     });
 
@@ -186,7 +216,9 @@ describe("Hebrew localization", () => {
       const result = schema.safeParse("d");
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe('ערך לא תקין: האפשרויות המתאימות הן "a", "b" או "c"');
+        expect(result.error.issues[0].message).toBe(
+          'ערך לא תקין: האפשרויות המתאימות הן "a", "b" או "c"',
+        );
       }
     });
   });
@@ -197,7 +229,9 @@ describe("Hebrew localization", () => {
       const result = schema.safeParse(10);
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe("מספר לא תקין: חייב להיות מכפלה של 3");
+        expect(result.error.issues[0].message).toBe(
+          "מספר לא תקין: חייב להיות מכפלה של 3",
+        );
       }
     });
 
@@ -215,7 +249,9 @@ describe("Hebrew localization", () => {
       const result = schema.safeParse({ a: "test", b: "extra", c: "more" });
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe('מפתחות לא מזוהים: "b", "c"');
+        expect(result.error.issues[0].message).toBe(
+          'מפתחות לא מזוהים: "b", "c"',
+        );
       }
     });
 
@@ -244,7 +280,9 @@ describe("Hebrew localization", () => {
       const result = schema.safeParse("world");
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe('המחרוזת חייבת להתחיל ב "hello"');
+        expect(result.error.issues[0].message).toBe(
+          'המחרוזת חייבת להתחיל ב "hello"',
+        );
       }
     });
 
@@ -253,7 +291,9 @@ describe("Hebrew localization", () => {
       const result = schema.safeParse("hello");
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe('המחרוזת חייבת להסתיים ב "world"');
+        expect(result.error.issues[0].message).toBe(
+          'המחרוזת חייבת להסתיים ב "world"',
+        );
       }
     });
 
@@ -262,7 +302,9 @@ describe("Hebrew localization", () => {
       const result = schema.safeParse("hello world");
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe('המחרוזת חייבת לכלול "test"');
+        expect(result.error.issues[0].message).toBe(
+          'המחרוזת חייבת לכלול "test"',
+        );
       }
     });
 
@@ -271,7 +313,9 @@ describe("Hebrew localization", () => {
       const result = schema.safeParse("ABC123");
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe("המחרוזת חייבת להתאים לתבנית /^[a-z]+$/");
+        expect(result.error.issues[0].message).toBe(
+          "המחרוזת חייבת להתאים לתבנית /^[a-z]+$/",
+        );
       }
     });
   });
@@ -311,7 +355,9 @@ describe("Hebrew localization", () => {
       const result = schema.safeParse(["abc", "not a number"]);
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe("קלט לא תקין: צריך להיות מספר, התקבל מחרוזת");
+        expect(result.error.issues[0].message).toBe(
+          "קלט לא תקין: צריך להיות מספר, התקבל מחרוזת",
+        );
       }
     });
   });
@@ -322,7 +368,9 @@ describe("Hebrew localization", () => {
       const result = schema.safeParse(5);
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe("קטן מדי: המספר צריך להיות גדול או שווה ל-10");
+        expect(result.error.issues[0].message).toBe(
+          "קטן מדי: המספר צריך להיות גדול או שווה ל-10",
+        );
       }
     });
 
@@ -331,7 +379,9 @@ describe("Hebrew localization", () => {
       const result = schema.safeParse(10);
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe("קטן מדי: המספר צריך להיות גדול מ-10");
+        expect(result.error.issues[0].message).toBe(
+          "קטן מדי: המספר צריך להיות גדול מ-10",
+        );
       }
     });
 
@@ -340,7 +390,9 @@ describe("Hebrew localization", () => {
       const result = schema.safeParse(15);
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe("גדול מדי: המספר צריך להיות קטן או שווה ל-10");
+        expect(result.error.issues[0].message).toBe(
+          "גדול מדי: המספר צריך להיות קטן או שווה ל-10",
+        );
       }
     });
 
@@ -349,7 +401,9 @@ describe("Hebrew localization", () => {
       const result = schema.safeParse(10);
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe("גדול מדי: המספר צריך להיות קטן מ-10");
+        expect(result.error.issues[0].message).toBe(
+          "גדול מדי: המספר צריך להיות קטן מ-10",
+        );
       }
     });
   });

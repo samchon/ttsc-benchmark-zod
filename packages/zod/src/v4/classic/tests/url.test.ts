@@ -7,7 +7,10 @@ test("type inference", () => {
 });
 
 test("url regex", () => {
-  expect((z.url({ hostname: /^example\.com$/ }).safeParse("http://example.org/").error?.issues[0] as any).pattern).toBe(
-    "^example\\.com$"
-  );
+  expect(
+    (
+      z.url({ hostname: /^example\.com$/ }).safeParse("http://example.org/")
+        .error?.issues[0] as any
+    ).pattern,
+  ).toBe("^example\\.com$");
 });

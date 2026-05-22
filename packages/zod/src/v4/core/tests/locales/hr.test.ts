@@ -10,7 +10,9 @@ test("Croatian locale - type name translations in too_small errors", () => {
   const stringResult = stringSchema.safeParse("abc");
   expect(stringResult.success).toBe(false);
   if (!stringResult.success) {
-    expect(stringResult.error.issues[0].message).toBe("Premalo: očekivano da tekst ima >=5 znakova");
+    expect(stringResult.error.issues[0].message).toBe(
+      "Premalo: očekivano da tekst ima >=5 znakova",
+    );
   }
 
   // Test number type translation
@@ -18,7 +20,9 @@ test("Croatian locale - type name translations in too_small errors", () => {
   const numberResult = numberSchema.safeParse(5);
   expect(numberResult.success).toBe(false);
   if (!numberResult.success) {
-    expect(numberResult.error.issues[0].message).toBe("Premalo: očekivano da broj bude >=10");
+    expect(numberResult.error.issues[0].message).toBe(
+      "Premalo: očekivano da broj bude >=10",
+    );
   }
 
   // Test array type translation
@@ -26,7 +30,9 @@ test("Croatian locale - type name translations in too_small errors", () => {
   const arrayResult = arraySchema.safeParse(["a", "b"]);
   expect(arrayResult.success).toBe(false);
   if (!arrayResult.success) {
-    expect(arrayResult.error.issues[0].message).toBe("Premalo: očekivano da niz ima >=3 stavki");
+    expect(arrayResult.error.issues[0].message).toBe(
+      "Premalo: očekivano da niz ima >=3 stavki",
+    );
   }
 
   // Test set type translation
@@ -34,7 +40,9 @@ test("Croatian locale - type name translations in too_small errors", () => {
   const setResult = setSchema.safeParse(new Set(["a"]));
   expect(setResult.success).toBe(false);
   if (!setResult.success) {
-    expect(setResult.error.issues[0].message).toBe("Premalo: očekivano da skup ima >=2 stavki");
+    expect(setResult.error.issues[0].message).toBe(
+      "Premalo: očekivano da skup ima >=2 stavki",
+    );
   }
 });
 
@@ -46,7 +54,9 @@ test("Croatian locale - type name translations in too_big errors", () => {
   const stringResult = stringSchema.safeParse("abcde");
   expect(stringResult.success).toBe(false);
   if (!stringResult.success) {
-    expect(stringResult.error.issues[0].message).toBe("Preveliko: očekivano da tekst ima <=3 znakova");
+    expect(stringResult.error.issues[0].message).toBe(
+      "Preveliko: očekivano da tekst ima <=3 znakova",
+    );
   }
 
   // Test number type translation
@@ -54,7 +64,9 @@ test("Croatian locale - type name translations in too_big errors", () => {
   const numberResult = numberSchema.safeParse(15);
   expect(numberResult.success).toBe(false);
   if (!numberResult.success) {
-    expect(numberResult.error.issues[0].message).toBe("Preveliko: očekivano da broj bude <=10");
+    expect(numberResult.error.issues[0].message).toBe(
+      "Preveliko: očekivano da broj bude <=10",
+    );
   }
 
   // Test array type translation
@@ -62,7 +74,9 @@ test("Croatian locale - type name translations in too_big errors", () => {
   const arrayResult = arraySchema.safeParse(["a", "b", "c"]);
   expect(arrayResult.success).toBe(false);
   if (!arrayResult.success) {
-    expect(arrayResult.error.issues[0].message).toBe("Preveliko: očekivano da niz ima <=2 stavki");
+    expect(arrayResult.error.issues[0].message).toBe(
+      "Preveliko: očekivano da niz ima <=2 stavki",
+    );
   }
 });
 
@@ -74,7 +88,9 @@ test("Croatian locale - type name translations in invalid_type errors", () => {
   const stringResult = stringSchema.safeParse(123);
   expect(stringResult.success).toBe(false);
   if (!stringResult.success) {
-    expect(stringResult.error.issues[0].message).toBe("Neispravan unos: očekuje se tekst, a primljeno je broj");
+    expect(stringResult.error.issues[0].message).toBe(
+      "Neispravan unos: očekuje se tekst, a primljeno je broj",
+    );
   }
 
   // Test number expected, string received
@@ -82,7 +98,9 @@ test("Croatian locale - type name translations in invalid_type errors", () => {
   const numberResult = numberSchema.safeParse("abc");
   expect(numberResult.success).toBe(false);
   if (!numberResult.success) {
-    expect(numberResult.error.issues[0].message).toBe("Neispravan unos: očekuje se broj, a primljeno je tekst");
+    expect(numberResult.error.issues[0].message).toBe(
+      "Neispravan unos: očekuje se broj, a primljeno je tekst",
+    );
   }
 
   // Test boolean expected, null received
@@ -90,7 +108,9 @@ test("Croatian locale - type name translations in invalid_type errors", () => {
   const booleanResult = booleanSchema.safeParse(null);
   expect(booleanResult.success).toBe(false);
   if (!booleanResult.success) {
-    expect(booleanResult.error.issues[0].message).toBe("Neispravan unos: očekuje se boolean, a primljeno je null");
+    expect(booleanResult.error.issues[0].message).toBe(
+      "Neispravan unos: očekuje se boolean, a primljeno je null",
+    );
   }
 
   // Test array expected, object received
@@ -98,7 +118,9 @@ test("Croatian locale - type name translations in invalid_type errors", () => {
   const arrayResult = arraySchema.safeParse({});
   expect(arrayResult.success).toBe(false);
   if (!arrayResult.success) {
-    expect(arrayResult.error.issues[0].message).toBe("Neispravan unos: očekuje se niz, a primljeno je objekt");
+    expect(arrayResult.error.issues[0].message).toBe(
+      "Neispravan unos: očekuje se niz, a primljeno je objekt",
+    );
   }
 });
 
@@ -118,7 +140,9 @@ test("Croatian locale - other error cases", () => {
   const enumResult = enumSchema.safeParse("c");
   expect(enumResult.success).toBe(false);
   if (!enumResult.success) {
-    expect(enumResult.error.issues[0].message).toBe('Neispravna opcija: očekivano jedno od "a"|"b"');
+    expect(enumResult.error.issues[0].message).toBe(
+      'Neispravna opcija: očekivano jedno od "a"|"b"',
+    );
   }
 
   // Test not_multiple_of
@@ -126,7 +150,9 @@ test("Croatian locale - other error cases", () => {
   const multipleResult = multipleSchema.safeParse(10);
   expect(multipleResult.success).toBe(false);
   if (!multipleResult.success) {
-    expect(multipleResult.error.issues[0].message).toBe("Neispravan broj: mora biti višekratnik od 3");
+    expect(multipleResult.error.issues[0].message).toBe(
+      "Neispravan broj: mora biti višekratnik od 3",
+    );
   }
 
   // Test unrecognized_keys
@@ -150,7 +176,9 @@ test("Croatian locale - other error cases", () => {
   const regexResult = regexSchema.safeParse("ABC123");
   expect(regexResult.success).toBe(false);
   if (!regexResult.success) {
-    expect(regexResult.error.issues[0].message).toBe("Neispravan tekst: mora odgovarati uzorku /^[a-z]+$/");
+    expect(regexResult.error.issues[0].message).toBe(
+      "Neispravan tekst: mora odgovarati uzorku /^[a-z]+$/",
+    );
   }
 
   // Test invalid_format with startsWith
@@ -158,6 +186,8 @@ test("Croatian locale - other error cases", () => {
   const startsWithResult = startsWithSchema.safeParse("world");
   expect(startsWithResult.success).toBe(false);
   if (!startsWithResult.success) {
-    expect(startsWithResult.error.issues[0].message).toBe('Neispravan tekst: mora započinjati s "hello"');
+    expect(startsWithResult.error.issues[0].message).toBe(
+      'Neispravan tekst: mora započinjati s "hello"',
+    );
   }
 });

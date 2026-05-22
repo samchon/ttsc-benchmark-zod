@@ -28,16 +28,21 @@ export const ZodIssueCode = {
 } as const;
 
 /** @deprecated Use `z.$ZodFlattenedError` */
-export type inferFlattenedErrors<T extends core.$ZodType, U = string> = core.$ZodFlattenedError<core.output<T>, U>;
+export type inferFlattenedErrors<
+  T extends core.$ZodType,
+  U = string,
+> = core.$ZodFlattenedError<core.output<T>, U>;
 
 /** @deprecated Use `z.$ZodFormattedError` */
-export type inferFormattedError<T extends core.$ZodType<any, any>, U = string> = core.$ZodFormattedError<
-  core.output<T>,
-  U
->;
+export type inferFormattedError<
+  T extends core.$ZodType<any, any>,
+  U = string,
+> = core.$ZodFormattedError<core.output<T>, U>;
 
 /** Use `z.$brand` instead */
-export type BRAND<T extends string | number | symbol = string | number | symbol> = {
+export type BRAND<
+  T extends string | number | symbol = string | number | symbol,
+> = {
   [core.$brand]: { [k in T]: true };
 };
 export { $brand, config } from "../core/index.js";

@@ -68,7 +68,8 @@ const error: () => errors.$ZodErrorMap = () => {
       }
 
       case "invalid_value":
-        if (issue.values.length === 1) return `Rangt gildi: gert ráð fyrir ${util.stringifyPrimitive(issue.values[0])}`;
+        if (issue.values.length === 1)
+          return `Rangt gildi: gert ráð fyrir ${util.stringifyPrimitive(issue.values[0])}`;
         return `Ógilt val: má vera eitt af eftirfarandi ${util.joinValues(issue.values, "|")}`;
       case "too_big": {
         const adj = issue.inclusive ? "<=" : "<";
@@ -91,9 +92,12 @@ const error: () => errors.$ZodErrorMap = () => {
         if (_issue.format === "starts_with") {
           return `Ógildur strengur: verður að byrja á "${_issue.prefix}"`;
         }
-        if (_issue.format === "ends_with") return `Ógildur strengur: verður að enda á "${_issue.suffix}"`;
-        if (_issue.format === "includes") return `Ógildur strengur: verður að innihalda "${_issue.includes}"`;
-        if (_issue.format === "regex") return `Ógildur strengur: verður að fylgja mynstri ${_issue.pattern}`;
+        if (_issue.format === "ends_with")
+          return `Ógildur strengur: verður að enda á "${_issue.suffix}"`;
+        if (_issue.format === "includes")
+          return `Ógildur strengur: verður að innihalda "${_issue.includes}"`;
+        if (_issue.format === "regex")
+          return `Ógildur strengur: verður að fylgja mynstri ${_issue.pattern}`;
         return `Rangt ${FormatDictionary[_issue.format] ?? issue.format}`;
       }
       case "not_multiple_of":

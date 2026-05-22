@@ -17,7 +17,10 @@ import {
  * Parameters for the emit method of JSONSchemaGenerator.
  * @deprecated Use toJSONSchema function instead
  */
-export type EmitParams = Pick<JSONSchemaGeneratorParams, "cycles" | "reused" | "external">;
+export type EmitParams = Pick<
+  JSONSchemaGeneratorParams,
+  "cycles" | "reused" | "external"
+>;
 
 /**
  * Parameters for JSONSchemaGenerator constructor.
@@ -82,7 +85,8 @@ export class JSONSchemaGenerator {
 
   constructor(params?: JSONSchemaGeneratorConstructorParams) {
     // Normalize target for internal context
-    let normalizedTarget: ToJSONSchemaContext["target"] = params?.target ?? "draft-2020-12";
+    let normalizedTarget: ToJSONSchemaContext["target"] =
+      params?.target ?? "draft-2020-12";
     if (normalizedTarget === "draft-4") normalizedTarget = "draft-04";
     if (normalizedTarget === "draft-7") normalizedTarget = "draft-07";
 
@@ -90,7 +94,9 @@ export class JSONSchemaGenerator {
       processors: allProcessors,
       target: normalizedTarget,
       ...(params?.metadata && { metadata: params.metadata }),
-      ...(params?.unrepresentable && { unrepresentable: params.unrepresentable }),
+      ...(params?.unrepresentable && {
+        unrepresentable: params.unrepresentable,
+      }),
       ...(params?.override && { override: params.override as any }),
       ...(params?.io && { io: params.io }),
     });
@@ -100,7 +106,10 @@ export class JSONSchemaGenerator {
    * Process a schema to prepare it for JSON Schema generation.
    * This must be called before emit().
    */
-  process(schema: schemas.$ZodType, _params: ProcessParams = { path: [], schemaPath: [] }): JSONSchema.BaseSchema {
+  process(
+    schema: schemas.$ZodType,
+    _params: ProcessParams = { path: [], schemaPath: [] },
+  ): JSONSchema.BaseSchema {
     return process(schema, this.ctx, _params);
   }
 

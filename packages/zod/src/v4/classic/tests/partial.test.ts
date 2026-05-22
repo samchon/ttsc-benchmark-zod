@@ -48,10 +48,16 @@ test("required", () => {
   expect(requiredObject.shape.field).toBeInstanceOf(z.ZodNonOptional);
   expect(requiredObject.shape.field.unwrap()).toBeInstanceOf(z.ZodDefault);
   expect(requiredObject.shape.nullableField).toBeInstanceOf(z.ZodNonOptional);
-  expect(requiredObject.shape.nullableField.unwrap()).toBeInstanceOf(z.ZodNullable);
+  expect(requiredObject.shape.nullableField.unwrap()).toBeInstanceOf(
+    z.ZodNullable,
+  );
   expect(requiredObject.shape.nullishField).toBeInstanceOf(z.ZodNonOptional);
-  expect(requiredObject.shape.nullishField.unwrap()).toBeInstanceOf(z.ZodOptional);
-  expect(requiredObject.shape.nullishField.unwrap().unwrap()).toBeInstanceOf(z.ZodNullable);
+  expect(requiredObject.shape.nullishField.unwrap()).toBeInstanceOf(
+    z.ZodOptional,
+  );
+  expect(requiredObject.shape.nullishField.unwrap().unwrap()).toBeInstanceOf(
+    z.ZodNullable,
+  );
 });
 
 test("required inference", () => {
@@ -115,7 +121,9 @@ test("partial with mask", async () => {
     country: z.string(),
   });
 
-  const masked = object.partial({ age: true, field: true, name: true }).strict();
+  const masked = object
+    .partial({ age: true, field: true, name: true })
+    .strict();
 
   expect(masked.shape.name).toBeInstanceOf(z.ZodOptional);
   expect(masked.shape.age).toBeInstanceOf(z.ZodOptional);
@@ -189,7 +197,8 @@ test("catch/prefault/default", () => {
     }
   `);
 
-  expect(mySchema.parse({ d: undefined }, { jitless: true })).toMatchInlineSnapshot(`
+  expect(mySchema.parse({ d: undefined }, { jitless: true }))
+    .toMatchInlineSnapshot(`
     {
       "b": "default value",
       "c": "prefault value",
@@ -237,7 +246,7 @@ test("handleOptionalObjectResult branches", () => {
       validUndefined: undefined,
       // defaultValue: not present, will get default
     },
-    { jitless: true }
+    { jitless: true },
   );
 
   expect(result1).toEqual({
@@ -254,7 +263,7 @@ test("handleOptionalObjectResult branches", () => {
       validDefinedUndefined: "test", // transforms to undefined
       validDefined: "valid", // valid value
     },
-    { jitless: true }
+    { jitless: true },
   );
 
   expect(result2).toEqual({
@@ -270,8 +279,8 @@ test("handleOptionalObjectResult branches", () => {
       {
         issueDefined: "abc", // too short
       },
-      { jitless: true }
-    )
+      { jitless: true },
+    ),
   ).toThrow();
 });
 
@@ -379,7 +388,9 @@ test("partial - throws error on schema with refinements", () => {
     }
   });
 
-  expect(() => refinedSchema.partial()).toThrow(".partial() cannot be used on object schemas containing refinements");
+  expect(() => refinedSchema.partial()).toThrow(
+    ".partial() cannot be used on object schemas containing refinements",
+  );
 });
 
 test("partial - throws error on schema with refine", () => {
@@ -388,11 +399,16 @@ test("partial - throws error on schema with refine", () => {
     confirmPassword: z.string(),
   });
 
-  const refinedSchema = baseSchema.refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords must match",
-  });
+  const refinedSchema = baseSchema.refine(
+    (data) => data.password === data.confirmPassword,
+    {
+      message: "Passwords must match",
+    },
+  );
 
-  expect(() => refinedSchema.partial()).toThrow(".partial() cannot be used on object schemas containing refinements");
+  expect(() => refinedSchema.partial()).toThrow(
+    ".partial() cannot be used on object schemas containing refinements",
+  );
 });
 
 test("required - preserves refinements", () => {
@@ -431,20 +447,29 @@ test("required - refinement is executed on required schema", () => {
     confirmPassword: z.string().optional(),
   });
 
-  const refinedSchema = baseSchema.refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords must match",
-  });
+  const refinedSchema = baseSchema.refine(
+    (data) => data.password === data.confirmPassword,
+    {
+      message: "Passwords must match",
+    },
+  );
 
   const requiredSchema = refinedSchema.required();
 
   // Mismatched passwords should fail refinement
-  const result = requiredSchema.safeParse({ password: "abc", confirmPassword: "xyz" });
+  const result = requiredSchema.safeParse({
+    password: "abc",
+    confirmPassword: "xyz",
+  });
   expect(result.success).toBe(false);
   if (!result.success) {
     expect(result.error.issues[0].message).toBe("Passwords must match");
   }
 
   // Matching passwords should pass
-  const validResult = requiredSchema.safeParse({ password: "abc", confirmPassword: "abc" });
+  const validResult = requiredSchema.safeParse({
+    password: "abc",
+    confirmPassword: "abc",
+  });
   expect(validResult.success).toBe(true);
 });

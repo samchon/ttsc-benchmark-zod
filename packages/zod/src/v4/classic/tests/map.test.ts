@@ -19,7 +19,7 @@ test("valid parse", () => {
     new Map([
       ["first", "foo"],
       ["second", "bar"],
-    ])
+    ]),
   );
   expect(result.success).toEqual(true);
   expect(result.data).toMatchInlineSnapshot(`
@@ -36,34 +36,34 @@ test("valid parse: size-related methods", () => {
       new Map([
         ["a", "b"],
         ["c", "d"],
-      ])
+      ]),
     );
     minTwo.parse(
       new Map([
         ["a", "b"],
         ["c", "d"],
         ["e", "f"],
-      ])
+      ]),
     );
     maxTwo.parse(
       new Map([
         ["a", "b"],
         ["c", "d"],
-      ])
+      ]),
     );
     maxTwo.parse(new Map([["a", "b"]]));
     justTwo.parse(
       new Map([
         ["a", "b"],
         ["c", "d"],
-      ])
+      ]),
     );
     nonEmpty.parse(new Map([["a", "b"]]));
     nonEmptyMax.parse(
       new Map([
         ["a", "b"],
         ["c", "d"],
-      ])
+      ]),
     );
   }).not.toThrow();
 
@@ -74,7 +74,7 @@ test("valid parse: size-related methods", () => {
     new Map([
       ["a", "b"],
       ["c", "d"],
-    ])
+    ]),
   );
   expect(sizeTwoResult.size).toBe(2);
 });
@@ -92,7 +92,7 @@ test("failing when map is bigger than max() ", () => {
       ["a", "b"],
       ["c", "d"],
       ["e", "f"],
-    ])
+    ]),
   );
   expect(result.success).toEqual(false);
   expect(result.error!.issues.length).toEqual(1);
@@ -102,7 +102,7 @@ test("failing when map is bigger than max() ", () => {
 test("valid parse async", async () => {
   const asyncMap = z.map(
     z.string().refine(async () => false, "bad key"),
-    z.string().refine(async () => false, "bad value")
+    z.string().refine(async () => false, "bad value"),
   );
   const result = await asyncMap.safeParseAsync(new Map([["first", "foo"]]));
   expect(result.success).toEqual(false);
@@ -170,7 +170,7 @@ test("throws when the given map has multiple invalid entries", () => {
     new Map([
       [1, "foo"],
       ["bar", 2],
-    ] as [any, any][]) as Map<any, any>
+    ] as [any, any][]) as Map<any, any>,
   );
 
   // const result = stringMap.safeParse(new Map([[42, Symbol()]]));
@@ -205,13 +205,13 @@ test("dirty", async () => {
     z.string().refine((val) => val === val.toUpperCase(), {
       message: "Keys must be uppercase",
     }),
-    z.string()
+    z.string(),
   );
   const result = await map.spa(
     new Map([
       ["first", "foo"],
       ["second", "bar"],
-    ])
+    ]),
   );
   expect(result.success).toEqual(false);
   if (!result.success) {
@@ -243,7 +243,7 @@ test("map with object keys", () => {
       name: z.string(),
       age: z.number(),
     }),
-    z.string()
+    z.string(),
   );
   const data = new Map([
     [{ name: "John", age: 30 }, "foo"],
@@ -279,7 +279,7 @@ test("min/max", async () => {
       ["b", "b"],
       ["c", "c"],
       ["d", "d"],
-    ])
+    ]),
   );
   expect(r1.success).toEqual(true);
 
@@ -288,7 +288,7 @@ test("min/max", async () => {
       ["a", "a"],
       ["b", "b"],
       ["c", "c"],
-    ])
+    ]),
   );
   expect(r2.success).toEqual(false);
   expect(r2.error!.issues).toMatchInlineSnapshot(`
@@ -312,7 +312,7 @@ test("min/max", async () => {
       ["d", "d"],
       ["e", "e"],
       ["f", "f"],
-    ])
+    ]),
   );
   expect(r3.success).toEqual(false);
   expect(r3.error!.issues).toMatchInlineSnapshot(`

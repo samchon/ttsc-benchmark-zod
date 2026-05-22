@@ -13,7 +13,9 @@ test("Georgian locale uses 'ველი' instead of 'სტრინგი'", (
   expect(numberResult.success).toBe(false);
   if (!numberResult.success) {
     // Expected: "არასწორი შეყვანა: მოსალოდნელი ველი, მიღებული რიცხვი"
-    expect(numberResult.error.issues[0].message).toBe("არასწორი შეყვანა: მოსალოდნელი ველი, მიღებული რიცხვი");
+    expect(numberResult.error.issues[0].message).toBe(
+      "არასწორი შეყვანა: მოსალოდნელი ველი, მიღებული რიცხვი",
+    );
   }
 
   // Test 2: Invalid base64
@@ -24,6 +26,8 @@ test("Georgian locale uses 'ველი' instead of 'სტრინგი'", (
     // Expected: "არასწორი base64-კოდირებული ველი"
     // "არასწორი ${FormatDictionary[_issue.format] ?? issue.format}"
     // FormatDictionary['base64'] is "base64-კოდირებული ველი"
-    expect(base64Result.error.issues[0].message).toBe("არასწორი base64-კოდირებული ველი");
+    expect(base64Result.error.issues[0].message).toBe(
+      "არასწორი base64-კოდირებული ველი",
+    );
   }
 });

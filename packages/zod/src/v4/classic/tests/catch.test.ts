@@ -285,9 +285,11 @@ test("optional clobbers catch through pipe boundaries", () => {
       .catch("X")
       .transform((s) => s + "!")
       .optional()
-      .parse(undefined)
+      .parse(undefined),
   ).toBeUndefined();
-  expect(z.string().catch("X").pipe(z.string()).optional().parse(undefined)).toBeUndefined();
+  expect(
+    z.string().catch("X").pipe(z.string()).optional().parse(undefined),
+  ).toBeUndefined();
   expect(
     z
       .string()
@@ -295,7 +297,7 @@ test("optional clobbers catch through pipe boundaries", () => {
       .transform((s) => s + "!")
       .transform((s) => s.toLowerCase())
       .optional()
-      .parse(undefined)
+      .parse(undefined),
   ).toBeUndefined();
   expect(
     z
@@ -306,7 +308,7 @@ test("optional clobbers catch through pipe boundaries", () => {
           .transform((s) => s + "!")
           .optional(),
       })
-      .parse({})
+      .parse({}),
   ).toEqual({});
 
   expect(
@@ -314,13 +316,13 @@ test("optional clobbers catch through pipe boundaries", () => {
       .string()
       .catch("X")
       .transform((s) => s + "!")
-      .parse("hi")
+      .parse("hi"),
   ).toBe("hi!");
   expect(
     z
       .string()
       .catch("X")
       .transform((s) => s + "!")
-      .parse(123)
+      .parse(123),
   ).toBe("X!");
 });

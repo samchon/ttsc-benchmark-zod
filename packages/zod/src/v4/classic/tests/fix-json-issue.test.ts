@@ -1,5 +1,12 @@
 import { expect, test } from "vitest";
-import { type infer as _infer, json, nullable, object, pipe, transform } from "../../mini/index.js";
+import {
+  type infer as _infer,
+  json,
+  nullable,
+  object,
+  pipe,
+  transform,
+} from "../../mini/index.js";
 // biome-ignore lint/correctness/noUnusedImports: This import verifies the type is exported
 import type { _ZodMiniJSONSchema } from "../../mini/schemas.js";
 
@@ -16,8 +23,8 @@ export const Container = object({
       (v) =>
         v ?? {
           data: "",
-        }
-    )
+        },
+    ),
   ),
 });
 

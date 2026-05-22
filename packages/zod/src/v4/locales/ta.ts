@@ -68,7 +68,8 @@ const error: () => errors.$ZodErrorMap = () => {
         return `தவறான உள்ளீடு: எதிர்பார்க்கப்பட்டது ${expected}, பெறப்பட்டது ${received}`;
       }
       case "invalid_value":
-        if (issue.values.length === 1) return `தவறான உள்ளீடு: எதிர்பார்க்கப்பட்டது ${util.stringifyPrimitive(issue.values[0])}`;
+        if (issue.values.length === 1)
+          return `தவறான உள்ளீடு: எதிர்பார்க்கப்பட்டது ${util.stringifyPrimitive(issue.values[0])}`;
         return `தவறான விருப்பம்: எதிர்பார்க்கப்பட்டது ${util.joinValues(issue.values, "|")} இல் ஒன்று`;
       case "too_big": {
         const adj = issue.inclusive ? "<=" : "<";
@@ -89,10 +90,14 @@ const error: () => errors.$ZodErrorMap = () => {
       }
       case "invalid_format": {
         const _issue = issue as errors.$ZodStringFormatIssues;
-        if (_issue.format === "starts_with") return `தவறான சரம்: "${_issue.prefix}" இல் தொடங்க வேண்டும்`;
-        if (_issue.format === "ends_with") return `தவறான சரம்: "${_issue.suffix}" இல் முடிவடைய வேண்டும்`;
-        if (_issue.format === "includes") return `தவறான சரம்: "${_issue.includes}" ஐ உள்ளடக்க வேண்டும்`;
-        if (_issue.format === "regex") return `தவறான சரம்: ${_issue.pattern} முறைபாட்டுடன் பொருந்த வேண்டும்`;
+        if (_issue.format === "starts_with")
+          return `தவறான சரம்: "${_issue.prefix}" இல் தொடங்க வேண்டும்`;
+        if (_issue.format === "ends_with")
+          return `தவறான சரம்: "${_issue.suffix}" இல் முடிவடைய வேண்டும்`;
+        if (_issue.format === "includes")
+          return `தவறான சரம்: "${_issue.includes}" ஐ உள்ளடக்க வேண்டும்`;
+        if (_issue.format === "regex")
+          return `தவறான சரம்: ${_issue.pattern} முறைபாட்டுடன் பொருந்த வேண்டும்`;
         return `தவறான ${FormatDictionary[_issue.format] ?? issue.format}`;
       }
       case "not_multiple_of":

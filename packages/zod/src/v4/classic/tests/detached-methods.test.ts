@@ -169,7 +169,12 @@ test("broad sweep: detaching builder methods does not throw or produce a corrupt
   const broken: Array<{ method: string; reason: string }> = [];
 
   for (const [methodName, args] of Object.entries(probeArgs)) {
-    const target: any = methodName in stringSchema ? stringSchema : methodName in numberSchema ? numberSchema : null;
+    const target: any =
+      methodName in stringSchema
+        ? stringSchema
+        : methodName in numberSchema
+          ? numberSchema
+          : null;
     if (!target) continue;
 
     const detached = target[methodName] as Function | undefined;
@@ -179,13 +184,21 @@ test("broad sweep: detaching builder methods does not throw or produce a corrupt
       const result = detached(...args);
       // If the detached call returned a schema, sanity-check it parses
       // its base type. (e.g. `optional()` should accept its inner type.)
-      if (result && typeof result === "object" && "_zod" in result && typeof (result as any).safeParse === "function") {
+      if (
+        result &&
+        typeof result === "object" &&
+        "_zod" in result &&
+        typeof (result as any).safeParse === "function"
+      ) {
         const probeValue = target === stringSchema ? "x" : 1;
         const r = (result as any).safeParse(probeValue);
         // success or a clean failure are both fine — we only fail on throw or
         // on a schema with corrupt internal state (innerType undefined etc).
         if (r === undefined || (typeof r === "object" && !("success" in r))) {
-          broken.push({ method: methodName, reason: "safeParse returned malformed result" });
+          broken.push({
+            method: methodName,
+            reason: "safeParse returned malformed result",
+          });
         }
       }
     } catch (err: any) {

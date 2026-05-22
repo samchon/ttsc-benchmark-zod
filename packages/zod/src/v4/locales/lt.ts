@@ -24,7 +24,10 @@ const error: () => errors.$ZodErrorMap = () => {
     string,
     {
       unit: Record<UnitType, string>;
-      verb: Record<SizeableComparisonType, { inclusive: string; notInclusive: string }>;
+      verb: Record<
+        SizeableComparisonType,
+        { inclusive: string; notInclusive: string }
+      >;
     }
   > = {
     string: {
@@ -101,7 +104,7 @@ const error: () => errors.$ZodErrorMap = () => {
     origin: string,
     unitType: UnitType,
     inclusive: boolean,
-    targetShouldBe: SizeableComparisonType
+    targetShouldBe: SizeableComparisonType,
   ): {
     unit: string;
     verb: string;
@@ -111,7 +114,9 @@ const error: () => errors.$ZodErrorMap = () => {
 
     return {
       unit: result.unit[unitType],
-      verb: result.verb[targetShouldBe][inclusive ? "inclusive" : "notInclusive"],
+      verb: result.verb[targetShouldBe][
+        inclusive ? "inclusive" : "notInclusive"
+      ],
     };
   }
 
@@ -176,7 +181,8 @@ const error: () => errors.$ZodErrorMap = () => {
         return `Gautas tipas ${received}, o tikėtasi - ${expected}`;
       }
       case "invalid_value":
-        if (issue.values.length === 1) return `Privalo būti ${util.stringifyPrimitive(issue.values[0])}`;
+        if (issue.values.length === 1)
+          return `Privalo būti ${util.stringifyPrimitive(issue.values[0])}`;
         return `Privalo būti vienas iš ${util.joinValues(issue.values, "|")} pasirinkimų`;
       case "too_big": {
         const origin = TypeDictionary[issue.origin] ?? issue.origin;
@@ -184,7 +190,7 @@ const error: () => errors.$ZodErrorMap = () => {
           issue.origin,
           getUnitTypeFromNumber(Number(issue.maximum)),
           issue.inclusive ?? false,
-          "smaller"
+          "smaller",
         );
         if (sizing?.verb)
           return `${capitalizeFirstCharacter(origin ?? issue.origin ?? "reikšmė")} ${sizing.verb} ${issue.maximum.toString()} ${sizing.unit ?? "elementų"}`;
@@ -197,7 +203,7 @@ const error: () => errors.$ZodErrorMap = () => {
           issue.origin,
           getUnitTypeFromNumber(Number(issue.minimum)),
           issue.inclusive ?? false,
-          "bigger"
+          "bigger",
         );
         if (sizing?.verb)
           return `${capitalizeFirstCharacter(origin ?? issue.origin ?? "reikšmė")} ${sizing.verb} ${issue.minimum.toString()} ${sizing.unit ?? "elementų"}`;
@@ -209,9 +215,12 @@ const error: () => errors.$ZodErrorMap = () => {
         if (_issue.format === "starts_with") {
           return `Eilutė privalo prasidėti "${_issue.prefix}"`;
         }
-        if (_issue.format === "ends_with") return `Eilutė privalo pasibaigti "${_issue.suffix}"`;
-        if (_issue.format === "includes") return `Eilutė privalo įtraukti "${_issue.includes}"`;
-        if (_issue.format === "regex") return `Eilutė privalo atitikti ${_issue.pattern}`;
+        if (_issue.format === "ends_with")
+          return `Eilutė privalo pasibaigti "${_issue.suffix}"`;
+        if (_issue.format === "includes")
+          return `Eilutė privalo įtraukti "${_issue.includes}"`;
+        if (_issue.format === "regex")
+          return `Eilutė privalo atitikti ${_issue.pattern}`;
         return `Neteisingas ${FormatDictionary[_issue.format] ?? issue.format}`;
       }
       case "not_multiple_of":

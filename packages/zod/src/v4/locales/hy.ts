@@ -118,7 +118,11 @@ const error: () => errors.$ZodErrorMap = () => {
         const sizing = getSizing(issue.origin);
         if (sizing) {
           const maxValue = Number(issue.maximum);
-          const unit = getArmenianPlural(maxValue, sizing.unit.one, sizing.unit.many);
+          const unit = getArmenianPlural(
+            maxValue,
+            sizing.unit.one,
+            sizing.unit.many,
+          );
           return `Չափազանց մեծ արժեք․ սպասվում է, որ ${withDefiniteArticle(issue.origin ?? "արժեք")} կունենա ${adj}${issue.maximum.toString()} ${unit}`;
         }
         return `Չափազանց մեծ արժեք․ սպասվում է, որ ${withDefiniteArticle(issue.origin ?? "արժեք")} լինի ${adj}${issue.maximum.toString()}`;
@@ -128,17 +132,25 @@ const error: () => errors.$ZodErrorMap = () => {
         const sizing = getSizing(issue.origin);
         if (sizing) {
           const minValue = Number(issue.minimum);
-          const unit = getArmenianPlural(minValue, sizing.unit.one, sizing.unit.many);
+          const unit = getArmenianPlural(
+            minValue,
+            sizing.unit.one,
+            sizing.unit.many,
+          );
           return `Չափազանց փոքր արժեք․ սպասվում է, որ ${withDefiniteArticle(issue.origin)} կունենա ${adj}${issue.minimum.toString()} ${unit}`;
         }
         return `Չափազանց փոքր արժեք․ սպասվում է, որ ${withDefiniteArticle(issue.origin)} լինի ${adj}${issue.minimum.toString()}`;
       }
       case "invalid_format": {
         const _issue = issue as errors.$ZodStringFormatIssues;
-        if (_issue.format === "starts_with") return `Սխալ տող․ պետք է սկսվի "${_issue.prefix}"-ով`;
-        if (_issue.format === "ends_with") return `Սխալ տող․ պետք է ավարտվի "${_issue.suffix}"-ով`;
-        if (_issue.format === "includes") return `Սխալ տող․ պետք է պարունակի "${_issue.includes}"`;
-        if (_issue.format === "regex") return `Սխալ տող․ պետք է համապատասխանի ${_issue.pattern} ձևաչափին`;
+        if (_issue.format === "starts_with")
+          return `Սխալ տող․ պետք է սկսվի "${_issue.prefix}"-ով`;
+        if (_issue.format === "ends_with")
+          return `Սխալ տող․ պետք է ավարտվի "${_issue.suffix}"-ով`;
+        if (_issue.format === "includes")
+          return `Սխալ տող․ պետք է պարունակի "${_issue.includes}"`;
+        if (_issue.format === "regex")
+          return `Սխալ տող․ պետք է համապատասխանի ${_issue.pattern} ձևաչափին`;
         return `Սխալ ${FormatDictionary[_issue.format] ?? issue.format}`;
       }
       case "not_multiple_of":

@@ -67,7 +67,8 @@ const error: () => errors.$ZodErrorMap = () => {
         return `Ugyldig input: forventet ${expected}, fikk ${received}`;
       }
       case "invalid_value":
-        if (issue.values.length === 1) return `Ugyldig verdi: forventet ${util.stringifyPrimitive(issue.values[0])}`;
+        if (issue.values.length === 1)
+          return `Ugyldig verdi: forventet ${util.stringifyPrimitive(issue.values[0])}`;
         return `Ugyldig valg: forventet en av ${util.joinValues(issue.values, "|")}`;
       case "too_big": {
         const adj = issue.inclusive ? "<=" : "<";
@@ -87,10 +88,14 @@ const error: () => errors.$ZodErrorMap = () => {
       }
       case "invalid_format": {
         const _issue = issue as errors.$ZodStringFormatIssues;
-        if (_issue.format === "starts_with") return `Ugyldig streng: må starte med "${_issue.prefix}"`;
-        if (_issue.format === "ends_with") return `Ugyldig streng: må ende med "${_issue.suffix}"`;
-        if (_issue.format === "includes") return `Ugyldig streng: må inneholde "${_issue.includes}"`;
-        if (_issue.format === "regex") return `Ugyldig streng: må matche mønsteret ${_issue.pattern}`;
+        if (_issue.format === "starts_with")
+          return `Ugyldig streng: må starte med "${_issue.prefix}"`;
+        if (_issue.format === "ends_with")
+          return `Ugyldig streng: må ende med "${_issue.suffix}"`;
+        if (_issue.format === "includes")
+          return `Ugyldig streng: må inneholde "${_issue.includes}"`;
+        if (_issue.format === "regex")
+          return `Ugyldig streng: må matche mønsteret ${_issue.pattern}`;
         return `Ugyldig ${FormatDictionary[_issue.format] ?? issue.format}`;
       }
       case "not_multiple_of":

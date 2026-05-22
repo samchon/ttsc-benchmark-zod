@@ -126,7 +126,9 @@ test("optional prop with pipe", () => {
   const schema = z.object({
     id: z
       .union([z.number(), z.string().nullish()])
-      .transform((val) => (val === null || val === undefined ? val : Number(val)))
+      .transform((val) =>
+        val === null || val === undefined ? val : Number(val),
+      )
       .pipe(z.number())
       .optional(),
   });
@@ -161,7 +163,9 @@ test("object absent keys require optin optional", () => {
       },
     ]
   `);
-  expect(valueUndefined.safeParse({}, { jitless: true }).success).toEqual(false);
+  expect(valueUndefined.safeParse({}, { jitless: true }).success).toEqual(
+    false,
+  );
   expect(valueUndefined.parse({ value: undefined, union: undefined })).toEqual({
     value: undefined,
     union: undefined,
@@ -174,7 +178,9 @@ test("object absent keys require optin optional", () => {
       .pipe(z.string().optional()),
   });
   expect(optionalOutOnly.safeParse({}).success).toEqual(false);
-  expect(optionalOutOnly.safeParse({}, { jitless: true }).success).toEqual(false);
+  expect(optionalOutOnly.safeParse({}, { jitless: true }).success).toEqual(
+    false,
+  );
 
   const defaulted = z.object({ value: z.string().default("fallback") });
   expect(defaulted.parse({})).toEqual({ value: "fallback" });
@@ -217,7 +223,9 @@ test("exactOptional in objects - absent keys", () => {
 
   // Present key with valid value should pass
   expect(schema.parse({ a: "hello" })).toEqual({ a: "hello" });
-  expect(schema.parse({ a: "hello" }, { jitless: true })).toEqual({ a: "hello" });
+  expect(schema.parse({ a: "hello" }, { jitless: true })).toEqual({
+    a: "hello",
+  });
 });
 
 test("exactOptional in objects - explicit undefined rejected", () => {
@@ -227,7 +235,9 @@ test("exactOptional in objects - explicit undefined rejected", () => {
 
   // Explicit undefined should fail
   expect(schema.safeParse({ a: undefined }).success).toEqual(false);
-  expect(schema.safeParse({ a: undefined }, { jitless: true }).success).toEqual(false);
+  expect(schema.safeParse({ a: undefined }, { jitless: true }).success).toEqual(
+    false,
+  );
 });
 
 test("exactOptional type inference in objects", () => {
@@ -265,7 +275,9 @@ test("exactOptional vs optional comparison", () => {
   expect(optionalSchema.parse({ a: undefined })).toEqual({ a: undefined });
 
   // exactOptional() rejects explicit undefined
-  expect(exactOptionalSchema.safeParse({ a: undefined }).success).toEqual(false);
+  expect(exactOptionalSchema.safeParse({ a: undefined }).success).toEqual(
+    false,
+  );
 });
 
 // Defensive inference coverage: every schema that propagates `optout` participates
@@ -274,22 +286,32 @@ test("exactOptional vs optional comparison", () => {
 // continue to hold or downstream `z.infer<typeof obj>` types silently flip required keys.
 test("object key optionality through optout propagation", () => {
   const direct = z.object({ k: z.string().optional() });
-  expectTypeOf<z.infer<typeof direct>>().toEqualTypeOf<{ k?: string | undefined }>();
+  expectTypeOf<z.infer<typeof direct>>().toEqualTypeOf<{
+    k?: string | undefined;
+  }>();
 
   const exact = z.object({ k: z.string().exactOptional() });
   expectTypeOf<z.infer<typeof exact>>().toEqualTypeOf<{ k?: string }>();
 
   // nullable() preserves the inner type's optout
   const nullableOpt = z.object({ k: z.string().optional().nullable() });
-  expectTypeOf<z.infer<typeof nullableOpt>>().toEqualTypeOf<{ k?: string | null | undefined }>();
+  expectTypeOf<z.infer<typeof nullableOpt>>().toEqualTypeOf<{
+    k?: string | null | undefined;
+  }>();
 
   // optional() wrapping nullable() — still optional out
   const optNullable = z.object({ k: z.string().nullable().optional() });
-  expectTypeOf<z.infer<typeof optNullable>>().toEqualTypeOf<{ k?: string | null | undefined }>();
+  expectTypeOf<z.infer<typeof optNullable>>().toEqualTypeOf<{
+    k?: string | null | undefined;
+  }>();
 
   // union containing an optional member must mark the key as optional
-  const unionWithOpt = z.object({ k: z.union([z.string(), z.string().optional()]) });
-  expectTypeOf<z.infer<typeof unionWithOpt>>().toEqualTypeOf<{ k?: string | undefined }>();
+  const unionWithOpt = z.object({
+    k: z.union([z.string(), z.string().optional()]),
+  });
+  expectTypeOf<z.infer<typeof unionWithOpt>>().toEqualTypeOf<{
+    k?: string | undefined;
+  }>();
 
   // pipe ending in optional()
   const pipedToOpt = z.object({
@@ -298,7 +320,9 @@ test("object key optionality through optout propagation", () => {
       .transform((v) => (Math.random() ? v : undefined))
       .pipe(z.string().optional()),
   });
-  expectTypeOf<z.output<typeof pipedToOpt>>().toEqualTypeOf<{ k?: string | undefined }>();
+  expectTypeOf<z.output<typeof pipedToOpt>>().toEqualTypeOf<{
+    k?: string | undefined;
+  }>();
 
   // mixed shape pinning required vs optional keys end-to-end
   const mixed = z.object({
@@ -322,12 +346,22 @@ test("object key optionality through optout propagation", () => {
 // any future flag change has to keep this contract.
 test("tuple tail optionality through optout propagation", () => {
   const trailingOptional = z.tuple([z.string(), z.number().optional()]);
-  expectTypeOf<z.output<typeof trailingOptional>>().toEqualTypeOf<[string, (number | undefined)?]>();
+  expectTypeOf<z.output<typeof trailingOptional>>().toEqualTypeOf<
+    [string, (number | undefined)?]
+  >();
 
   const trailingExact = z.tuple([z.string(), z.number().exactOptional()]);
-  expectTypeOf<z.output<typeof trailingExact>>().toEqualTypeOf<[string, number?]>();
+  expectTypeOf<z.output<typeof trailingExact>>().toEqualTypeOf<
+    [string, number?]
+  >();
 
   // Interior optional must NOT make the tail optional
-  const interiorOptional = z.tuple([z.string(), z.number().optional(), z.string()]);
-  expectTypeOf<z.output<typeof interiorOptional>>().toEqualTypeOf<[string, number | undefined, string]>();
+  const interiorOptional = z.tuple([
+    z.string(),
+    z.number().optional(),
+    z.string(),
+  ]);
+  expectTypeOf<z.output<typeof interiorOptional>>().toEqualTypeOf<
+    [string, number | undefined, string]
+  >();
 });

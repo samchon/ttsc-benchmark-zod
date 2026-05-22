@@ -116,11 +116,19 @@ test("assignability", () => {
   z.string().default("default") satisfies z.ZodDefault;
 
   // $ZodTemplateLiteral
-  z.templateLiteral([z.literal("a"), z.literal("b")]) satisfies z.core.$ZodTemplateLiteral;
-  z.templateLiteral([z.literal("a"), z.literal("b")]) satisfies z.ZodTemplateLiteral;
+  z.templateLiteral([
+    z.literal("a"),
+    z.literal("b"),
+  ]) satisfies z.core.$ZodTemplateLiteral;
+  z.templateLiteral([
+    z.literal("a"),
+    z.literal("b"),
+  ]) satisfies z.ZodTemplateLiteral;
 
   // $ZodCustom
-  z.custom<string>((val) => typeof val === "string") satisfies z.core.$ZodCustom;
+  z.custom<string>(
+    (val) => typeof val === "string",
+  ) satisfies z.core.$ZodCustom;
   z.custom<string>((val) => typeof val === "string") satisfies z.ZodCustom;
 
   // $ZodTransform
@@ -146,8 +154,14 @@ test("assignability", () => {
   // $ZodPreprocess
   z.preprocess((v) => v, z.number()) satisfies z.core.$ZodPreprocess;
   z.preprocess((v) => v, z.number()) satisfies z.ZodPreprocess;
-  z.preprocess((v) => v, z.number()) satisfies z.core.$ZodPipe<z.core.$ZodTransform, z.ZodNumber>;
-  z.preprocess((v) => v, z.number()) satisfies z.ZodPipe<z.core.$ZodTransform, z.ZodNumber>;
+  z.preprocess((v) => v, z.number()) satisfies z.core.$ZodPipe<
+    z.core.$ZodTransform,
+    z.ZodNumber
+  >;
+  z.preprocess((v) => v, z.number()) satisfies z.ZodPipe<
+    z.core.$ZodTransform,
+    z.ZodNumber
+  >;
 
   // $ZodSuccess
   z.success(z.string()) satisfies z.core.$ZodSuccess;
@@ -188,15 +202,18 @@ test("assignability to $ZodType", () => {
   z.set(z.string()) satisfies z.ZodType;
   z.literal("example") satisfies z.ZodType;
 
-  expectTypeOf<z.ZodType extends z.core.$ZodType ? true : false>().toEqualTypeOf<true>();
+  expectTypeOf<
+    z.ZodType extends z.core.$ZodType ? true : false
+  >().toEqualTypeOf<true>();
 });
 
 test("assignability with narrowing", () => {
-  type _RefinedSchema<T extends z.ZodType<object> | z.ZodUnion> = T extends z.ZodUnion
-    ? RefinedUnionSchema<T> // <-- Type instantiation is excessively deep and possibly infinite.
-    : T extends z.ZodType<object>
-      ? RefinedTypeSchema<z.output<T>> // <-- Type instantiation is excessively deep and possibly infinite.
-      : never;
+  type _RefinedSchema<T extends z.ZodType<object> | z.ZodUnion> =
+    T extends z.ZodUnion
+      ? RefinedUnionSchema<T> // <-- Type instantiation is excessively deep and possibly infinite.
+      : T extends z.ZodType<object>
+        ? RefinedTypeSchema<z.output<T>> // <-- Type instantiation is excessively deep and possibly infinite.
+        : never;
   void (0 as unknown as _RefinedSchema<z.ZodType<object>>);
 
   type RefinedTypeSchema<T extends object> = T;
@@ -210,12 +227,16 @@ test("generic assignability in objects", () => {
     order: string;
   }
 
-  const createSortItemSchema = <T extends z.ZodType<string>>(sortKeySchema: T) =>
+  const createSortItemSchema = <T extends z.ZodType<string>>(
+    sortKeySchema: T,
+  ) =>
     z.object({
       key: sortKeySchema,
       order: z.string(),
     });
 
-  <T extends z.ZodType<string>>(sortKeySchema: T, defaultSortBy: SortItem<z.output<T>>[] = []) =>
-    createSortItemSchema(sortKeySchema).array().default(defaultSortBy);
+  <T extends z.ZodType<string>>(
+    sortKeySchema: T,
+    defaultSortBy: SortItem<z.output<T>>[] = [],
+  ) => createSortItemSchema(sortKeySchema).array().default(defaultSortBy);
 });

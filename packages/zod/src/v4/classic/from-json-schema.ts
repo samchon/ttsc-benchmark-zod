@@ -12,7 +12,11 @@ const z = {
   iso: _iso,
 };
 
-type JSONSchemaVersion = "draft-2020-12" | "draft-7" | "draft-4" | "openapi-3.0";
+type JSONSchemaVersion =
+  | "draft-2020-12"
+  | "draft-7"
+  | "draft-4"
+  | "openapi-3.0";
 
 interface FromJSONSchemaParams {
   defaultTarget?: JSONSchemaVersion;
@@ -101,7 +105,10 @@ const RECOGNIZED_KEYS = /*@__PURE__*/ new Set([
   "readOnly",
 ]);
 
-function detectVersion(schema: JSONSchema.JSONSchema, defaultTarget?: JSONSchemaVersion): JSONSchemaVersion {
+function detectVersion(
+  schema: JSONSchema.JSONSchema,
+  defaultTarget?: JSONSchemaVersion,
+): JSONSchemaVersion {
   const $schema = schema.$schema;
 
   if ($schema === "https://json-schema.org/draft/2020-12/schema") {
@@ -118,9 +125,14 @@ function detectVersion(schema: JSONSchema.JSONSchema, defaultTarget?: JSONSchema
   return defaultTarget ?? "draft-2020-12";
 }
 
-function resolveRef(ref: string, ctx: ConversionContext): JSONSchema.JSONSchema {
+function resolveRef(
+  ref: string,
+  ctx: ConversionContext,
+): JSONSchema.JSONSchema {
   if (!ref.startsWith("#")) {
-    throw new Error("External $ref is not supported, only local refs (#/...) are allowed");
+    throw new Error(
+      "External $ref is not supported, only local refs (#/...) are allowed",
+    );
   }
 
   const path = ref.slice(1).split("/").filter(Boolean);
@@ -143,14 +155,22 @@ function resolveRef(ref: string, ctx: ConversionContext): JSONSchema.JSONSchema 
   throw new Error(`Reference not found: ${ref}`);
 }
 
-function convertBaseSchema(schema: JSONSchema.JSONSchema, ctx: ConversionContext): ZodType {
+function convertBaseSchema(
+  schema: JSONSchema.JSONSchema,
+  ctx: ConversionContext,
+): ZodType {
   // Handle unsupported features
   if (schema.not !== undefined) {
     // Special case: { not: {} } represents never
-    if (typeof schema.not === "object" && Object.keys(schema.not).length === 0) {
+    if (
+      typeof schema.not === "object" &&
+      Object.keys(schema.not).length === 0
+    ) {
       return z.never();
     }
-    throw new Error("not is not supported in Zod (except { not: {} } for never)");
+    throw new Error(
+      "not is not supported in Zod (except { not: {} } for never)",
+    );
   }
   if (schema.unevaluatedItems !== undefined) {
     throw new Error("unevaluatedItems is not supported");
@@ -158,10 +178,17 @@ function convertBaseSchema(schema: JSONSchema.JSONSchema, ctx: ConversionContext
   if (schema.unevaluatedProperties !== undefined) {
     throw new Error("unevaluatedProperties is not supported");
   }
-  if (schema.if !== undefined || schema.then !== undefined || schema.else !== undefined) {
+  if (
+    schema.if !== undefined ||
+    schema.then !== undefined ||
+    schema.else !== undefined
+  ) {
     throw new Error("Conditional schemas (if/then/else) are not supported");
   }
-  if (schema.dependentSchemas !== undefined || schema.dependentRequired !== undefined) {
+  if (
+    schema.dependentSchemas !== undefined ||
+    schema.dependentRequired !== undefined
+  ) {
     throw new Error("dependentSchemas and dependentRequired are not supported");
   }
 
@@ -219,11 +246,11 @@ function convertBaseSchema(schema: JSONSchema.JSONSchema, ctx: ConversionContext
     if (literalSchemas.length < 2) {
       return literalSchemas[0]!;
     }
-    return z.union([literalSchemas[0]!, literalSchemas[1]!, ...literalSchemas.slice(2)] as [
-      ZodType,
-      ZodType,
-      ...ZodType[],
-    ]);
+    return z.union([
+      literalSchemas[0]!,
+      literalSchemas[1]!,
+      ...literalSchemas.slice(2),
+    ] as [ZodType, ZodType, ...ZodType[]]);
   }
 
   // Handle const
@@ -333,7 +360,8 @@ function convertBaseSchema(schema: JSONSchema.JSONSchema, ctx: ConversionContext
 
     case "number":
     case "integer": {
-      let numberSchema: ZodNumber = type === "integer" ? z.number().int() : z.number();
+      let numberSchema: ZodNumber =
+        type === "integer" ? z.number().int() : z.number();
 
       // Apply constraints
       if (typeof schema.minimum === "number") {
@@ -344,12 +372,18 @@ function convertBaseSchema(schema: JSONSchema.JSONSchema, ctx: ConversionContext
       }
       if (typeof schema.exclusiveMinimum === "number") {
         numberSchema = numberSchema.gt(schema.exclusiveMinimum);
-      } else if (schema.exclusiveMinimum === true && typeof schema.minimum === "number") {
+      } else if (
+        schema.exclusiveMinimum === true &&
+        typeof schema.minimum === "number"
+      ) {
         numberSchema = numberSchema.gt(schema.minimum);
       }
       if (typeof schema.exclusiveMaximum === "number") {
         numberSchema = numberSchema.lt(schema.exclusiveMaximum);
-      } else if (schema.exclusiveMaximum === true && typeof schema.maximum === "number") {
+      } else if (
+        schema.exclusiveMaximum === true &&
+        typeof schema.maximum === "number"
+      ) {
         numberSchema = numberSchema.lt(schema.maximum);
       }
       if (typeof schema.multipleOf === "number") {
@@ -377,17 +411,26 @@ function convertBaseSchema(schema: JSONSchema.JSONSchema, ctx: ConversionContext
 
       // Convert properties - mark optional ones
       for (const [key, propSchema] of Object.entries(properties)) {
-        const propZodSchema = convertSchema(propSchema as JSONSchema.JSONSchema, ctx);
+        const propZodSchema = convertSchema(
+          propSchema as JSONSchema.JSONSchema,
+          ctx,
+        );
         // If not in required array, make it optional
-        shape[key] = requiredSet.has(key) ? propZodSchema : propZodSchema.optional();
+        shape[key] = requiredSet.has(key)
+          ? propZodSchema
+          : propZodSchema.optional();
       }
 
       // Handle propertyNames
       if (schema.propertyNames) {
         const keySchema = convertSchema(schema.propertyNames, ctx) as ZodString;
         const valueSchema =
-          schema.additionalProperties && typeof schema.additionalProperties === "object"
-            ? convertSchema(schema.additionalProperties as JSONSchema.JSONSchema, ctx)
+          schema.additionalProperties &&
+          typeof schema.additionalProperties === "object"
+            ? convertSchema(
+                schema.additionalProperties as JSONSchema.JSONSchema,
+                ctx,
+              )
             : z.any();
 
         // Case A: No properties (pure record)
@@ -412,7 +455,10 @@ function convertBaseSchema(schema: JSONSchema.JSONSchema, ctx: ConversionContext
         const looseRecords: ZodType[] = [];
 
         for (const pattern of patternKeys) {
-          const patternValue = convertSchema(patternProps[pattern] as JSONSchema.JSONSchema, ctx);
+          const patternValue = convertSchema(
+            patternProps[pattern] as JSONSchema.JSONSchema,
+            ctx,
+          );
           const keySchema = z.string().regex(new RegExp(pattern));
           looseRecords.push(z.looseRecord(keySchema, patternValue));
         }
@@ -431,7 +477,10 @@ function convertBaseSchema(schema: JSONSchema.JSONSchema, ctx: ConversionContext
           zodSchema = schemasToIntersect[0]!;
         } else {
           // Chain intersections: (A & B) & C & D ...
-          let result = z.intersection(schemasToIntersect[0]!, schemasToIntersect[1]!);
+          let result = z.intersection(
+            schemasToIntersect[0]!,
+            schemasToIntersect[1]!,
+          );
           for (let i = 2; i < schemasToIntersect.length; i++) {
             result = z.intersection(result, schemasToIntersect[i]!);
           }
@@ -449,7 +498,12 @@ function convertBaseSchema(schema: JSONSchema.JSONSchema, ctx: ConversionContext
         zodSchema = objectSchema.strict();
       } else if (typeof schema.additionalProperties === "object") {
         // Extra properties must match the specified schema
-        zodSchema = objectSchema.catchall(convertSchema(schema.additionalProperties as JSONSchema.JSONSchema, ctx));
+        zodSchema = objectSchema.catchall(
+          convertSchema(
+            schema.additionalProperties as JSONSchema.JSONSchema,
+            ctx,
+          ),
+        );
       } else {
         // additionalProperties is true or undefined - allow any extra properties (passthrough)
         zodSchema = objectSchema.passthrough();
@@ -466,7 +520,9 @@ function convertBaseSchema(schema: JSONSchema.JSONSchema, ctx: ConversionContext
 
       if (prefixItems && Array.isArray(prefixItems)) {
         // Tuple with prefixItems (draft-2020-12)
-        const tupleItems = prefixItems.map((item) => convertSchema(item as JSONSchema.JSONSchema, ctx));
+        const tupleItems = prefixItems.map((item) =>
+          convertSchema(item as JSONSchema.JSONSchema, ctx),
+        );
         const rest =
           items && typeof items === "object" && !Array.isArray(items)
             ? convertSchema(items as JSONSchema.JSONSchema, ctx)
@@ -485,10 +541,15 @@ function convertBaseSchema(schema: JSONSchema.JSONSchema, ctx: ConversionContext
         }
       } else if (Array.isArray(items)) {
         // Tuple with items array (draft-7)
-        const tupleItems = items.map((item) => convertSchema(item as JSONSchema.JSONSchema, ctx));
+        const tupleItems = items.map((item) =>
+          convertSchema(item as JSONSchema.JSONSchema, ctx),
+        );
         const rest =
           schema.additionalItems && typeof schema.additionalItems === "object"
-            ? convertSchema(schema.additionalItems as JSONSchema.JSONSchema, ctx)
+            ? convertSchema(
+                schema.additionalItems as JSONSchema.JSONSchema,
+                ctx,
+              )
             : undefined; // additionalItems: false means no rest, handled by default tuple behavior
         if (rest) {
           zodSchema = z.tuple(tupleItems as [ZodType, ...ZodType[]]).rest(rest);
@@ -530,28 +591,36 @@ function convertBaseSchema(schema: JSONSchema.JSONSchema, ctx: ConversionContext
   return zodSchema;
 }
 
-function convertSchema(schema: JSONSchema.JSONSchema | boolean, ctx: ConversionContext): ZodType {
+function convertSchema(
+  schema: JSONSchema.JSONSchema | boolean,
+  ctx: ConversionContext,
+): ZodType {
   if (typeof schema === "boolean") {
     return schema ? z.any() : z.never();
   }
 
   // Convert base schema first (ignoring composition keywords)
   let baseSchema = convertBaseSchema(schema, ctx);
-  const hasExplicitType = schema.type || schema.enum !== undefined || schema.const !== undefined;
+  const hasExplicitType =
+    schema.type || schema.enum !== undefined || schema.const !== undefined;
 
   // Process composition keywords LAST (they can appear together)
   // Handle anyOf - wrap base schema with union
   if (schema.anyOf && Array.isArray(schema.anyOf)) {
     const options = schema.anyOf.map((s) => convertSchema(s, ctx));
     const anyOfUnion = z.union(options as [ZodType, ZodType, ...ZodType[]]);
-    baseSchema = hasExplicitType ? z.intersection(baseSchema, anyOfUnion) : anyOfUnion;
+    baseSchema = hasExplicitType
+      ? z.intersection(baseSchema, anyOfUnion)
+      : anyOfUnion;
   }
 
   // Handle oneOf - exclusive union (exactly one must match)
   if (schema.oneOf && Array.isArray(schema.oneOf)) {
     const options = schema.oneOf.map((s) => convertSchema(s, ctx));
     const oneOfUnion = z.xor(options as [ZodType, ZodType, ...ZodType[]]);
-    baseSchema = hasExplicitType ? z.intersection(baseSchema, oneOfUnion) : oneOfUnion;
+    baseSchema = hasExplicitType
+      ? z.intersection(baseSchema, oneOfUnion)
+      : oneOfUnion;
   }
 
   // Handle allOf - wrap base schema with intersection
@@ -559,7 +628,9 @@ function convertSchema(schema: JSONSchema.JSONSchema | boolean, ctx: ConversionC
     if (schema.allOf.length === 0) {
       baseSchema = hasExplicitType ? baseSchema : z.any();
     } else {
-      let result = hasExplicitType ? baseSchema : convertSchema(schema.allOf[0]!, ctx);
+      let result = hasExplicitType
+        ? baseSchema
+        : convertSchema(schema.allOf[0]!, ctx);
       const startIdx = hasExplicitType ? 0 : 1;
       for (let i = startIdx; i < schema.allOf.length; i++) {
         result = z.intersection(result, convertSchema(schema.allOf[i]!, ctx));
@@ -590,14 +661,26 @@ function convertSchema(schema: JSONSchema.JSONSchema | boolean, ctx: ConversionC
   // preserve the contract that `schema.description` reads from globalRegistry.
   const extraMeta: Record<string, unknown> = {};
 
-  const coreMetadataKeys = ["$id", "id", "$comment", "$anchor", "$vocabulary", "$dynamicRef", "$dynamicAnchor"];
+  const coreMetadataKeys = [
+    "$id",
+    "id",
+    "$comment",
+    "$anchor",
+    "$vocabulary",
+    "$dynamicRef",
+    "$dynamicAnchor",
+  ];
   for (const key of coreMetadataKeys) {
     if (key in schema) {
       extraMeta[key] = schema[key];
     }
   }
 
-  const contentMetadataKeys = ["contentEncoding", "contentMediaType", "contentSchema"];
+  const contentMetadataKeys = [
+    "contentEncoding",
+    "contentMediaType",
+    "contentSchema",
+  ];
   for (const key of contentMetadataKeys) {
     if (key in schema) {
       extraMeta[key] = schema[key];
@@ -626,7 +709,10 @@ function convertSchema(schema: JSONSchema.JSONSchema | boolean, ctx: ConversionC
 
 /**
  * Converts a JSON Schema to a Zod schema. This function should be considered semi-experimental. It's behavior is liable to change. */
-export function fromJSONSchema(schema: JSONSchema.JSONSchema | boolean, params?: FromJSONSchemaParams): ZodType {
+export function fromJSONSchema(
+  schema: JSONSchema.JSONSchema | boolean,
+  params?: FromJSONSchemaParams,
+): ZodType {
   // Handle boolean schemas
   if (typeof schema === "boolean") {
     return schema ? z.any() : z.never();
@@ -640,11 +726,16 @@ export function fromJSONSchema(schema: JSONSchema.JSONSchema | boolean, params?:
   try {
     normalized = JSON.parse(JSON.stringify(schema));
   } catch {
-    throw new Error("fromJSONSchema input is not valid JSON (possibly cyclic); use $defs/$ref for recursive schemas");
+    throw new Error(
+      "fromJSONSchema input is not valid JSON (possibly cyclic); use $defs/$ref for recursive schemas",
+    );
   }
 
   const version = detectVersion(normalized, params?.defaultTarget);
-  const defs = (normalized.$defs || normalized.definitions || {}) as Record<string, JSONSchema.JSONSchema>;
+  const defs = (normalized.$defs || normalized.definitions || {}) as Record<
+    string,
+    JSONSchema.JSONSchema
+  >;
 
   const ctx: ConversionContext = {
     version,

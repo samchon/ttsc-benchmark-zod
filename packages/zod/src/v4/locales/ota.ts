@@ -68,7 +68,8 @@ const error: () => errors.$ZodErrorMap = () => {
         return `Fâsit giren: umulan ${expected}, alınan ${received}`;
       }
       case "invalid_value":
-        if (issue.values.length === 1) return `Fâsit giren: umulan ${util.stringifyPrimitive(issue.values[0])}`;
+        if (issue.values.length === 1)
+          return `Fâsit giren: umulan ${util.stringifyPrimitive(issue.values[0])}`;
         return `Fâsit tercih: mûteberler ${util.joinValues(issue.values, "|")}`;
       case "too_big": {
         const adj = issue.inclusive ? "<=" : "<";
@@ -88,10 +89,14 @@ const error: () => errors.$ZodErrorMap = () => {
       }
       case "invalid_format": {
         const _issue = issue as errors.$ZodStringFormatIssues;
-        if (_issue.format === "starts_with") return `Fâsit metin: "${_issue.prefix}" ile başlamalı.`;
-        if (_issue.format === "ends_with") return `Fâsit metin: "${_issue.suffix}" ile bitmeli.`;
-        if (_issue.format === "includes") return `Fâsit metin: "${_issue.includes}" ihtivâ etmeli.`;
-        if (_issue.format === "regex") return `Fâsit metin: ${_issue.pattern} nakşına uymalı.`;
+        if (_issue.format === "starts_with")
+          return `Fâsit metin: "${_issue.prefix}" ile başlamalı.`;
+        if (_issue.format === "ends_with")
+          return `Fâsit metin: "${_issue.suffix}" ile bitmeli.`;
+        if (_issue.format === "includes")
+          return `Fâsit metin: "${_issue.includes}" ihtivâ etmeli.`;
+        if (_issue.format === "regex")
+          return `Fâsit metin: ${_issue.pattern} nakşına uymalı.`;
         return `Fâsit ${FormatDictionary[_issue.format] ?? issue.format}`;
       }
       case "not_multiple_of":
