@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  '@ttsc/linux-x64': file:/tmp/ttsc-tgz/ttsc-linux-x64-0.12.4.tgz
+
 importers:
 
   .:
@@ -23,6 +26,9 @@ importers:
       '@types/semver':
         specifier: ^7.7.0
         version: 7.7.0
+      '@typescript/native-preview':
+        specifier: 7.0.0-dev.20260517.1
+        version: 7.0.0-dev.20260517.1
       '@web-std/file':
         specifier: ^3.0.3
         version: 3.0.3
@@ -88,13 +94,16 @@ importers:
         version: 28.0.0
       tsdown:
         specifier: ^0.21.10
-        version: 0.21.10(synckit@0.11.12)(typescript@5.5.4)
+        version: 0.21.10(@typescript/native-preview@7.0.0-dev.20260517.1)(synckit@0.11.12)(typescript@5.5.4)
       tslib:
         specifier: ^2.8.1
         version: 2.8.1
       tsx:
         specifier: ^4.19.3
         version: 4.19.3
+      ttsc:
+        specifier: file:/tmp/ttsc-tgz/ttsc-0.12.4.tgz
+        version: file:../../../../../../../../../tmp/ttsc-tgz/ttsc-0.12.4.tgz
       typescript:
         specifier: ~5.5.4
         version: 5.5.4
@@ -2662,6 +2671,41 @@ packages:
   '@ts-morph/common@0.29.0':
     resolution: {integrity: sha512-35oUmphHbJvQ/+UTwFNme/t2p3FoKiGJ5auTjjpNTop2dyREspirjMy82PLSC1pnDJ8ah1GU98hwpVt64YXQsg==}
 
+  '@ttsc/darwin-arm64@0.12.4':
+    resolution: {integrity: sha512-Jq6XvSprpR/AcAaP+60XywGdwRakedYl8sFXPZFuMiju/wt08fle6mo5QAPDxjoahHH6gdVI78TURFVSw6tMaQ==}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@ttsc/darwin-x64@0.12.4':
+    resolution: {integrity: sha512-+/0ZScCT8xcf0pqhj+Oloz0m/Xl/gD0+JcxTI8MRuK1S3bxvNQiLNX+LLEQ+5NS2yVDoprTMWWZ3P3N4TeqpvQ==}
+    cpu: [x64]
+    os: [darwin]
+
+  '@ttsc/linux-arm64@0.12.4':
+    resolution: {integrity: sha512-BG8vDcDGkmBVNpcB4uR+VGeO/tEfLCpRW+5RJqp3wNuuiP7/BXhmetMIO/ia0JFDJ440Zb/AVmWSArDdIjl/2Q==}
+    cpu: [arm64]
+    os: [linux]
+
+  '@ttsc/linux-arm@0.12.4':
+    resolution: {integrity: sha512-5viZeo7lGn5MHOM8OGQ7iYuo0oqgLhvRAounPLx0ANm7NQuvgHxRUJQjM25HNAX7awG6ybU6fY3V8S//4GY+mw==}
+    cpu: [arm]
+    os: [linux]
+
+  '@ttsc/linux-x64@file:../../../../../../../../../tmp/ttsc-tgz/ttsc-linux-x64-0.12.4.tgz':
+    resolution: {integrity: sha512-cqBu3rLIewPITNzQUxm/llG0ywmlbnNjYQ09QiIktqqrWi866rLcV98RiRVU8S6ivxK3eqo9KmQ9Qdht0AKTNg==, tarball: file:../../../../../../../../../tmp/ttsc-tgz/ttsc-linux-x64-0.12.4.tgz}
+    version: 0.12.4
+    os: [linux]
+
+  '@ttsc/win32-arm64@0.12.4':
+    resolution: {integrity: sha512-MvF+wWLpnG/DLmBorxL53cbmfjw8LdZ/70XLEYQIJdpO1C0U3Z1lUS/gM8PKzrM/IFx/3sGEvMM9z4eheuOOgQ==}
+    cpu: [arm64]
+    os: [win32]
+
+  '@ttsc/win32-x64@0.12.4':
+    resolution: {integrity: sha512-yKPHwv2kLlDXPvCvy4bK221LYbrHaQ3aR1KBKvsaKtOACoPwtuWVPSxQnSTJWuBZdDbtxXTU4/KOByZFERHuPA==}
+    cpu: [x64]
+    os: [win32]
+
   '@tufjs/canonical-json@1.0.0':
     resolution: {integrity: sha512-QTnf++uxunWvG2z3UFNzAoQPHxnSXOwtaI3iJ+AohhV+5vONuArPjJE7aPXPVXfXJsqrVbZBu9b81AJoSd09IQ==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
@@ -2781,6 +2825,53 @@ packages:
 
   '@typescript/analyze-trace@0.10.1':
     resolution: {integrity: sha512-RnlSOPh14QbopGCApgkSx5UBgGda5MX1cHqp2fsqfiDyCwGL/m1jaeB9fzu7didVS81LQqGZZuxFBcg8YU8EVw==}
+    hasBin: true
+
+  '@typescript/native-preview-darwin-arm64@7.0.0-dev.20260517.1':
+    resolution: {integrity: sha512-YjoHUk4g7ayc8328Wt/JU9T+ChfOO1hNc5qGmkkygL4J4Q3/Wp+EqCNcFinYRSca0Yl5WdcVngd8xyGFeTlwUA==}
+    engines: {node: '>=16.20.0'}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@typescript/native-preview-darwin-x64@7.0.0-dev.20260517.1':
+    resolution: {integrity: sha512-E/xAkhVaWaoU/u5itoRc1WD8M+A/JPmNbb4SiBexTZDQ3h/5xWU0HRwq/drRiLjFlcm0e1i66MzB8tbc2icctQ==}
+    engines: {node: '>=16.20.0'}
+    cpu: [x64]
+    os: [darwin]
+
+  '@typescript/native-preview-linux-arm64@7.0.0-dev.20260517.1':
+    resolution: {integrity: sha512-u+xY12IarGGRFXh7hbN/cxW5aYNdwa84mG0pyXglvThXT0rzzPGUEJdxVkNBo6UHqnc4FJihdcaioWpXBxQe9w==}
+    engines: {node: '>=16.20.0'}
+    cpu: [arm64]
+    os: [linux]
+
+  '@typescript/native-preview-linux-arm@7.0.0-dev.20260517.1':
+    resolution: {integrity: sha512-CJZJ21rSBtBxmfebMh8K/kH+e3Z+s8hM2+4ud0ZesEBgkBjePBo6FR4/1IJl38i4OvYnpbZerANR0yCRytv/Pw==}
+    engines: {node: '>=16.20.0'}
+    cpu: [arm]
+    os: [linux]
+
+  '@typescript/native-preview-linux-x64@7.0.0-dev.20260517.1':
+    resolution: {integrity: sha512-yRnlMPugNitsW9lBBQVfy8NgeUrgenjspq2LKeYmaAlvw6uf1bkbSHw6hJeCpl1oh7kH+RAHUx0yzm/RlfFdKg==}
+    engines: {node: '>=16.20.0'}
+    cpu: [x64]
+    os: [linux]
+
+  '@typescript/native-preview-win32-arm64@7.0.0-dev.20260517.1':
+    resolution: {integrity: sha512-fomiKzxtXrrasjJWbwaC8BGbzVQQv0VYVWijF0yKdXqxXjDRD01zT72Z1sjQGz0QJ19TVTVhJiNa7nI3wUaEsw==}
+    engines: {node: '>=16.20.0'}
+    cpu: [arm64]
+    os: [win32]
+
+  '@typescript/native-preview-win32-x64@7.0.0-dev.20260517.1':
+    resolution: {integrity: sha512-ekFca6XpdGIfLwqaRSm0GzYvI1COhoN+a62KeSwmaZN8EGWN/Rwrp/Tm9VjWGrdHSOLQFdEAGNibmp4bRB4HyA==}
+    engines: {node: '>=16.20.0'}
+    cpu: [x64]
+    os: [win32]
+
+  '@typescript/native-preview@7.0.0-dev.20260517.1':
+    resolution: {integrity: sha512-RSenvv0X4Uubpqyq9Z28xucCqpt5Gm/YaBs04b2Chps+qxYH+sRhYlLoiRkCx9x7Kxx6WLK3mjP+Xj6YNxHZjg==}
+    engines: {node: '>=16.20.0'}
     hasBin: true
 
   '@ungap/structured-clone@1.3.0':
@@ -5892,6 +5983,11 @@ packages:
     engines: {node: '>=18.0.0'}
     hasBin: true
 
+  ttsc@file:../../../../../../../../../tmp/ttsc-tgz/ttsc-0.12.4.tgz:
+    resolution: {integrity: sha512-dPZk2Zpr3uMDU0yeOrKpDQlbVZits5IEdeejuDRn4pbBs4eoAS4vMxUpVqPWRMEpU7sxMXbqQnDlPzg99h4a0A==, tarball: file:../../../../../../../../../tmp/ttsc-tgz/ttsc-0.12.4.tgz}
+    version: 0.12.4
+    hasBin: true
+
   tuf-js@1.1.7:
     resolution: {integrity: sha512-i3P9Kgw3ytjELUfpuKVDNBJvk4u5bXL6gskv572mcevPbSKCV3zt3djhmlEQ65yERjIbOSncy7U4cQJaB1CBCg==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
@@ -8312,6 +8408,27 @@ snapshots:
       path-browserify: 1.0.1
       tinyglobby: 0.2.15
 
+  '@ttsc/darwin-arm64@0.12.4':
+    optional: true
+
+  '@ttsc/darwin-x64@0.12.4':
+    optional: true
+
+  '@ttsc/linux-arm64@0.12.4':
+    optional: true
+
+  '@ttsc/linux-arm@0.12.4':
+    optional: true
+
+  '@ttsc/linux-x64@file:../../../../../../../../../tmp/ttsc-tgz/ttsc-linux-x64-0.12.4.tgz':
+    optional: true
+
+  '@ttsc/win32-arm64@0.12.4':
+    optional: true
+
+  '@ttsc/win32-x64@0.12.4':
+    optional: true
+
   '@tufjs/canonical-json@1.0.0': {}
 
   '@tufjs/models@1.0.4':
@@ -8452,6 +8569,37 @@ snapshots:
       split2: 3.2.2
       treeify: 1.1.0
       yargs: 16.2.0
+
+  '@typescript/native-preview-darwin-arm64@7.0.0-dev.20260517.1':
+    optional: true
+
+  '@typescript/native-preview-darwin-x64@7.0.0-dev.20260517.1':
+    optional: true
+
+  '@typescript/native-preview-linux-arm64@7.0.0-dev.20260517.1':
+    optional: true
+
+  '@typescript/native-preview-linux-arm@7.0.0-dev.20260517.1':
+    optional: true
+
+  '@typescript/native-preview-linux-x64@7.0.0-dev.20260517.1':
+    optional: true
+
+  '@typescript/native-preview-win32-arm64@7.0.0-dev.20260517.1':
+    optional: true
+
+  '@typescript/native-preview-win32-x64@7.0.0-dev.20260517.1':
+    optional: true
+
+  '@typescript/native-preview@7.0.0-dev.20260517.1':
+    optionalDependencies:
+      '@typescript/native-preview-darwin-arm64': 7.0.0-dev.20260517.1
+      '@typescript/native-preview-darwin-x64': 7.0.0-dev.20260517.1
+      '@typescript/native-preview-linux-arm': 7.0.0-dev.20260517.1
+      '@typescript/native-preview-linux-arm64': 7.0.0-dev.20260517.1
+      '@typescript/native-preview-linux-x64': 7.0.0-dev.20260517.1
+      '@typescript/native-preview-win32-arm64': 7.0.0-dev.20260517.1
+      '@typescript/native-preview-win32-x64': 7.0.0-dev.20260517.1
 
   '@ungap/structured-clone@1.3.0': {}
 
@@ -11542,7 +11690,7 @@ snapshots:
       glob: 11.0.2
       package-json-from-dist: 1.0.1
 
-  rolldown-plugin-dts@0.23.2(rolldown@1.0.0-rc.17)(typescript@5.5.4):
+  rolldown-plugin-dts@0.23.2(@typescript/native-preview@7.0.0-dev.20260517.1)(rolldown@1.0.0-rc.17)(typescript@5.5.4):
     dependencies:
       '@babel/generator': 8.0.0-rc.3
       '@babel/helper-validator-identifier': 8.0.0-rc.3
@@ -11556,6 +11704,7 @@ snapshots:
       picomatch: 4.0.4
       rolldown: 1.0.0-rc.17
     optionalDependencies:
+      '@typescript/native-preview': 7.0.0-dev.20260517.1
       typescript: 5.5.4
     transitivePeerDependencies:
       - oxc-resolver
@@ -12097,7 +12246,7 @@ snapshots:
       minimist: 1.2.8
       strip-bom: 3.0.0
 
-  tsdown@0.21.10(synckit@0.11.12)(typescript@5.5.4):
+  tsdown@0.21.10(@typescript/native-preview@7.0.0-dev.20260517.1)(synckit@0.11.12)(typescript@5.5.4):
     dependencies:
       ansis: 4.2.0
       cac: 7.0.0
@@ -12108,7 +12257,7 @@ snapshots:
       obug: 2.1.1
       picomatch: 4.0.4
       rolldown: 1.0.0-rc.17
-      rolldown-plugin-dts: 0.23.2(rolldown@1.0.0-rc.17)(typescript@5.5.4)
+      rolldown-plugin-dts: 0.23.2(@typescript/native-preview@7.0.0-dev.20260517.1)(rolldown@1.0.0-rc.17)(typescript@5.5.4)
       semver: 7.7.4
       tinyexec: 1.1.2
       tinyglobby: 0.2.16
@@ -12146,6 +12295,16 @@ snapshots:
       get-tsconfig: 4.10.0
     optionalDependencies:
       fsevents: 2.3.3
+
+  ttsc@file:../../../../../../../../../tmp/ttsc-tgz/ttsc-0.12.4.tgz:
+    optionalDependencies:
+      '@ttsc/darwin-arm64': 0.12.4
+      '@ttsc/darwin-x64': 0.12.4
+      '@ttsc/linux-arm': 0.12.4
+      '@ttsc/linux-arm64': 0.12.4
+      '@ttsc/linux-x64': file:../../../../../../../../../tmp/ttsc-tgz/ttsc-linux-x64-0.12.4.tgz
+      '@ttsc/win32-arm64': 0.12.4
+      '@ttsc/win32-x64': 0.12.4
 
   tuf-js@1.1.7:
     dependencies:

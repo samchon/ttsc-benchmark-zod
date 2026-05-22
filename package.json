@@ -1,7 +1,7 @@
 {
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@10.12.1",
+  "packageManager": "pnpm@10.10.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/colinhacks/zod.git"
@@ -44,7 +44,9 @@
     "tsdown": "^0.21.10",
     "tslib": "^2.8.1",
     "tsx": "^4.19.3",
+    "ttsc": "file:/tmp/ttsc-tgz/ttsc-0.12.4.tgz",
     "typescript": "~5.5.4",
+    "@typescript/native-preview": "7.0.0-dev.20260517.1",
     "vite": "^7.3.2",
     "vitest": "^4.1.5",
     "zod": "workspace:*",
@@ -86,6 +88,12 @@
     "bundle:rollup": "rollup -c",
     "bundle:esbuild": "esbuild --bundle ./scratch/input.ts --outfile=./scratch/out_esbuild.js --bundle --format=esm",
     "check:semver": "tsx scripts/check-versions.ts",
-    "check:circular": "madge --circular --extensions ts --exclude '(v4/core|v3)' packages/zod/src"
+    "check:circular": "madge --circular --extensions ts --exclude '(v4/core|v3)' packages/zod/src",
+    "build:benchmark": "pnpm --filter zod run build:benchmark"
+  },
+  "pnpm": {
+    "overrides": {
+      "@ttsc/linux-x64": "file:/tmp/ttsc-tgz/ttsc-linux-x64-0.12.4.tgz"
+    }
   }
 }

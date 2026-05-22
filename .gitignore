@@ -2,6 +2,8 @@
 **/.DS_Store
 node_modules
 /lib
+packages/zod/lib
+*.tsbuildinfo
 /__buildtest__
 coverage
 .idea
