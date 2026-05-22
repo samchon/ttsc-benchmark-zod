@@ -72,7 +72,7 @@ export type ParseInput = {
 export function addIssueToContext(ctx: ParseContext, issueData: IssueData): void {
   const overrideMap = getErrorMap();
   const issue = makeIssue({
-    issueData: issueData,
+    issueData,
     data: ctx.data,
     path: ctx.path,
     errorMaps: [

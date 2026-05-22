@@ -126,7 +126,7 @@ function processCreateParams(params: RawCreateParams): ProcessedCreateParams {
   if (errorMap && (invalid_type_error || required_error)) {
     throw new Error(`Can't use "invalid_type_error" or "required_error" in conjunction with custom error map.`);
   }
-  if (errorMap) return { errorMap: errorMap, description };
+  if (errorMap) return { errorMap, description };
   const customMap: ZodErrorMap = (iss, ctx) => {
     const { message } = params;
 
@@ -614,7 +614,7 @@ const durationRegex =
 //   /^[a-zA-Z0-9\.\!\#\$\%\&\'\*\+\/\=\?\^\_\`\{\|\}\~\-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 // const emailRegex =
 //   /^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/i;
-const emailRegex = /^(?!\.)(?!.*\.\.)([A-Z0-9_'+\-\.]*)[A-Z0-9_+-]@([A-Z0-9][A-Z0-9\-]*\.)+[A-Z]{2,}$/i;
+const emailRegex = /^(?!\.)(?!.*\.\.)([A-Z0-9_'+\-.]*)[A-Z0-9_+-]@([A-Z0-9][A-Z0-9-]*\.)+[A-Z]{2,}$/i;
 // const emailRegex =
 //   /^[a-z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-z0-9-]+(?:\.[a-z0-9\-]+)*$/i;
 
@@ -653,7 +653,7 @@ function timeRegexSource(args: { precision?: number | null }) {
   let secondsRegexSource = `[0-5]\\d`;
   if (args.precision) {
     secondsRegexSource = `${secondsRegexSource}\\.\\d{${args.precision}}`;
-  } else if (args.precision == null) {
+  } else if (args.precision === null || args.precision === undefined) {
     secondsRegexSource = `${secondsRegexSource}(\\.\\d+)?`;
   }
 
@@ -1167,7 +1167,7 @@ export class ZodString extends ZodType<string, ZodStringDef, string> {
   regex(regex: RegExp, message?: errorUtil.ErrMessage) {
     return this._addCheck({
       kind: "regex",
-      regex: regex,
+      regex,
       ...errorUtil.errToObj(message),
     });
   }
@@ -1175,7 +1175,7 @@ export class ZodString extends ZodType<string, ZodStringDef, string> {
   includes(value: string, options?: { message?: string; position?: number }) {
     return this._addCheck({
       kind: "includes",
-      value: value,
+      value,
       position: options?.position,
       ...errorUtil.errToObj(options?.message),
     });
@@ -1184,7 +1184,7 @@ export class ZodString extends ZodType<string, ZodStringDef, string> {
   startsWith(value: string, message?: errorUtil.ErrMessage) {
     return this._addCheck({
       kind: "startsWith",
-      value: value,
+      value,
       ...errorUtil.errToObj(message),
     });
   }
@@ -1192,7 +1192,7 @@ export class ZodString extends ZodType<string, ZodStringDef, string> {
   endsWith(value: string, message?: errorUtil.ErrMessage) {
     return this._addCheck({
       kind: "endsWith",
-      value: value,
+      value,
       ...errorUtil.errToObj(message),
     });
   }
@@ -1547,7 +1547,7 @@ export class ZodNumber extends ZodType<number, ZodNumberDef, number> {
   multipleOf(value: number, message?: errorUtil.ErrMessage) {
     return this._addCheck({
       kind: "multipleOf",
-      value: value,
+      value,
       message: errorUtil.toString(message),
     });
   }
@@ -1971,7 +1971,7 @@ export class ZodDate extends ZodType<Date, ZodDateDef, Date> {
       }
     }
 
-    return min != null ? new Date(min) : null;
+    return min !== null ? new Date(min) : null;
   }
 
   get maxDate() {
@@ -1982,7 +1982,7 @@ export class ZodDate extends ZodType<Date, ZodDateDef, Date> {
       }
     }
 
-    return max != null ? new Date(max) : null;
+    return max !== null ? new Date(max) : null;
   }
 
   static create = (params?: RawCreateParams & { coerce?: boolean }): ZodDate => {
@@ -3350,8 +3350,8 @@ export class ZodIntersection<T extends ZodTypeAny, U extends ZodTypeAny> extends
     params?: RawCreateParams
   ): ZodIntersection<TSchema, USchema> => {
     return new ZodIntersection({
-      left: left,
-      right: right,
+      left,
+      right,
       typeName: ZodFirstPartyTypeKind.ZodIntersection,
       ...processCreateParams(params),
     });
@@ -3984,7 +3984,7 @@ export class ZodLazy<T extends ZodTypeAny> extends ZodType<output<T>, ZodLazyDef
 
   static create = <Inner extends ZodTypeAny>(getter: () => Inner, params?: RawCreateParams): ZodLazy<Inner> => {
     return new ZodLazy({
-      getter: getter,
+      getter,
       typeName: ZodFirstPartyTypeKind.ZodLazy,
       ...processCreateParams(params),
     });
@@ -4023,7 +4023,7 @@ export class ZodLiteral<T> extends ZodType<T, ZodLiteralDef<T>, T> {
 
   static create = <Value extends Primitive>(value: Value, params?: RawCreateParams): ZodLiteral<Value> => {
     return new ZodLiteral({
-      value: value,
+      value,
       typeName: ZodFirstPartyTypeKind.ZodLiteral,
       ...processCreateParams(params),
     });
@@ -4213,7 +4213,7 @@ export class ZodNativeEnum<T extends EnumLike> extends ZodType<T[keyof T], ZodNa
 
   static create = <Elements extends EnumLike>(values: Elements, params?: RawCreateParams): ZodNativeEnum<Elements> => {
     return new ZodNativeEnum({
-      values: values,
+      values,
       typeName: ZodFirstPartyTypeKind.ZodNativeEnum,
       ...processCreateParams(params),
     });
