@@ -2791,8 +2791,7 @@ function handleIntersectionResults(
 
   if (!merged.valid) {
     throw new Error(
-      `Unmergable intersection. Error path: ` +
-        `${JSON.stringify(merged.mergeErrorPath)}`,
+      `Unmergable intersection. Error path: ${JSON.stringify(merged.mergeErrorPath)}`,
     );
   }
 

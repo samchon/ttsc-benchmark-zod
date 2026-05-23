@@ -196,22 +196,18 @@ test("z.pick/omit/partial/required - do not allow unknown keys", () => {
   });
 
   // Mixed valid + invalid keys - throws at parse time (lazy evaluation)
+  // prettier-ignore
   // @ts-expect-error
-  expect(() =>
-    z.parse(z.pick(schema, { name: true, asdf: true }), {}),
-  ).toThrow();
+  expect(() => z.parse(z.pick(schema, { name: true, asdf: true }), {})).toThrow();
+  // prettier-ignore
   // @ts-expect-error
-  expect(() =>
-    z.parse(z.omit(schema, { name: true, asdf: true }), {}),
-  ).toThrow();
+  expect(() => z.parse(z.omit(schema, { name: true, asdf: true }), {})).toThrow();
+  // prettier-ignore
   // @ts-expect-error
-  expect(() =>
-    z.parse(z.partial(schema, { name: true, asdf: true }), {}),
-  ).toThrow();
+  expect(() => z.parse(z.partial(schema, { name: true, asdf: true }), {})).toThrow();
+  // prettier-ignore
   // @ts-expect-error
-  expect(() =>
-    z.parse(z.required(schema, { name: true, asdf: true }), {}),
-  ).toThrow();
+  expect(() => z.parse(z.required(schema, { name: true, asdf: true }), {})).toThrow();
 
   // Only invalid keys
   // @ts-expect-error

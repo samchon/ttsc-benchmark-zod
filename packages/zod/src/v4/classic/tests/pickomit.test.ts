@@ -122,14 +122,12 @@ test("pick/omit/required/partial - do not allow unknown keys", () => {
   expect(() => schema.pick({ name: true, asdf: true }).safeParse({})).toThrow();
   // @ts-expect-error
   expect(() => schema.omit({ name: true, asdf: true }).safeParse({})).toThrow();
+  // prettier-ignore
   // @ts-expect-error
-  expect(() =>
-    schema.partial({ name: true, asdf: true }).safeParse({}),
-  ).toThrow();
+  expect(() => schema.partial({ name: true, asdf: true }).safeParse({})).toThrow();
+  // prettier-ignore
   // @ts-expect-error
-  expect(() =>
-    schema.required({ name: true, asdf: true }).safeParse({}),
-  ).toThrow();
+  expect(() => schema.required({ name: true, asdf: true }).safeParse({})).toThrow();
 
   // Only invalid keys
   // @ts-expect-error

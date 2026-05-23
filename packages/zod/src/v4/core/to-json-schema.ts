@@ -342,9 +342,7 @@ export function extractDefs<T extends schemas.$ZodType>(
       const seen = entry[1];
       if (seen.cycle) {
         throw new Error(
-          "Cycle detected: " +
-            `#/${seen.cycle?.join("/")}/<root>` +
-            '\n\nSet the `cycles` parameter to `"ref"` to resolve cyclical schemas with defs.',
+          `Cycle detected: #/${seen.cycle?.join("/")}/<root>\n\nSet the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.`,
         );
       }
     }
