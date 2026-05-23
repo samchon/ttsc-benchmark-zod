@@ -11,7 +11,7 @@ test("Spanish locale - type name translations in too_small errors", () => {
   expect(stringResult.success).toBe(false);
   if (!stringResult.success) {
     expect(stringResult.error.issues[0].message).toBe(
-      "Demasiado pequeño: se esperaba que texto tuviera >=5 caracteres"
+      "Demasiado pequeño: se esperaba que texto tuviera >=5 caracteres",
     );
   }
 
@@ -20,7 +20,9 @@ test("Spanish locale - type name translations in too_small errors", () => {
   const numberResult = numberSchema.safeParse(5);
   expect(numberResult.success).toBe(false);
   if (!numberResult.success) {
-    expect(numberResult.error.issues[0].message).toBe("Demasiado pequeño: se esperaba que número fuera >=10");
+    expect(numberResult.error.issues[0].message).toBe(
+      "Demasiado pequeño: se esperaba que número fuera >=10",
+    );
   }
 
   // Test array type translation
@@ -29,7 +31,7 @@ test("Spanish locale - type name translations in too_small errors", () => {
   expect(arrayResult.success).toBe(false);
   if (!arrayResult.success) {
     expect(arrayResult.error.issues[0].message).toBe(
-      "Demasiado pequeño: se esperaba que arreglo tuviera >=3 elementos"
+      "Demasiado pequeño: se esperaba que arreglo tuviera >=3 elementos",
     );
   }
 
@@ -38,7 +40,9 @@ test("Spanish locale - type name translations in too_small errors", () => {
   const setResult = setSchema.safeParse(new Set(["a"]));
   expect(setResult.success).toBe(false);
   if (!setResult.success) {
-    expect(setResult.error.issues[0].message).toBe("Demasiado pequeño: se esperaba que conjunto tuviera >=2 elementos");
+    expect(setResult.error.issues[0].message).toBe(
+      "Demasiado pequeño: se esperaba que conjunto tuviera >=2 elementos",
+    );
   }
 });
 
@@ -50,7 +54,9 @@ test("Spanish locale - type name translations in too_big errors", () => {
   const stringResult = stringSchema.safeParse("abcde");
   expect(stringResult.success).toBe(false);
   if (!stringResult.success) {
-    expect(stringResult.error.issues[0].message).toBe("Demasiado grande: se esperaba que texto tuviera <=3 caracteres");
+    expect(stringResult.error.issues[0].message).toBe(
+      "Demasiado grande: se esperaba que texto tuviera <=3 caracteres",
+    );
   }
 
   // Test number type translation
@@ -58,7 +64,9 @@ test("Spanish locale - type name translations in too_big errors", () => {
   const numberResult = numberSchema.safeParse(15);
   expect(numberResult.success).toBe(false);
   if (!numberResult.success) {
-    expect(numberResult.error.issues[0].message).toBe("Demasiado grande: se esperaba que número fuera <=10");
+    expect(numberResult.error.issues[0].message).toBe(
+      "Demasiado grande: se esperaba que número fuera <=10",
+    );
   }
 
   // Test array type translation
@@ -66,7 +74,9 @@ test("Spanish locale - type name translations in too_big errors", () => {
   const arrayResult = arraySchema.safeParse(["a", "b", "c"]);
   expect(arrayResult.success).toBe(false);
   if (!arrayResult.success) {
-    expect(arrayResult.error.issues[0].message).toBe("Demasiado grande: se esperaba que arreglo tuviera <=2 elementos");
+    expect(arrayResult.error.issues[0].message).toBe(
+      "Demasiado grande: se esperaba que arreglo tuviera <=2 elementos",
+    );
   }
 });
 
@@ -78,7 +88,9 @@ test("Spanish locale - type name translations in invalid_type errors", () => {
   const stringResult = stringSchema.safeParse(123);
   expect(stringResult.success).toBe(false);
   if (!stringResult.success) {
-    expect(stringResult.error.issues[0].message).toBe("Entrada inválida: se esperaba texto, recibido número");
+    expect(stringResult.error.issues[0].message).toBe(
+      "Entrada inválida: se esperaba texto, recibido número",
+    );
   }
 
   // Test number expected, string received
@@ -86,7 +98,9 @@ test("Spanish locale - type name translations in invalid_type errors", () => {
   const numberResult = numberSchema.safeParse("abc");
   expect(numberResult.success).toBe(false);
   if (!numberResult.success) {
-    expect(numberResult.error.issues[0].message).toBe("Entrada inválida: se esperaba número, recibido texto");
+    expect(numberResult.error.issues[0].message).toBe(
+      "Entrada inválida: se esperaba número, recibido texto",
+    );
   }
 
   // Test boolean expected, null received
@@ -94,7 +108,9 @@ test("Spanish locale - type name translations in invalid_type errors", () => {
   const booleanResult = booleanSchema.safeParse(null);
   expect(booleanResult.success).toBe(false);
   if (!booleanResult.success) {
-    expect(booleanResult.error.issues[0].message).toBe("Entrada inválida: se esperaba booleano, recibido nulo");
+    expect(booleanResult.error.issues[0].message).toBe(
+      "Entrada inválida: se esperaba booleano, recibido nulo",
+    );
   }
 
   // Test array expected, object received
@@ -102,7 +118,9 @@ test("Spanish locale - type name translations in invalid_type errors", () => {
   const arrayResult = arraySchema.safeParse({});
   expect(arrayResult.success).toBe(false);
   if (!arrayResult.success) {
-    expect(arrayResult.error.issues[0].message).toBe("Entrada inválida: se esperaba arreglo, recibido objeto");
+    expect(arrayResult.error.issues[0].message).toBe(
+      "Entrada inválida: se esperaba arreglo, recibido objeto",
+    );
   }
 });
 
@@ -136,7 +154,9 @@ test("Spanish locale - other error cases", () => {
   const enumResult = enumSchema.safeParse("c");
   expect(enumResult.success).toBe(false);
   if (!enumResult.success) {
-    expect(enumResult.error.issues[0].message).toBe('Opción inválida: se esperaba una de "a"|"b"');
+    expect(enumResult.error.issues[0].message).toBe(
+      'Opción inválida: se esperaba una de "a"|"b"',
+    );
   }
 
   // Test not_multiple_of
@@ -144,7 +164,9 @@ test("Spanish locale - other error cases", () => {
   const multipleResult = multipleSchema.safeParse(10);
   expect(multipleResult.success).toBe(false);
   if (!multipleResult.success) {
-    expect(multipleResult.error.issues[0].message).toBe("Número inválido: debe ser múltiplo de 3");
+    expect(multipleResult.error.issues[0].message).toBe(
+      "Número inválido: debe ser múltiplo de 3",
+    );
   }
 
   // Test unrecognized_keys
@@ -168,7 +190,9 @@ test("Spanish locale - other error cases", () => {
   const regexResult = regexSchema.safeParse("ABC123");
   expect(regexResult.success).toBe(false);
   if (!regexResult.success) {
-    expect(regexResult.error.issues[0].message).toBe("Cadena inválida: debe coincidir con el patrón /^[a-z]+$/");
+    expect(regexResult.error.issues[0].message).toBe(
+      "Cadena inválida: debe coincidir con el patrón /^[a-z]+$/",
+    );
   }
 
   // Test invalid_format with startsWith
@@ -176,6 +200,8 @@ test("Spanish locale - other error cases", () => {
   const startsWithResult = startsWithSchema.safeParse("world");
   expect(startsWithResult.success).toBe(false);
   if (!startsWithResult.success) {
-    expect(startsWithResult.error.issues[0].message).toBe('Cadena inválida: debe comenzar con "hello"');
+    expect(startsWithResult.error.issues[0].message).toBe(
+      'Cadena inválida: debe comenzar con "hello"',
+    );
   }
 });

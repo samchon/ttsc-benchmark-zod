@@ -68,7 +68,8 @@ const error: () => errors.$ZodErrorMap = () => {
       }
 
       case "invalid_value":
-        if (issue.values.length === 1) return `Невалиден вход: очакван ${util.stringifyPrimitive(issue.values[0])}`;
+        if (issue.values.length === 1)
+          return `Невалиден вход: очакван ${util.stringifyPrimitive(issue.values[0])}`;
         return `Невалидна опция: очаквано едно от ${util.joinValues(issue.values, "|")}`;
       case "too_big": {
         const adj = issue.inclusive ? "<=" : "<";
@@ -91,9 +92,12 @@ const error: () => errors.$ZodErrorMap = () => {
         if (_issue.format === "starts_with") {
           return `Невалиден низ: трябва да започва с "${_issue.prefix}"`;
         }
-        if (_issue.format === "ends_with") return `Невалиден низ: трябва да завършва с "${_issue.suffix}"`;
-        if (_issue.format === "includes") return `Невалиден низ: трябва да включва "${_issue.includes}"`;
-        if (_issue.format === "regex") return `Невалиден низ: трябва да съвпада с ${_issue.pattern}`;
+        if (_issue.format === "ends_with")
+          return `Невалиден низ: трябва да завършва с "${_issue.suffix}"`;
+        if (_issue.format === "includes")
+          return `Невалиден низ: трябва да включва "${_issue.includes}"`;
+        if (_issue.format === "regex")
+          return `Невалиден низ: трябва да съвпада с ${_issue.pattern}`;
 
         let invalid_adj = "Невалиден";
 

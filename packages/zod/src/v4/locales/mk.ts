@@ -67,7 +67,8 @@ const error: () => errors.$ZodErrorMap = () => {
         return `Грешен внес: се очекува ${expected}, примено ${received}`;
       }
       case "invalid_value":
-        if (issue.values.length === 1) return `Invalid input: expected ${util.stringifyPrimitive(issue.values[0])}`;
+        if (issue.values.length === 1)
+          return `Invalid input: expected ${util.stringifyPrimitive(issue.values[0])}`;
         return `Грешана опција: се очекува една ${util.joinValues(issue.values, "|")}`;
       case "too_big": {
         const adj = issue.inclusive ? "<=" : "<";
@@ -90,9 +91,12 @@ const error: () => errors.$ZodErrorMap = () => {
         if (_issue.format === "starts_with") {
           return `Неважечка низа: мора да започнува со "${_issue.prefix}"`;
         }
-        if (_issue.format === "ends_with") return `Неважечка низа: мора да завршува со "${_issue.suffix}"`;
-        if (_issue.format === "includes") return `Неважечка низа: мора да вклучува "${_issue.includes}"`;
-        if (_issue.format === "regex") return `Неважечка низа: мора да одгоара на патернот ${_issue.pattern}`;
+        if (_issue.format === "ends_with")
+          return `Неважечка низа: мора да завршува со "${_issue.suffix}"`;
+        if (_issue.format === "includes")
+          return `Неважечка низа: мора да вклучува "${_issue.includes}"`;
+        if (_issue.format === "regex")
+          return `Неважечка низа: мора да одгоара на патернот ${_issue.pattern}`;
         return `Invalid ${FormatDictionary[_issue.format] ?? issue.format}`;
       }
       case "not_multiple_of":

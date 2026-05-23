@@ -2465,7 +2465,7 @@ packages:
     os: [darwin]
 
   '@ttsc/lint@file:../../../../../../../../../tmp/ttsc-tgz/ttsc-lint-0.12.4.tgz':
-    resolution: {integrity: sha512-iqcT7YB1QqUrU7Ap6UISws5GtxbmE/HUKJvqa/aB9iaqUKol6vb+rgQ+k4RgKx+h36btORgLBBQwK0LM187Ffg==, tarball: file:../../../../../../../../../tmp/ttsc-tgz/ttsc-lint-0.12.4.tgz}
+    resolution: {integrity: sha512-mCxyhgLQ51nL9JIgh8tyMvjcvSWv9gWlj6Vpd4Jb7sa3gvFn2eAR8AKzXj4g3R0slyKTpE2fs6Ccvh6ZxsYZ5A==, tarball: file:../../../../../../../../../tmp/ttsc-tgz/ttsc-lint-0.12.4.tgz}
     version: 0.12.4
 
   '@ttsc/linux-arm64@0.12.4':
@@ -2479,7 +2479,7 @@ packages:
     os: [linux]
 
   '@ttsc/linux-x64@file:../../../../../../../../../tmp/ttsc-tgz/ttsc-linux-x64-0.12.4.tgz':
-    resolution: {integrity: sha512-Q0ECoyT5aYWvt+f3ewK60vH6S9qyo/BkHh60Gu6b/ZwblOrF++yBbzuBpFAdNm4Nu3GgvDVEw6X3LKLFBdA7CA==, tarball: file:../../../../../../../../../tmp/ttsc-tgz/ttsc-linux-x64-0.12.4.tgz}
+    resolution: {integrity: sha512-mkp1hfwqkKLqGmiqSltDOTC8Q8UlVwKxgtQD016xMAp0cnGt8OZwiMHKZ/J0eZT0cNUBtrbt4jzOqG+Hfsgsyg==, tarball: file:../../../../../../../../../tmp/ttsc-tgz/ttsc-linux-x64-0.12.4.tgz}
     version: 0.12.4
     os: [linux]
 
@@ -5755,7 +5755,7 @@ packages:
     hasBin: true
 
   ttsc@file:../../../../../../../../../tmp/ttsc-tgz/ttsc-0.12.4.tgz:
-    resolution: {integrity: sha512-BNjvdNbxAXRbyJyTzmyOxkQimgvZTY1+yfBwqYJpyBCAGZTHU6xR+AJGTha0l/FTxREJiA+LPdtpPklBapbW1g==, tarball: file:../../../../../../../../../tmp/ttsc-tgz/ttsc-0.12.4.tgz}
+    resolution: {integrity: sha512-2s7vprQKXhgbcre1fVoHX9evUJ+AY3uLOADfhhkt1GtidEP7fgPfugrXJ6+ZCZfhyPLalfL8rT1E1kX/vLAh/g==, tarball: file:../../../../../../../../../tmp/ttsc-tgz/ttsc-0.12.4.tgz}
     version: 0.12.4
     hasBin: true
 

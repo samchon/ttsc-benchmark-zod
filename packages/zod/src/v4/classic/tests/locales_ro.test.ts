@@ -10,7 +10,9 @@ test("Romanian locale uses 'șir' instead of 'string'", () => {
   expect(numberResult.success).toBe(false);
   if (!numberResult.success) {
     // Expected: "Intrare invalidă: așteptat șir, primit număr"
-    expect(numberResult.error.issues[0].message).toBe("Intrare invalidă: așteptat șir, primit număr");
+    expect(numberResult.error.issues[0].message).toBe(
+      "Intrare invalidă: așteptat șir, primit număr",
+    );
   }
 
   // Test 2: Invalid base64
@@ -19,6 +21,8 @@ test("Romanian locale uses 'șir' instead of 'string'", () => {
   expect(base64Result.success).toBe(false);
   if (!base64Result.success) {
     // Expected: "Format invalid: șir codat base64"
-    expect(base64Result.error.issues[0].message).toBe("Format invalid: șir codat base64");
+    expect(base64Result.error.issues[0].message).toBe(
+      "Format invalid: șir codat base64",
+    );
   }
 });

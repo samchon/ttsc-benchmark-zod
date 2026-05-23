@@ -10,7 +10,9 @@ test("Greek locale - too_small errors", () => {
   const stringResult = stringSchema.safeParse("abc");
   expect(stringResult.success).toBe(false);
   if (!stringResult.success) {
-    expect(stringResult.error.issues[0].message).toBe("Πολύ μικρό: αναμενόταν string να έχει >=5 χαρακτήρες");
+    expect(stringResult.error.issues[0].message).toBe(
+      "Πολύ μικρό: αναμενόταν string να έχει >=5 χαρακτήρες",
+    );
   }
 
   // Test number type translation
@@ -18,7 +20,9 @@ test("Greek locale - too_small errors", () => {
   const numberResult = numberSchema.safeParse(5);
   expect(numberResult.success).toBe(false);
   if (!numberResult.success) {
-    expect(numberResult.error.issues[0].message).toBe("Πολύ μικρό: αναμενόταν number να είναι >=10");
+    expect(numberResult.error.issues[0].message).toBe(
+      "Πολύ μικρό: αναμενόταν number να είναι >=10",
+    );
   }
 
   // Test array type translation
@@ -26,7 +30,9 @@ test("Greek locale - too_small errors", () => {
   const arrayResult = arraySchema.safeParse(["a", "b"]);
   expect(arrayResult.success).toBe(false);
   if (!arrayResult.success) {
-    expect(arrayResult.error.issues[0].message).toBe("Πολύ μικρό: αναμενόταν array να έχει >=3 στοιχεία");
+    expect(arrayResult.error.issues[0].message).toBe(
+      "Πολύ μικρό: αναμενόταν array να έχει >=3 στοιχεία",
+    );
   }
 
   // Test set type translation
@@ -34,7 +40,9 @@ test("Greek locale - too_small errors", () => {
   const setResult = setSchema.safeParse(new Set(["a"]));
   expect(setResult.success).toBe(false);
   if (!setResult.success) {
-    expect(setResult.error.issues[0].message).toBe("Πολύ μικρό: αναμενόταν set να έχει >=2 στοιχεία");
+    expect(setResult.error.issues[0].message).toBe(
+      "Πολύ μικρό: αναμενόταν set να έχει >=2 στοιχεία",
+    );
   }
 });
 
@@ -46,7 +54,9 @@ test("Greek locale - too_big errors", () => {
   const stringResult = stringSchema.safeParse("abcde");
   expect(stringResult.success).toBe(false);
   if (!stringResult.success) {
-    expect(stringResult.error.issues[0].message).toBe("Πολύ μεγάλο: αναμενόταν string να έχει <=3 χαρακτήρες");
+    expect(stringResult.error.issues[0].message).toBe(
+      "Πολύ μεγάλο: αναμενόταν string να έχει <=3 χαρακτήρες",
+    );
   }
 
   // Test number type translation
@@ -54,7 +64,9 @@ test("Greek locale - too_big errors", () => {
   const numberResult = numberSchema.safeParse(15);
   expect(numberResult.success).toBe(false);
   if (!numberResult.success) {
-    expect(numberResult.error.issues[0].message).toBe("Πολύ μεγάλο: αναμενόταν number να είναι <=10");
+    expect(numberResult.error.issues[0].message).toBe(
+      "Πολύ μεγάλο: αναμενόταν number να είναι <=10",
+    );
   }
 
   // Test array type translation
@@ -62,7 +74,9 @@ test("Greek locale - too_big errors", () => {
   const arrayResult = arraySchema.safeParse(["a", "b", "c"]);
   expect(arrayResult.success).toBe(false);
   if (!arrayResult.success) {
-    expect(arrayResult.error.issues[0].message).toBe("Πολύ μεγάλο: αναμενόταν array να έχει <=2 στοιχεία");
+    expect(arrayResult.error.issues[0].message).toBe(
+      "Πολύ μεγάλο: αναμενόταν array να έχει <=2 στοιχεία",
+    );
   }
 });
 
@@ -74,7 +88,9 @@ test("Greek locale - invalid_type errors", () => {
   const stringResult = stringSchema.safeParse(123);
   expect(stringResult.success).toBe(false);
   if (!stringResult.success) {
-    expect(stringResult.error.issues[0].message).toBe("Μη έγκυρη είσοδος: αναμενόταν string, λήφθηκε number");
+    expect(stringResult.error.issues[0].message).toBe(
+      "Μη έγκυρη είσοδος: αναμενόταν string, λήφθηκε number",
+    );
   }
 
   // Test number expected, string received
@@ -82,7 +98,9 @@ test("Greek locale - invalid_type errors", () => {
   const numberResult = numberSchema.safeParse("abc");
   expect(numberResult.success).toBe(false);
   if (!numberResult.success) {
-    expect(numberResult.error.issues[0].message).toBe("Μη έγκυρη είσοδος: αναμενόταν number, λήφθηκε string");
+    expect(numberResult.error.issues[0].message).toBe(
+      "Μη έγκυρη είσοδος: αναμενόταν number, λήφθηκε string",
+    );
   }
 
   // Test boolean expected, null received
@@ -90,7 +108,9 @@ test("Greek locale - invalid_type errors", () => {
   const booleanResult = booleanSchema.safeParse(null);
   expect(booleanResult.success).toBe(false);
   if (!booleanResult.success) {
-    expect(booleanResult.error.issues[0].message).toBe("Μη έγκυρη είσοδος: αναμενόταν boolean, λήφθηκε null");
+    expect(booleanResult.error.issues[0].message).toBe(
+      "Μη έγκυρη είσοδος: αναμενόταν boolean, λήφθηκε null",
+    );
   }
 
   // Test array expected, object received
@@ -98,7 +118,9 @@ test("Greek locale - invalid_type errors", () => {
   const arrayResult = arraySchema.safeParse({});
   expect(arrayResult.success).toBe(false);
   if (!arrayResult.success) {
-    expect(arrayResult.error.issues[0].message).toBe("Μη έγκυρη είσοδος: αναμενόταν array, λήφθηκε object");
+    expect(arrayResult.error.issues[0].message).toBe(
+      "Μη έγκυρη είσοδος: αναμενόταν array, λήφθηκε object",
+    );
   }
 });
 
@@ -120,7 +142,9 @@ test("Greek locale - other error cases", () => {
   expect(recordResult.success).toBe(false);
   if (!recordResult.success) {
     expect(recordResult.error.issues[0].code).toBe("invalid_key");
-    expect(recordResult.error.issues[0].message).toBe("Μη έγκυρο κλειδί στο record");
+    expect(recordResult.error.issues[0].message).toBe(
+      "Μη έγκυρο κλειδί στο record",
+    );
   }
 
   // Test invalid_value with enum
@@ -128,7 +152,9 @@ test("Greek locale - other error cases", () => {
   const enumResult = enumSchema.safeParse("c");
   expect(enumResult.success).toBe(false);
   if (!enumResult.success) {
-    expect(enumResult.error.issues[0].message).toBe('Μη έγκυρη επιλογή: αναμενόταν ένα από "a"|"b"');
+    expect(enumResult.error.issues[0].message).toBe(
+      'Μη έγκυρη επιλογή: αναμενόταν ένα από "a"|"b"',
+    );
   }
 
   // Test not_multiple_of
@@ -136,7 +162,9 @@ test("Greek locale - other error cases", () => {
   const multipleResult = multipleSchema.safeParse(10);
   expect(multipleResult.success).toBe(false);
   if (!multipleResult.success) {
-    expect(multipleResult.error.issues[0].message).toBe("Μη έγκυρος αριθμός: πρέπει να είναι πολλαπλάσιο του 3");
+    expect(multipleResult.error.issues[0].message).toBe(
+      "Μη έγκυρος αριθμός: πρέπει να είναι πολλαπλάσιο του 3",
+    );
   }
 
   // Test unrecognized_keys (single key)
@@ -155,7 +183,9 @@ test("Greek locale - other error cases", () => {
   });
   expect(strictMultipleResult.success).toBe(false);
   if (!strictMultipleResult.success) {
-    expect(strictMultipleResult.error.issues[0].message).toBe('Άγνωστα κλειδιά: "b", "c"');
+    expect(strictMultipleResult.error.issues[0].message).toBe(
+      'Άγνωστα κλειδιά: "b", "c"',
+    );
   }
 
   // Test invalid_union
@@ -172,7 +202,7 @@ test("Greek locale - other error cases", () => {
   expect(regexResult.success).toBe(false);
   if (!regexResult.success) {
     expect(regexResult.error.issues[0].message).toBe(
-      "Μη έγκυρη συμβολοσειρά: πρέπει να ταιριάζει με το μοτίβο /^[a-z]+$/"
+      "Μη έγκυρη συμβολοσειρά: πρέπει να ταιριάζει με το μοτίβο /^[a-z]+$/",
     );
   }
 
@@ -181,7 +211,9 @@ test("Greek locale - other error cases", () => {
   const startsWithResult = startsWithSchema.safeParse("world");
   expect(startsWithResult.success).toBe(false);
   if (!startsWithResult.success) {
-    expect(startsWithResult.error.issues[0].message).toBe('Μη έγκυρη συμβολοσειρά: πρέπει να ξεκινά με "hello"');
+    expect(startsWithResult.error.issues[0].message).toBe(
+      'Μη έγκυρη συμβολοσειρά: πρέπει να ξεκινά με "hello"',
+    );
   }
 
   // Test invalid_format with endsWith
@@ -189,7 +221,9 @@ test("Greek locale - other error cases", () => {
   const endsWithResult = endsWithSchema.safeParse("hello");
   expect(endsWithResult.success).toBe(false);
   if (!endsWithResult.success) {
-    expect(endsWithResult.error.issues[0].message).toBe('Μη έγκυρη συμβολοσειρά: πρέπει να τελειώνει με "world"');
+    expect(endsWithResult.error.issues[0].message).toBe(
+      'Μη έγκυρη συμβολοσειρά: πρέπει να τελειώνει με "world"',
+    );
   }
 
   // Test invalid_format with includes
@@ -197,7 +231,9 @@ test("Greek locale - other error cases", () => {
   const includesResult = includesSchema.safeParse("hello");
   expect(includesResult.success).toBe(false);
   if (!includesResult.success) {
-    expect(includesResult.error.issues[0].message).toBe('Μη έγκυρη συμβολοσειρά: πρέπει να περιέχει "test"');
+    expect(includesResult.error.issues[0].message).toBe(
+      'Μη έγκυρη συμβολοσειρά: πρέπει να περιέχει "test"',
+    );
   }
 });
 
@@ -210,6 +246,8 @@ test("Greek locale - invalid_type with instanceof (class-name expected)", () => 
   const dateResult = dateSchema.safeParse("not a date");
   expect(dateResult.success).toBe(false);
   if (!dateResult.success) {
-    expect(dateResult.error.issues[0].message).toBe("Μη έγκυρη είσοδος: αναμενόταν instanceof Date, λήφθηκε string");
+    expect(dateResult.error.issues[0].message).toBe(
+      "Μη έγκυρη είσοδος: αναμενόταν instanceof Date, λήφθηκε string",
+    );
   }
 });

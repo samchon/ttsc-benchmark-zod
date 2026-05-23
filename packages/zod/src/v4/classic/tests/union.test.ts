@@ -3,13 +3,18 @@ import { expect, expectTypeOf, test } from "vitest";
 import * as z from "zod/v4";
 
 test("function parsing", () => {
-  const schema = z.union([z.string().refine(() => false), z.number().refine(() => false)]);
+  const schema = z.union([
+    z.string().refine(() => false),
+    z.number().refine(() => false),
+  ]);
   const result = schema.safeParse("asdf");
   expect(result.success).toEqual(false);
 });
 
 test("union 2", () => {
-  const result = z.union([z.number(), z.string().refine(() => false)]).safeParse("a");
+  const result = z
+    .union([z.number(), z.string().refine(() => false)])
+    .safeParse("a");
   expect(result.success).toEqual(false);
 });
 
@@ -79,7 +84,9 @@ test("union inferred types", () => {
   const test = z.object({}).or(z.array(z.object({})));
 
   type Test = z.output<typeof test>; // <— any
-  expectTypeOf<Test>().toEqualTypeOf<Record<string, never> | Array<Record<string, never>>>();
+  expectTypeOf<Test>().toEqualTypeOf<
+    Record<string, never> | Array<Record<string, never>>
+  >();
 });
 
 test("union values", () => {
@@ -204,11 +211,16 @@ test("z.xor() - multiple matches fails", () => {
 });
 
 test("z.xor() with custom error message", () => {
-  const schema = z.xor([z.string(), z.number()], "Expected exactly one of string or number");
+  const schema = z.xor(
+    [z.string(), z.number()],
+    "Expected exactly one of string or number",
+  );
   const result = schema.safeParse(true);
   expect(result.success).toBe(false);
   if (!result.success) {
-    expect(result.error.issues[0].message).toBe("Expected exactly one of string or number");
+    expect(result.error.issues[0].message).toBe(
+      "Expected exactly one of string or number",
+    );
   }
 });
 

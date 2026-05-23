@@ -55,7 +55,10 @@ test("omit type inference", () => {
   const nonameFish = fish.omit({ name: true });
   type nonameFish = z.infer<typeof nonameFish>;
 
-  expectTypeOf<nonameFish>().toEqualTypeOf<{ age: number; nested: Record<string, never> }>();
+  expectTypeOf<nonameFish>().toEqualTypeOf<{
+    age: number;
+    nested: Record<string, never>;
+  }>();
 });
 
 test("omit parse - success", () => {
@@ -119,8 +122,10 @@ test("pick/omit/required/partial - do not allow unknown keys", () => {
   expect(() => schema.pick({ name: true, asdf: true }).safeParse({})).toThrow();
   // @ts-expect-error
   expect(() => schema.omit({ name: true, asdf: true }).safeParse({})).toThrow();
+  // prettier-ignore
   // @ts-expect-error
   expect(() => schema.partial({ name: true, asdf: true }).safeParse({})).toThrow();
+  // prettier-ignore
   // @ts-expect-error
   expect(() => schema.required({ name: true, asdf: true }).safeParse({})).toThrow();
 
@@ -153,7 +158,7 @@ test("pick - throws error on schema with refinements", () => {
   });
 
   expect(() => refinedSchema.pick({ name: true })).toThrow(
-    ".pick() cannot be used on object schemas containing refinements"
+    ".pick() cannot be used on object schemas containing refinements",
   );
 });
 
@@ -175,7 +180,7 @@ test("omit - throws error on schema with refinements", () => {
   });
 
   expect(() => refinedSchema.omit({ id: true })).toThrow(
-    ".omit() cannot be used on object schemas containing refinements"
+    ".omit() cannot be used on object schemas containing refinements",
   );
 });
 
@@ -185,12 +190,15 @@ test("pick - throws error on schema with refine", () => {
     confirmPassword: z.string(),
   });
 
-  const refinedSchema = baseSchema.refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords must match",
-  });
+  const refinedSchema = baseSchema.refine(
+    (data) => data.password === data.confirmPassword,
+    {
+      message: "Passwords must match",
+    },
+  );
 
   expect(() => refinedSchema.pick({ password: true })).toThrow(
-    ".pick() cannot be used on object schemas containing refinements"
+    ".pick() cannot be used on object schemas containing refinements",
   );
 });
 
@@ -201,11 +209,14 @@ test("omit - throws error on schema with refine", () => {
     email: z.string(),
   });
 
-  const refinedSchema = baseSchema.refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords must match",
-  });
+  const refinedSchema = baseSchema.refine(
+    (data) => data.password === data.confirmPassword,
+    {
+      message: "Passwords must match",
+    },
+  );
 
   expect(() => refinedSchema.omit({ email: true })).toThrow(
-    ".omit() cannot be used on object schemas containing refinements"
+    ".omit() cannot be used on object schemas containing refinements",
   );
 });

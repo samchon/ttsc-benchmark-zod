@@ -66,12 +66,18 @@ const error: () => errors.$ZodErrorMap = () => {
         return `Ongeldige invoer: verwacht ${expected}, ontving ${received}`;
       }
       case "invalid_value":
-        if (issue.values.length === 1) return `Ongeldige invoer: verwacht ${util.stringifyPrimitive(issue.values[0])}`;
+        if (issue.values.length === 1)
+          return `Ongeldige invoer: verwacht ${util.stringifyPrimitive(issue.values[0])}`;
         return `Ongeldige optie: verwacht één van ${util.joinValues(issue.values, "|")}`;
       case "too_big": {
         const adj = issue.inclusive ? "<=" : "<";
         const sizing = getSizing(issue.origin);
-        const longName = issue.origin === "date" ? "laat" : issue.origin === "string" ? "lang" : "groot";
+        const longName =
+          issue.origin === "date"
+            ? "laat"
+            : issue.origin === "string"
+              ? "lang"
+              : "groot";
 
         if (sizing)
           return `Te ${longName}: verwacht dat ${issue.origin ?? "waarde"} ${adj}${issue.maximum.toString()} ${sizing.unit ?? "elementen"} ${sizing.verb}`;
@@ -80,7 +86,12 @@ const error: () => errors.$ZodErrorMap = () => {
       case "too_small": {
         const adj = issue.inclusive ? ">=" : ">";
         const sizing = getSizing(issue.origin);
-        const shortName = issue.origin === "date" ? "vroeg" : issue.origin === "string" ? "kort" : "klein";
+        const shortName =
+          issue.origin === "date"
+            ? "vroeg"
+            : issue.origin === "string"
+              ? "kort"
+              : "klein";
 
         if (sizing) {
           return `Te ${shortName}: verwacht dat ${issue.origin} ${adj}${issue.minimum.toString()} ${sizing.unit} ${sizing.verb}`;
@@ -93,9 +104,12 @@ const error: () => errors.$ZodErrorMap = () => {
         if (_issue.format === "starts_with") {
           return `Ongeldige tekst: moet met "${_issue.prefix}" beginnen`;
         }
-        if (_issue.format === "ends_with") return `Ongeldige tekst: moet op "${_issue.suffix}" eindigen`;
-        if (_issue.format === "includes") return `Ongeldige tekst: moet "${_issue.includes}" bevatten`;
-        if (_issue.format === "regex") return `Ongeldige tekst: moet overeenkomen met patroon ${_issue.pattern}`;
+        if (_issue.format === "ends_with")
+          return `Ongeldige tekst: moet op "${_issue.suffix}" eindigen`;
+        if (_issue.format === "includes")
+          return `Ongeldige tekst: moet "${_issue.includes}" bevatten`;
+        if (_issue.format === "regex")
+          return `Ongeldige tekst: moet overeenkomen met patroon ${_issue.pattern}`;
         return `Ongeldig: ${FormatDictionary[_issue.format] ?? issue.format}`;
       }
       case "not_multiple_of":

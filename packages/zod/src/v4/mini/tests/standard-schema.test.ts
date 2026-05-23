@@ -25,7 +25,9 @@ test("toJSONSchema result ~standard.jsonSchema works with objects", () => {
   const jsonSchema = z.toJSONSchema(schema);
 
   // Call ~standard.jsonSchema.input - this should not throw
-  const inputSchema = jsonSchema["~standard"].jsonSchema.input({ target: "draft-07" });
+  const inputSchema = jsonSchema["~standard"].jsonSchema.input({
+    target: "draft-07",
+  });
 
   expect(inputSchema).toMatchObject({
     type: "object",
@@ -37,7 +39,9 @@ test("toJSONSchema result ~standard.jsonSchema works with objects", () => {
   });
 
   // Call ~standard.jsonSchema.output - this should not throw
-  const outputSchema = jsonSchema["~standard"].jsonSchema.output({ target: "draft-07" });
+  const outputSchema = jsonSchema["~standard"].jsonSchema.output({
+    target: "draft-07",
+  });
 
   expect(outputSchema).toMatchObject({
     type: "object",

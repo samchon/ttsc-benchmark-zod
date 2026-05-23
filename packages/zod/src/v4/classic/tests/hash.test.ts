@@ -7,7 +7,8 @@ test("hash() API — types and runtime across all alg/enc combinations", async (
   type Alg = "md5" | "sha1" | "sha256" | "sha384" | "sha512";
   // type Enc = "hex" | "base64" | "base64url";
 
-  const toB64Url = (b64: string) => b64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
+  const toB64Url = (b64: string) =>
+    b64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
 
   const makeDigests = (alg: Alg, input: string) => {
     const buf = createHash(alg).update(input).digest();
@@ -17,19 +18,29 @@ test("hash() API — types and runtime across all alg/enc combinations", async (
     return { hex, base64, base64url };
   };
 
-  const algs: ReadonlyArray<Alg> = ["md5", "sha1", "sha256", "sha384", "sha512"];
+  const algs: ReadonlyArray<Alg> = [
+    "md5",
+    "sha1",
+    "sha256",
+    "sha384",
+    "sha512",
+  ];
   const input = "zodasklfjaasdf";
 
   // --- Type-level checks (ensure the literal format string is encoded in the return type)
   expectTypeOf(hash("md5")).toEqualTypeOf<ZodCustomStringFormat<"md5_hex">>();
   expectTypeOf(hash("sha1")).toEqualTypeOf<ZodCustomStringFormat<"sha1_hex">>();
-  expectTypeOf(hash("sha256", { enc: "base64" as const })).toEqualTypeOf<ZodCustomStringFormat<"sha256_base64">>();
+  expectTypeOf(hash("sha256", { enc: "base64" as const })).toEqualTypeOf<
+    ZodCustomStringFormat<"sha256_base64">
+  >();
   expectTypeOf(hash("sha384", { enc: "base64url" as const })).toEqualTypeOf<
     ZodCustomStringFormat<"sha384_base64url">
   >();
 
   // Test generic format types are correctly inferred and Enc defaults to "hex"
-  expectTypeOf(hash("sha256")).toEqualTypeOf<ZodCustomStringFormat<"sha256_hex">>();
+  expectTypeOf(hash("sha256")).toEqualTypeOf<
+    ZodCustomStringFormat<"sha256_hex">
+  >();
 
   // --- Runtime matrix (success + a few sharp-edged failures per combo)
   for (const alg of algs) {
@@ -58,8 +69,12 @@ test("hash() API — types and runtime across all alg/enc combinations", async (
     }
 
     // base64url: adding padding or using invalid characters should fail
-    expect(() => hash(alg, { enc: "base64url" }).parse(base64url + "=")).toThrow();
-    expect(() => hash(alg, { enc: "base64url" }).parse(base64url + "!")).toThrow();
+    expect(() =>
+      hash(alg, { enc: "base64url" }).parse(base64url + "="),
+    ).toThrow();
+    expect(() =>
+      hash(alg, { enc: "base64url" }).parse(base64url + "!"),
+    ).toThrow();
 
     // Param object present but enc omitted should still default to hex at runtime
     const schemaWithEmptyParams = hash(alg, {} as any);

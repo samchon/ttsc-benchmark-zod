@@ -24,8 +24,12 @@ test("instanceof", async () => {
   const bar = BarSchema.parse(new Bar("asdf"));
   expect(bar.val).toEqual("asdf");
 
-  await expect(() => SubtestSchema.parse(new Test())).toThrow(/Input not instance of Subtest/);
-  await expect(() => TestSchema.parse(12)).toThrow(/Input not instance of Test/);
+  await expect(() => SubtestSchema.parse(new Test())).toThrow(
+    /Input not instance of Subtest/,
+  );
+  await expect(() => TestSchema.parse(12)).toThrow(
+    /Input not instance of Test/,
+  );
 
   util.assertEqual<Test, z.infer<typeof TestSchema>>(true);
 });

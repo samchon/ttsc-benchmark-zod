@@ -23,15 +23,20 @@ test("passing validations", () => {
   maxCheck.safeParse(new File(["12345678"], "test.txt"));
   mimeCheck.safeParse(new File([""], "test.csv", { type: "text/plain" }));
   expect(() => mimeCheck.parse(new File([""], "test.txt"))).toThrow();
-  expect(() => mimeCheck.parse(new File([""], "test.txt", { type: "text/csv" }))).toThrow();
+  expect(() =>
+    mimeCheck.parse(new File([""], "test.txt", { type: "text/csv" })),
+  ).toThrow();
 });
 
 test("types", () => {
-  expectTypeOf(z.file().parse(new File([], "test.txt"))).toEqualTypeOf(new File([], "test.txt"));
+  expectTypeOf(z.file().parse(new File([], "test.txt"))).toEqualTypeOf(
+    new File([], "test.txt"),
+  );
 });
 
 test("failing validations", () => {
-  expect(minCheck.safeParse(new File(["1234"], "test.txt"))).toMatchInlineSnapshot(`
+  expect(minCheck.safeParse(new File(["1234"], "test.txt")))
+    .toMatchInlineSnapshot(`
     {
       "error": [ZodError: [
       {
@@ -46,7 +51,8 @@ test("failing validations", () => {
       "success": false,
     }
   `);
-  expect(maxCheck.safeParse(new File(["123456789"], "test.txt"))).toMatchInlineSnapshot(`
+  expect(maxCheck.safeParse(new File(["123456789"], "test.txt")))
+    .toMatchInlineSnapshot(`
     {
       "error": [ZodError: [
       {
@@ -61,7 +67,8 @@ test("failing validations", () => {
       "success": false,
     }
   `);
-  expect(mimeCheck.safeParse(new File([""], "test.csv"))).toMatchInlineSnapshot(`
+  expect(mimeCheck.safeParse(new File([""], "test.csv")))
+    .toMatchInlineSnapshot(`
     {
       "error": [ZodError: [
       {
@@ -77,7 +84,8 @@ test("failing validations", () => {
       "success": false,
     }
   `);
-  expect(mimeCheck.safeParse(new File([""], "test.csv", { type: "text/csv" }))).toMatchInlineSnapshot(`
+  expect(mimeCheck.safeParse(new File([""], "test.csv", { type: "text/csv" })))
+    .toMatchInlineSnapshot(`
     {
       "error": [ZodError: [
       {

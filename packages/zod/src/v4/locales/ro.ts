@@ -78,7 +78,8 @@ const error: () => errors.$ZodErrorMap = () => {
       }
 
       case "invalid_value":
-        if (issue.values.length === 1) return `Intrare invalidă: așteptat ${util.stringifyPrimitive(issue.values[0])}`;
+        if (issue.values.length === 1)
+          return `Intrare invalidă: așteptat ${util.stringifyPrimitive(issue.values[0])}`;
         return `Opțiune invalidă: așteptat una dintre ${util.joinValues(issue.values, "|")}`;
       case "too_big": {
         const adj = issue.inclusive ? "<=" : "<";
@@ -101,9 +102,12 @@ const error: () => errors.$ZodErrorMap = () => {
         if (_issue.format === "starts_with") {
           return `Șir invalid: trebuie să înceapă cu "${_issue.prefix}"`;
         }
-        if (_issue.format === "ends_with") return `Șir invalid: trebuie să se termine cu "${_issue.suffix}"`;
-        if (_issue.format === "includes") return `Șir invalid: trebuie să includă "${_issue.includes}"`;
-        if (_issue.format === "regex") return `Șir invalid: trebuie să se potrivească cu modelul ${_issue.pattern}`;
+        if (_issue.format === "ends_with")
+          return `Șir invalid: trebuie să se termine cu "${_issue.suffix}"`;
+        if (_issue.format === "includes")
+          return `Șir invalid: trebuie să includă "${_issue.includes}"`;
+        if (_issue.format === "regex")
+          return `Șir invalid: trebuie să se potrivească cu modelul ${_issue.pattern}`;
         return `Format invalid: ${FormatDictionary[_issue.format] ?? issue.format}`;
       }
       case "not_multiple_of":

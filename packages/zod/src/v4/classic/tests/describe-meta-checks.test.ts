@@ -10,7 +10,9 @@ describe("z.describe() check", () => {
 
 describe("z.meta() check", () => {
   it("registers metadata in globalRegistry", () => {
-    const schema = z.number().check(z.meta({ title: "Age", description: "User's age" }));
+    const schema = z
+      .number()
+      .check(z.meta({ title: "Age", description: "User's age" }));
     const meta = z.globalRegistry.get(schema);
     expect(meta?.title).toBe("Age");
     expect(meta?.description).toBe("User's age");
@@ -19,7 +21,9 @@ describe("z.meta() check", () => {
 
 describe("combined usage", () => {
   it("works with multiple checks", () => {
-    const schema = z.string().check(z.describe("Email address"), z.meta({ title: "Email" }));
+    const schema = z
+      .string()
+      .check(z.describe("Email address"), z.meta({ title: "Email" }));
     const meta = z.globalRegistry.get(schema);
     expect(meta?.description).toBe("Email address");
     expect(meta?.title).toBe("Email");

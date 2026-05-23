@@ -5,7 +5,10 @@ import * as z from "zod/v3";
 import { util } from "../helpers/util.js";
 
 test("generics", () => {
-  async function stripOuter<TData extends z.ZodTypeAny>(schema: TData, data: unknown) {
+  async function stripOuter<TData extends z.ZodTypeAny>(
+    schema: TData,
+    data: unknown,
+  ) {
     return z
       .object({
         nested: schema, // as z.ZodTypeAny,

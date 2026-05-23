@@ -229,7 +229,10 @@ test("z.union", () => {
 });
 
 test("z.intersection", () => {
-  const a = z.intersection(z.object({ a: z.string() }), z.object({ b: z.number() }));
+  const a = z.intersection(
+    z.object({ a: z.string() }),
+    z.object({ b: z.number() }),
+  );
   expect(z.parse(a, { a: "hello", b: 123 })).toEqual({ a: "hello", b: 123 });
   expect(() => z.parse(a, { a: "hello" })).toThrow();
   expect(() => z.parse(a, { b: 123 })).toThrow();
@@ -244,10 +247,15 @@ test("z.tuple", () => {
   expect(() => z.parse(a, "hello")).toThrow();
 
   // tuple with rest
-  const b = z.tuple([z.string(), z.number(), z.optional(z.string())], z.boolean());
+  const b = z.tuple(
+    [z.string(), z.number(), z.optional(z.string())],
+    z.boolean(),
+  );
   type b = z.output<typeof b>;
 
-  expectTypeOf<b>().toEqualTypeOf<[string, number, (string | undefined)?, ...boolean[]]>();
+  expectTypeOf<b>().toEqualTypeOf<
+    [string, number, (string | undefined)?, ...boolean[]]
+  >();
   const datas = [
     ["hello", 123],
     ["hello", 123, "world"],
@@ -265,7 +273,9 @@ test("z.tuple", () => {
   const cArgs = [z.string(), z.number(), z.optional(z.string())] as const;
   const c = z.tuple(cArgs, z.boolean());
   type c = z.output<typeof c>;
-  expectTypeOf<c>().toEqualTypeOf<[string, number, (string | undefined)?, ...boolean[]]>();
+  expectTypeOf<c>().toEqualTypeOf<
+    [string, number, (string | undefined)?, ...boolean[]]
+  >();
   // type c = z.output<typeof c>;
 });
 
@@ -278,7 +288,9 @@ test("z.record", () => {
   const b = z.record(z.union([z.string(), z.number(), z.symbol()]), z.string());
   type b = z.output<typeof b>;
   expectTypeOf<b>().toEqualTypeOf<Record<string | number | symbol, string>>();
-  expect(z.parse(b, { a: "hello", 1: "world", [Symbol.for("asdf")]: "symbol" })).toEqual({
+  expect(
+    z.parse(b, { a: "hello", 1: "world", [Symbol.for("asdf")]: "symbol" }),
+  ).toEqual({
     a: "hello",
     1: "world",
     [Symbol.for("asdf")]: "symbol",
@@ -296,7 +308,9 @@ test("z.record", () => {
   // missing keys
   expect(() => z.parse(c, { a: "hello", b: "world" })).toThrow();
   // extra keys
-  expect(() => z.parse(c, { a: "hello", b: "world", c: "world", d: "world" })).toThrow();
+  expect(() =>
+    z.parse(c, { a: "hello", b: "world", c: "world", d: "world" }),
+  ).toThrow();
 
   // partial enum
   const d = z.record(z.enum(["a", "b"]).or(z.never()), z.string());
@@ -331,7 +345,9 @@ test("z.map", () => {
   const a = z.map(z.string(), z.number());
   type a = z.output<typeof a>;
   expectTypeOf<a>().toEqualTypeOf<Map<string, number>>();
-  expect(z.parse(a, new Map([["hello", 123]]))).toEqual(new Map([["hello", 123]]));
+  expect(z.parse(a, new Map([["hello", 123]]))).toEqual(
+    new Map([["hello", 123]]),
+  );
   expect(() => z.parse(a, new Map([["hello", "world"]]))).toThrow();
   expect(() => z.parse(a, new Map([[1243, "world"]]))).toThrow();
   expect(() => z.parse(a, "hello")).toThrow();
@@ -358,7 +374,10 @@ test("z.map invalid_element", () => {
 });
 
 test("z.map async", async () => {
-  const a = z.map(z.string().check(z.refine(async () => true)), z.number().check(z.refine(async () => true)));
+  const a = z.map(
+    z.string().check(z.refine(async () => true)),
+    z.number().check(z.refine(async () => true)),
+  );
   const d1 = new Map([["hello", 123]]);
   expect(await z.parseAsync(a, d1)).toEqual(d1);
 
@@ -377,7 +396,9 @@ test("z.set", () => {
   const a = z.set(z.string());
   type a = z.output<typeof a>;
   expectTypeOf<a>().toEqualTypeOf<Set<string>>();
-  expect(z.parse(a, new Set(["hello", "world"]))).toEqual(new Set(["hello", "world"]));
+  expect(z.parse(a, new Set(["hello", "world"]))).toEqual(
+    new Set(["hello", "world"]),
+  );
   expect(() => z.parse(a, new Set([123]))).toThrow();
   expect(() => z.parse(a, ["hello", "world"])).toThrow();
   expect(() => z.parse(a, "hello")).toThrow();
@@ -469,7 +490,7 @@ test("z.file", () => {
 test("z.transform", () => {
   const a = z.pipe(
     z.string(),
-    z.transform((val) => val.toUpperCase())
+    z.transform((val) => val.toUpperCase()),
   );
   type a = z.output<typeof a>;
   expectTypeOf<a>().toEqualTypeOf<string>();
@@ -480,7 +501,7 @@ test("z.transform", () => {
 test("z.transform async", async () => {
   const a = z.pipe(
     z.string(),
-    z.transform(async (val) => val.toUpperCase())
+    z.transform(async (val) => val.toUpperCase()),
   );
   type a = z.output<typeof a>;
   expectTypeOf<a>().toEqualTypeOf<string>();
@@ -491,7 +512,7 @@ test("z.transform async", async () => {
 test("z.preprocess", () => {
   const a = z.pipe(
     z.transform((val) => String(val).toUpperCase()),
-    z.string()
+    z.string(),
   );
   type a = z.output<typeof a>;
   expectTypeOf<a>().toEqualTypeOf<string>();
@@ -572,9 +593,9 @@ test("z.pipe", () => {
   const a = z.pipe(
     z.pipe(
       z.string(),
-      z.transform((val) => val.length)
+      z.transform((val) => val.length),
     ),
-    z.number()
+    z.number(),
   );
   type a_in = z.input<typeof a>;
   expectTypeOf<a_in>().toEqualTypeOf<string>();
@@ -664,7 +685,7 @@ test("z.check", () => {
         message: "Expected a string",
         input: ctx.value,
       });
-    })
+    }),
   );
   expect(z.safeParse(a, "hello")).toMatchObject({
     success: true,
@@ -687,7 +708,7 @@ test("z.with (alias for z.check)", () => {
         message: "Expected a string",
         input: ctx.value,
       });
-    })
+    }),
   );
   expect(z.safeParse(a, "hello")).toMatchObject({
     success: true,
@@ -699,7 +720,9 @@ test("z.with (alias for z.check)", () => {
   });
 
   // Test with refine
-  const b = z.string().with(z.refine((val) => val.length > 3, "Must be longer than 3"));
+  const b = z
+    .string()
+    .with(z.refine((val) => val.length > 3, "Must be longer than 3"));
   expect(z.safeParse(b, "hello").success).toBe(true);
   expect(z.safeParse(b, "hi").success).toBe(false);
 
@@ -728,7 +751,7 @@ test("z.instanceof", () => {
 test("z.refine", () => {
   const a = z.number().check(
     z.refine((val) => val > 3),
-    z.refine((val) => val < 10)
+    z.refine((val) => val < 10),
   );
   expect(z.parse(a, 5)).toEqual(5);
   expect(() => z.parse(a, 2)).toThrow();
@@ -911,8 +934,10 @@ test("def typing", () => {
   z.lazy(() => z.string()).def.type satisfies "lazy";
   z.string().optional().def.type satisfies "optional";
   z.string().default("default").def.type satisfies "default";
-  z.templateLiteral([z.literal("a"), z.literal("b")]).def.type satisfies "template_literal";
-  z.custom<string>((val) => typeof val === "string").def.type satisfies "custom";
+  z.templateLiteral([z.literal("a"), z.literal("b")]).def
+    .type satisfies "template_literal";
+  z.custom<string>((val) => typeof val === "string").def
+    .type satisfies "custom";
   z.transform((val) => val as string).def.type satisfies "transform";
   z.string().optional().nonoptional().def.type satisfies "nonoptional";
   z.object({ key: z.string() }).readonly().def.type satisfies "readonly";
@@ -929,7 +954,9 @@ test("runtime type property exists and returns correct values", () => {
 });
 
 test("type narrowing works with type property", () => {
-  type ArrayOrRecord = z.ZodArray<z.ZodString> | z.ZodRecord<z.ZodString, z.ZodAny>;
+  type ArrayOrRecord =
+    | z.ZodArray<z.ZodString>
+    | z.ZodRecord<z.ZodString, z.ZodAny>;
   const arraySchema = z.array(z.string()) as ArrayOrRecord;
 
   if (arraySchema.type === "array") {

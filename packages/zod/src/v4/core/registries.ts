@@ -24,7 +24,10 @@ export type $replace<Meta, S extends $ZodType> = Meta extends $output
           : Meta;
 
 type MetadataType = object | undefined;
-export class $ZodRegistry<Meta extends MetadataType = MetadataType, Schema extends $ZodType = $ZodType> {
+export class $ZodRegistry<
+  Meta extends MetadataType = MetadataType,
+  Schema extends $ZodType = $ZodType,
+> {
   _meta!: Meta;
   _schema!: Schema;
   _map: WeakMap<Schema, $replace<Meta, Schema>> = new WeakMap();
@@ -32,7 +35,9 @@ export class $ZodRegistry<Meta extends MetadataType = MetadataType, Schema exten
 
   add<S extends Schema>(
     schema: S,
-    ..._meta: undefined extends Meta ? [$replace<Meta, S>?] : [$replace<Meta, S>]
+    ..._meta: undefined extends Meta
+      ? [$replace<Meta, S>?]
+      : [$replace<Meta, S>]
   ): this {
     const meta: any = _meta[0];
     this._map.set(schema, meta!);
@@ -87,7 +92,10 @@ export interface JSONSchemaMeta {
 export interface GlobalMeta extends JSONSchemaMeta {}
 
 // registries
-export function registry<T extends MetadataType = MetadataType, S extends $ZodType = $ZodType>(): $ZodRegistry<T, S> {
+export function registry<
+  T extends MetadataType = MetadataType,
+  S extends $ZodType = $ZodType,
+>(): $ZodRegistry<T, S> {
   return new $ZodRegistry<T, S>();
 }
 
@@ -101,5 +109,8 @@ interface GlobalThisWithRegistry {
   __zod_globalRegistry?: $ZodRegistry<GlobalMeta>;
 }
 
-(globalThis as GlobalThisWithRegistry).__zod_globalRegistry ??= registry<GlobalMeta>();
-export const globalRegistry: $ZodRegistry<GlobalMeta> = (globalThis as GlobalThisWithRegistry).__zod_globalRegistry!;
+(globalThis as GlobalThisWithRegistry).__zod_globalRegistry ??=
+  registry<GlobalMeta>();
+export const globalRegistry: $ZodRegistry<GlobalMeta> = (
+  globalThis as GlobalThisWithRegistry
+).__zod_globalRegistry!;

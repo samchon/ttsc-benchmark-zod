@@ -42,7 +42,9 @@ test("catch with transform", () => {
   expect(stringWithDefault.parse(15)).toBe("default");
   expect(stringWithDefault).toBeInstanceOf(z.ZodCatch);
   expect(stringWithDefault._def.innerType).toBeInstanceOf(z.ZodEffects);
-  expect(stringWithDefault._def.innerType._def.schema).toBeInstanceOf(z.ZodSchema);
+  expect(stringWithDefault._def.innerType._def.schema).toBeInstanceOf(
+    z.ZodSchema,
+  );
 
   type inp = z.input<typeof stringWithDefault>;
   util.assertEqual<inp, unknown>(true);
@@ -56,7 +58,9 @@ test("catch on existing optional", () => {
   expect(stringWithDefault.parse(15)).toBe("asdf");
   expect(stringWithDefault).toBeInstanceOf(z.ZodCatch);
   expect(stringWithDefault._def.innerType).toBeInstanceOf(z.ZodOptional);
-  expect(stringWithDefault._def.innerType._def.innerType).toBeInstanceOf(z.ZodString);
+  expect(stringWithDefault._def.innerType._def.innerType).toBeInstanceOf(
+    z.ZodString,
+  );
 
   type inp = z.input<typeof stringWithDefault>;
   util.assertEqual<inp, unknown>(true);
@@ -207,8 +211,12 @@ test("catch error", () => {
   expect(!result.success && result.error.issues[0].message).toMatch("number");
 
   expect(catchError).toBeInstanceOf(z.ZodError);
-  expect(catchError !== undefined && (catchError as z.ZodError).issues.length).toEqual(1);
-  expect(catchError !== undefined && (catchError as z.ZodError).issues[0].message).toMatch("string");
+  expect(
+    catchError !== undefined && (catchError as z.ZodError).issues.length,
+  ).toEqual(1);
+  expect(
+    catchError !== undefined && (catchError as z.ZodError).issues[0].message,
+  ).toMatch("string");
 });
 
 test("ctx.input", () => {

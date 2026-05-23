@@ -80,7 +80,9 @@ test("empty object", () => {
   expect(schema.parse({ name: "asdf" })).toEqual({});
   expect(schema.safeParse(null).success).toEqual(false);
   expect(schema.safeParse("asdf").success).toEqual(false);
-  expectTypeOf<z.output<typeof schema>>().toEqualTypeOf<Record<string, never>>();
+  expectTypeOf<z.output<typeof schema>>().toEqualTypeOf<
+    Record<string, never>
+  >();
 });
 
 const data = {
@@ -94,7 +96,13 @@ test("strip by default", () => {
 });
 
 test("unknownkeys override", () => {
-  const val = z.object({ points: z.number() }).strict().passthrough().strip().passthrough().parse(data);
+  const val = z
+    .object({ points: z.number() })
+    .strict()
+    .passthrough()
+    .strip()
+    .passthrough()
+    .parse(data);
 
   expect(val).toEqual(data);
 });
@@ -130,7 +138,10 @@ test("catchall inference", () => {
 });
 
 test("catchall overrides strict", () => {
-  const o1 = z.object({ first: z.string().optional() }).strict().catchall(z.number());
+  const o1 = z
+    .object({ first: z.string().optional() })
+    .strict()
+    .catchall(z.number());
 
   // should run fine
   // setting a catchall overrides the unknownKeys behavior
@@ -176,7 +187,10 @@ test("optional keys are unset", () => {
 });
 
 test("catchall parsing", async () => {
-  const result = z.object({ name: z.string() }).catchall(z.number()).parse({ name: "Foo", validExtraKey: 61 });
+  const result = z
+    .object({ name: z.string() })
+    .catchall(z.number())
+    .parse({ name: "Foo", validExtraKey: 61 });
 
   expect(result).toEqual({ name: "Foo", validExtraKey: 61 });
 
@@ -189,7 +203,10 @@ test("catchall parsing", async () => {
 });
 
 test("nonexistent keys", async () => {
-  const Schema = z.union([z.object({ a: z.string() }), z.object({ b: z.number() })]);
+  const Schema = z.union([
+    z.object({ a: z.string() }),
+    z.object({ b: z.number() }),
+  ]);
   const obj = { a: "A" };
   const result = await Schema.spa(obj); // Works with 1.11.10, breaks with 2.0.0-beta.21
   expect(result.success).toBe(true);
@@ -242,7 +259,8 @@ test("inferred unioned object type with optional properties", async () => {
   ]);
   type Unioned = z.infer<typeof Unioned>;
   expectTypeOf<Unioned>().toEqualTypeOf<
-    { a: string; b?: string | undefined } | { a?: string | undefined; b: string }
+    | { a: string; b?: string | undefined }
+    | { a?: string | undefined; b: string }
   >();
 });
 
@@ -278,13 +296,20 @@ test("z.keyof returns enum", () => {
 });
 
 test("inferred partial object type with optional properties", async () => {
-  const Partial = z.object({ a: z.string(), b: z.string().optional() }).partial();
+  const Partial = z
+    .object({ a: z.string(), b: z.string().optional() })
+    .partial();
   type Partial = z.infer<typeof Partial>;
-  expectTypeOf<Partial>().toEqualTypeOf<{ a?: string | undefined; b?: string | undefined }>();
+  expectTypeOf<Partial>().toEqualTypeOf<{
+    a?: string | undefined;
+    b?: string | undefined;
+  }>();
 });
 
 test("inferred picked object type with optional properties", async () => {
-  const Picked = z.object({ a: z.string(), b: z.string().optional() }).pick({ b: true });
+  const Picked = z
+    .object({ a: z.string(), b: z.string().optional() })
+    .pick({ b: true });
   type Picked = z.infer<typeof Picked>;
   expectTypeOf<Picked>().toEqualTypeOf<{ b?: string | undefined }>();
 });
@@ -333,7 +358,9 @@ test("intersection of object with date", async () => {
   const schema = z.object({
     a: z.date(),
   });
-  expect(z.intersection(schema, schema).parse({ a: new Date(1637353595983) })).toEqual({
+  expect(
+    z.intersection(schema, schema).parse({ a: new Date(1637353595983) }),
+  ).toEqual({
     a: new Date(1637353595983),
   });
   const result = await schema.parseAsync({ a: new Date(1637353595983) });
@@ -346,7 +373,9 @@ test("intersection of object with refine with date", async () => {
       a: z.date(),
     })
     .refine(() => true);
-  expect(z.intersection(schema, schema).parse({ a: new Date(1637353595983) })).toEqual({
+  expect(
+    z.intersection(schema, schema).parse({ a: new Date(1637353595983) }),
+  ).toEqual({
     a: new Date(1637353595983),
   });
   const result = await schema.parseAsync({ a: new Date(1637353595983) });
@@ -364,7 +393,7 @@ test("constructor key", () => {
     person.parse({
       name: "bob dylan",
       constructor: 61,
-    })
+    }),
   ).toThrow();
 });
 
@@ -416,19 +445,25 @@ test("merge() throws when receiver has refinements", () => {
 
   const b = z.object({ email: z.string() });
 
-  expect(() => a.merge(b)).toThrow(".merge() cannot be used on object schemas containing refinements");
+  expect(() => a.merge(b)).toThrow(
+    ".merge() cannot be used on object schemas containing refinements",
+  );
 });
 
 test("merge() throws when receiver has superRefine", () => {
   const a = z.object({ x: z.string() }).superRefine(() => {});
   const b = z.object({ y: z.number() });
 
-  expect(() => a.merge(b)).toThrow(".merge() cannot be used on object schemas containing refinements");
+  expect(() => a.merge(b)).toThrow(
+    ".merge() cannot be used on object schemas containing refinements",
+  );
 });
 
 test("merge() preserves refinements on the second schema", () => {
   const a = z.object({ name: z.string() });
-  const b = z.object({ age: z.number() }).refine((data) => data.age >= 18, { message: "Must be 18+" });
+  const b = z
+    .object({ age: z.number() })
+    .refine((data) => data.age >= 18, { message: "Must be 18+" });
 
   const merged = a.merge(b);
 
@@ -449,8 +484,14 @@ test("extend() should return schema with new key", () => {
   const actual = PersonWithNickname.parse(expected);
 
   expect(actual).toEqual(expected);
-  expectTypeOf<keyof PersonWithNickname>().toEqualTypeOf<"firstName" | "lastName" | "nickName">();
-  expectTypeOf<PersonWithNickname>().toEqualTypeOf<{ firstName: string; lastName: string; nickName: string }>();
+  expectTypeOf<keyof PersonWithNickname>().toEqualTypeOf<
+    "firstName" | "lastName" | "nickName"
+  >();
+  expectTypeOf<PersonWithNickname>().toEqualTypeOf<{
+    firstName: string;
+    lastName: string;
+    nickName: string;
+  }>();
 });
 
 test("extend() should have power to override existing key", () => {
@@ -463,7 +504,10 @@ test("extend() should have power to override existing key", () => {
   const actual = PersonWithNumberAsLastName.parse(expected);
 
   expect(actual).toEqual(expected);
-  expectTypeOf<PersonWithNumberAsLastName>().toEqualTypeOf<{ firstName: string; lastName: number }>();
+  expectTypeOf<PersonWithNumberAsLastName>().toEqualTypeOf<{
+    firstName: string;
+    lastName: number;
+  }>();
 });
 
 test("safeExtend() should have power to override existing key", () => {
@@ -476,8 +520,13 @@ test("safeExtend() should have power to override existing key", () => {
   const actual = PersonWithMinLastName.parse(expected);
 
   expect(actual).toEqual(expected);
-  expect(() => PersonWithMinLastName.parse({ firstName: "f", lastName: "ab" })).toThrow();
-  expectTypeOf<PersonWithMinLastName>().toEqualTypeOf<{ firstName: string; lastName: string }>();
+  expect(() =>
+    PersonWithMinLastName.parse({ firstName: "f", lastName: "ab" }),
+  ).toThrow();
+  expectTypeOf<PersonWithMinLastName>().toEqualTypeOf<{
+    firstName: string;
+    lastName: string;
+  }>();
 });
 
 test("safeExtend() maintains refinements", () => {
@@ -515,7 +564,9 @@ test("passthrough index signature", () => {
 
 test("assignability", () => {
   z.object({ a: z.string() }) satisfies z.ZodObject<{ a: z.ZodString }>;
-  z.object({ a: z.string() }).catchall(z.number()) satisfies z.ZodObject<{ a: z.ZodString }>;
+  z.object({ a: z.string() }).catchall(z.number()) satisfies z.ZodObject<{
+    a: z.ZodString;
+  }>;
   z.object({ a: z.string() }).strict() satisfies z.ZodObject;
   z.object({}) satisfies z.ZodObject;
 
@@ -608,16 +659,26 @@ test("empty shape", () => {
 
 test("zodtype assignability", () => {
   // Does not error
-  z.object({ hello: z.string().optional() }) satisfies z.ZodType<{ hello?: string | undefined }>;
-  z.object({ hello: z.string() }) satisfies z.ZodType<{ hello?: string | undefined }>;
+  z.object({ hello: z.string().optional() }) satisfies z.ZodType<{
+    hello?: string | undefined;
+  }>;
+  z.object({ hello: z.string() }) satisfies z.ZodType<{
+    hello?: string | undefined;
+  }>;
   // @ts-expect-error
   z.object({}) satisfies z.ZodType<{ hello: string | undefined }>;
   // @ts-expect-error
-  z.object({ hello: z.string().optional() }) satisfies z.ZodType<{ hello: string | undefined }>;
+  z.object({ hello: z.string().optional() }) satisfies z.ZodType<{
+    hello: string | undefined;
+  }>;
   // @ts-expect-error
-  z.object({ hello: z.string().optional() }) satisfies z.ZodType<{ hello: string }>;
+  z.object({ hello: z.string().optional() }) satisfies z.ZodType<{
+    hello: string;
+  }>;
   // @ts-expect-error
-  z.object({ hello: z.number() }) satisfies z.ZodType<{ hello?: string | undefined }>;
+  z.object({ hello: z.number() }) satisfies z.ZodType<{
+    hello?: string | undefined;
+  }>;
 });
 
 test("index signature in shape", () => {
@@ -675,7 +736,8 @@ test("safeExtend() on object with refinements should not throw", () => {
 // https://github.com/colinhacks/zod/security/advisories/GHSA-r34p-xfmx-58wv
 // https://github.com/colinhacks/zod/security/advisories/GHSA-84jv-fqfx-wxhr
 describe("__proto__ in object catchall paths", () => {
-  const protoInput = () => JSON.parse('{"__proto__":{"isAdmin":true},"name":"alice"}');
+  const protoInput = () =>
+    JSON.parse('{"__proto__":{"isAdmin":true},"name":"alice"}');
 
   test("looseObject drops __proto__ and preserves Object.prototype", () => {
     const schema = z.looseObject({ name: z.string() });
@@ -701,7 +763,9 @@ describe("__proto__ in object catchall paths", () => {
 
   test("safeParseAsync + jitless drops __proto__", async () => {
     const schema = z.looseObject({ name: z.string() });
-    const result = await schema.safeParseAsync(protoInput(), { jitless: true } as any);
+    const result = await schema.safeParseAsync(protoInput(), {
+      jitless: true,
+    } as any);
     expect(result.success).toBe(true);
     if (result.success) {
       expect((result.data as any).isAdmin).toBeUndefined();

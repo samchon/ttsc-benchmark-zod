@@ -2,13 +2,16 @@ import type * as core from "../core/index.js";
 import type * as JSONSchema from "./json-schema.js";
 import { type $ZodRegistry, globalRegistry } from "./registries.js";
 import type * as schemas from "./schemas.js";
-import type { StandardJSONSchemaV1, StandardSchemaWithJSONProps } from "./standard-schema.js";
+import type {
+  StandardJSONSchemaV1,
+  StandardSchemaWithJSONProps,
+} from "./standard-schema.js";
 
 export type Processor<T extends schemas.$ZodType = schemas.$ZodType> = (
   schema: T,
   ctx: ToJSONSchemaContext,
   json: JSONSchema.BaseSchema,
-  params: ProcessParams
+  params: ProcessParams,
 ) => void;
 
 export interface JSONSchemaGeneratorParams {
@@ -21,7 +24,13 @@ export interface JSONSchemaGeneratorParams {
    * - `"draft-07"` — JSON Schema Draft 7
    * - `"draft-04"` — JSON Schema Draft 4
    * - `"openapi-3.0"` — OpenAPI 3.0 Schema Object */
-  target?: "draft-04" | "draft-07" | "draft-2020-12" | "openapi-3.0" | ({} & string) | undefined;
+  target?:
+    | "draft-04"
+    | "draft-07"
+    | "draft-2020-12"
+    | "openapi-3.0"
+    | ({} & string)
+    | undefined;
   /** How to handle unrepresentable types.
    * - `"throw"` — Default. Unrepresentable types throw an error
    * - `"any"` — Unrepresentable types become `{}` */
@@ -50,7 +59,10 @@ export interface JSONSchemaGeneratorParams {
 /**
  * Parameters for the toJSONSchema function.
  */
-export type ToJSONSchemaParams = Omit<JSONSchemaGeneratorParams, "processors" | "external">;
+export type ToJSONSchemaParams = Omit<
+  JSONSchemaGeneratorParams,
+  "processors" | "external"
+>;
 
 /**
  * Parameters for the toJSONSchema function when passing a registry.
@@ -84,7 +96,12 @@ export interface Seen {
 export interface ToJSONSchemaContext {
   processors: Record<string, Processor>;
   metadataRegistry: $ZodRegistry<Record<string, any>>;
-  target: "draft-04" | "draft-07" | "draft-2020-12" | "openapi-3.0" | ({} & string);
+  target:
+    | "draft-04"
+    | "draft-07"
+    | "draft-2020-12"
+    | "openapi-3.0"
+    | ({} & string);
   unrepresentable: "throw" | "any";
   override: (ctx: {
     // must be schemas.$ZodType to prevent recursive type resolution error
@@ -115,7 +132,9 @@ export interface ToJSONSchemaContext {
 //   };
 // }
 
-export function initializeContext(params: JSONSchemaGeneratorParams): ToJSONSchemaContext {
+export function initializeContext(
+  params: JSONSchemaGeneratorParams,
+): ToJSONSchemaContext {
   // Normalize target: convert old non-hyphenated versions to hyphenated versions
   let target: ToJSONSchemaContext["target"] = params?.target ?? "draft-2020-12";
   if (target === "draft-4") target = "draft-04";
@@ -139,7 +158,7 @@ export function initializeContext(params: JSONSchemaGeneratorParams): ToJSONSche
 export function process<T extends schemas.$ZodType>(
   schema: T,
   ctx: ToJSONSchemaContext,
-  _params: ProcessParams = { path: [], schemaPath: [] }
+  _params: ProcessParams = { path: [], schemaPath: [] },
 ): JSONSchema.BaseSchema {
   const def = schema._zod.def as schemas.$ZodTypes["_zod"]["def"];
 
@@ -159,7 +178,12 @@ export function process<T extends schemas.$ZodType>(
   }
 
   // initialize
-  const result: Seen = { schema: {}, count: 1, cycle: undefined, path: _params.path };
+  const result: Seen = {
+    schema: {},
+    count: 1,
+    cycle: undefined,
+    path: _params.path,
+  };
   ctx.seen.set(schema, result);
 
   // custom method overrides default behavior
@@ -179,7 +203,9 @@ export function process<T extends schemas.$ZodType>(
       const _json = result.schema;
       const processor = ctx.processors[def.type];
       if (!processor) {
-        throw new Error(`[toJSONSchema]: Non-representable type encountered: ${def.type}`);
+        throw new Error(
+          `[toJSONSchema]: Non-representable type encountered: ${def.type}`,
+        );
       }
       processor(schema, ctx, _json, params);
     }
@@ -205,7 +231,8 @@ export function process<T extends schemas.$ZodType>(
   }
 
   // set prefault as default
-  if (ctx.io === "input" && "_prefault" in result.schema) result.schema.default ??= result.schema._prefault;
+  if (ctx.io === "input" && "_prefault" in result.schema)
+    result.schema.default ??= result.schema._prefault;
   delete result.schema._prefault;
 
   // pulling fresh from ctx.seen in case it was overwritten
@@ -216,7 +243,7 @@ export function process<T extends schemas.$ZodType>(
 
 export function extractDefs<T extends schemas.$ZodType>(
   ctx: ToJSONSchemaContext,
-  schema: T
+  schema: T,
   // params: EmitParams
 ): void {
   // iterate over seen map;
@@ -232,7 +259,7 @@ export function extractDefs<T extends schemas.$ZodType>(
       const existing = idToSchema.get(id);
       if (existing && existing !== entry[0]) {
         throw new Error(
-          `Duplicate schema id "${id}" detected during JSON Schema conversion. Two different schemas cannot share the same id when converted together.`
+          `Duplicate schema id "${id}" detected during JSON Schema conversion. Two different schemas cannot share the same id when converted together.`,
         );
       }
       idToSchema.set(id, entry[0]);
@@ -241,13 +268,16 @@ export function extractDefs<T extends schemas.$ZodType>(
 
   // returns a ref to the schema
   // defId will be empty if the ref points to an external schema (or #)
-  const makeURI = (entry: [schemas.$ZodType<unknown, unknown>, Seen]): { ref: string; defId?: string } => {
+  const makeURI = (
+    entry: [schemas.$ZodType<unknown, unknown>, Seen],
+  ): { ref: string; defId?: string } => {
     // comparing the seen objects because sometimes
     // multiple schemas map to the same seen object.
     // e.g. lazy
 
     // external is configured
-    const defsSegment = ctx.target === "draft-2020-12" ? "$defs" : "definitions";
+    const defsSegment =
+      ctx.target === "draft-2020-12" ? "$defs" : "definitions";
     if (ctx.external) {
       const externalId = ctx.external.registry.get(entry[0])?.id; // ?? "__shared";// `__schema${ctx.counter++}`;
 
@@ -258,9 +288,15 @@ export function extractDefs<T extends schemas.$ZodType>(
       }
 
       // otherwise, add to __shared
-      const id: string = entry[1].defId ?? (entry[1].schema.id as string) ?? `schema${ctx.counter++}`;
+      const id: string =
+        entry[1].defId ??
+        (entry[1].schema.id as string) ??
+        `schema${ctx.counter++}`;
       entry[1].defId = id; // set defId so it will be reused if needed
-      return { defId: id, ref: `${uriGenerator("__shared")}#/${defsSegment}/${id}` };
+      return {
+        defId: id,
+        ref: `${uriGenerator("__shared")}#/${defsSegment}/${id}`,
+      };
     }
 
     if (entry[1] === root) {
@@ -276,7 +312,9 @@ export function extractDefs<T extends schemas.$ZodType>(
 
   // stored cached version in `def` property
   // remove all properties, set $ref
-  const extractToDef = (entry: [schemas.$ZodType<unknown, unknown>, Seen]): void => {
+  const extractToDef = (
+    entry: [schemas.$ZodType<unknown, unknown>, Seen],
+  ): void => {
     // if the schema is already a reference, do not extract it
     if (entry[1].schema.$ref) {
       return;
@@ -304,7 +342,7 @@ export function extractDefs<T extends schemas.$ZodType>(
       const seen = entry[1];
       if (seen.cycle) {
         throw new Error(
-          `Cycle detected: #/${seen.cycle?.join("/")}/<root>\n\nSet the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.`
+          `Cycle detected: #/${seen.cycle?.join("/")}/<root>\n\nSet the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.`,
         );
       }
     }
@@ -356,7 +394,7 @@ export function extractDefs<T extends schemas.$ZodType>(
 
 export function finalize<T extends schemas.$ZodType>(
   ctx: ToJSONSchemaContext,
-  schema: T
+  schema: T,
 ): ZodStandardJSONSchemaPayload<T> {
   const root = ctx.seen.get(schema);
   if (!root) throw new Error("Unprocessed schema. This is a bug in Zod.");
@@ -381,7 +419,12 @@ export function finalize<T extends schemas.$ZodType>(
       const refSchema = refSeen.schema;
 
       // merge referenced schema into current
-      if (refSchema.$ref && (ctx.target === "draft-07" || ctx.target === "draft-04" || ctx.target === "openapi-3.0")) {
+      if (
+        refSchema.$ref &&
+        (ctx.target === "draft-07" ||
+          ctx.target === "draft-04" ||
+          ctx.target === "openapi-3.0")
+      ) {
         // older drafts can't combine $ref with other properties
         schema.allOf = schema.allOf ?? [];
         schema.allOf.push(refSchema);
@@ -407,7 +450,10 @@ export function finalize<T extends schemas.$ZodType>(
       if (refSchema.$ref && refSeen.def) {
         for (const key in schema) {
           if (key === "$ref" || key === "allOf") continue;
-          if (key in refSeen.def && JSON.stringify(schema[key]) === JSON.stringify(refSeen.def[key])) {
+          if (
+            key in refSeen.def &&
+            JSON.stringify(schema[key]) === JSON.stringify(refSeen.def[key])
+          ) {
             delete schema[key];
           }
         }
@@ -428,7 +474,11 @@ export function finalize<T extends schemas.$ZodType>(
         if (parentSeen.def) {
           for (const key in schema) {
             if (key === "$ref" || key === "allOf") continue;
-            if (key in parentSeen.def && JSON.stringify(schema[key]) === JSON.stringify(parentSeen.def[key])) {
+            if (
+              key in parentSeen.def &&
+              JSON.stringify(schema[key]) ===
+                JSON.stringify(parentSeen.def[key])
+            ) {
               delete schema[key];
             }
           }
@@ -507,8 +557,16 @@ export function finalize<T extends schemas.$ZodType>(
       value: {
         ...schema["~standard"],
         jsonSchema: {
-          input: createStandardJSONSchemaMethod(schema, "input", ctx.processors),
-          output: createStandardJSONSchemaMethod(schema, "output", ctx.processors),
+          input: createStandardJSONSchemaMethod(
+            schema,
+            "input",
+            ctx.processors,
+          ),
+          output: createStandardJSONSchemaMethod(
+            schema,
+            "output",
+            ctx.processors,
+          ),
         },
       },
       enumerable: false,
@@ -525,7 +583,7 @@ function isTransforming(
   _schema: schemas.$ZodType,
   _ctx?: {
     seen: Set<schemas.$ZodType>;
-  }
+  },
 ): boolean {
   const ctx = _ctx ?? { seen: new Set() };
 
@@ -556,7 +614,9 @@ function isTransforming(
     return isTransforming(def.left, ctx) || isTransforming(def.right, ctx);
   }
   if (def.type === "record" || def.type === "map") {
-    return isTransforming(def.keyType, ctx) || isTransforming(def.valueType, ctx);
+    return (
+      isTransforming(def.keyType, ctx) || isTransforming(def.valueType, ctx)
+    );
   }
   if (def.type === "pipe") {
     if (_schema._zod.traits.has("$ZodCodec")) return true;
@@ -586,7 +646,10 @@ function isTransforming(
   return false;
 }
 
-export type ZodStandardSchemaWithJSON<T> = StandardSchemaWithJSONProps<core.input<T>, core.output<T>>;
+export type ZodStandardSchemaWithJSON<T> = StandardSchemaWithJSONProps<
+  core.input<T>,
+  core.output<T>
+>;
 export interface ZodStandardJSONSchemaPayload<T> extends JSONSchema.BaseSchema {
   "~standard": ZodStandardSchemaWithJSON<T>;
 }
@@ -596,7 +659,10 @@ export interface ZodStandardJSONSchemaPayload<T> extends JSONSchema.BaseSchema {
  * This encapsulates the logic of initializing context, processing, extracting defs, and finalizing.
  */
 export const createToJSONSchemaMethod =
-  <T extends schemas.$ZodType>(schema: T, processors: Record<string, Processor> = {}) =>
+  <T extends schemas.$ZodType>(
+    schema: T,
+    processors: Record<string, Processor> = {},
+  ) =>
   (params?: ToJSONSchemaParams): ZodStandardJSONSchemaPayload<T> => {
     const ctx = initializeContext({ ...params, processors });
     process(schema, ctx);
@@ -608,12 +674,23 @@ export const createToJSONSchemaMethod =
  * Creates a toJSONSchema method for a schema instance.
  * This encapsulates the logic of initializing context, processing, extracting defs, and finalizing.
  */
-type StandardJSONSchemaMethodParams = Parameters<StandardJSONSchemaV1["~standard"]["jsonSchema"]["input"]>[0];
+type StandardJSONSchemaMethodParams = Parameters<
+  StandardJSONSchemaV1["~standard"]["jsonSchema"]["input"]
+>[0];
 export const createStandardJSONSchemaMethod =
-  <T extends schemas.$ZodType>(schema: T, io: "input" | "output", processors: Record<string, Processor> = {}) =>
+  <T extends schemas.$ZodType>(
+    schema: T,
+    io: "input" | "output",
+    processors: Record<string, Processor> = {},
+  ) =>
   (params?: StandardJSONSchemaMethodParams): JSONSchema.BaseSchema => {
     const { libraryOptions, target } = params ?? {};
-    const ctx = initializeContext({ ...(libraryOptions ?? {}), target, io, processors });
+    const ctx = initializeContext({
+      ...(libraryOptions ?? {}),
+      target,
+      io,
+      processors,
+    });
     process(schema, ctx);
     extractDefs(ctx, schema);
     return finalize(ctx, schema);

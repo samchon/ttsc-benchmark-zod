@@ -138,7 +138,10 @@ test("pick and omit with getter", () => {
   // Shape should not surface `readonly` modifiers from getter-defined keys.
   // object/strictObject/looseObject all pass shape through util.Writeable<T>.
   type Shape = (typeof Category)["shape"];
-  expectTypeOf<Shape>().toEqualTypeOf<{ name: z.ZodString; subcategories: z.ZodArray<typeof Category> }>();
+  expectTypeOf<Shape>().toEqualTypeOf<{
+    name: z.ZodString;
+    subcategories: z.ZodArray<typeof Category>;
+  }>();
 
   const PickedCategory = Category.pick({ name: true });
   const OmittedCategory = Category.omit({ subcategories: true });
@@ -149,8 +152,12 @@ test("pick and omit with getter", () => {
   PickedCategory.parse(picked);
   OmittedCategory.parse(omitted);
 
-  expect(() => PickedCategory.parse({ name: "test", subcategories: [] })).toThrow();
-  expect(() => OmittedCategory.parse({ name: "test", subcategories: [] })).toThrow();
+  expect(() =>
+    PickedCategory.parse({ name: "test", subcategories: [] }),
+  ).toThrow();
+  expect(() =>
+    OmittedCategory.parse({ name: "test", subcategories: [] }),
+  ).toThrow();
 });
 
 test("shape stays writeable through extend/safeExtend/partial/required", () => {
@@ -419,7 +426,9 @@ test("tuple with recursive types", () => {
   const TaskListNodeSchema = z.strictObject({
     type: z.literal("taskList"),
     get content() {
-      return z.array(z.tuple([TaskListNodeSchema, z.union([TaskListNodeSchema])])).min(1);
+      return z
+        .array(z.tuple([TaskListNodeSchema, z.union([TaskListNodeSchema])]))
+        .min(1);
     },
   });
   type TaskListNodeSchema = z.infer<typeof TaskListNodeSchema>;
@@ -608,11 +617,13 @@ test("recursive type with `id` meta", () => {
     config: z.object({
       title: z.string().meta({ description: "Title" }),
       get elements() {
-        return z.array(z.discriminatedUnion("type", [AType, BType, CType])).meta({
-          id: "SpecialElements",
-          title: "SpecialElements",
-          description: "Array of elements",
-        });
+        return z
+          .array(z.discriminatedUnion("type", [AType, BType, CType]))
+          .meta({
+            id: "SpecialElements",
+            title: "SpecialElements",
+            description: "Array of elements",
+          });
       },
     }),
   });

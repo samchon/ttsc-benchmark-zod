@@ -16,7 +16,9 @@ test("default with transform", () => {
   expect(stringWithDefault.parse(undefined)).toBe("DEFAULT");
   expect(stringWithDefault).toBeInstanceOf(z.ZodDefault);
   expect(stringWithDefault._def.innerType).toBeInstanceOf(z.ZodEffects);
-  expect(stringWithDefault._def.innerType._def.schema).toBeInstanceOf(z.ZodSchema);
+  expect(stringWithDefault._def.innerType._def.schema).toBeInstanceOf(
+    z.ZodSchema,
+  );
 
   type inp = z.input<typeof stringWithDefault>;
   util.assertEqual<inp, string | undefined>(true);
@@ -29,7 +31,9 @@ test("default on existing optional", () => {
   expect(stringWithDefault.parse(undefined)).toBe("asdf");
   expect(stringWithDefault).toBeInstanceOf(z.ZodDefault);
   expect(stringWithDefault._def.innerType).toBeInstanceOf(z.ZodOptional);
-  expect(stringWithDefault._def.innerType._def.innerType).toBeInstanceOf(z.ZodString);
+  expect(stringWithDefault._def.innerType._def.innerType).toBeInstanceOf(
+    z.ZodString,
+  );
 
   type inp = z.input<typeof stringWithDefault>;
   util.assertEqual<inp, string | undefined>(true);
@@ -87,7 +91,9 @@ test("chained defaults", () => {
 });
 
 test("factory", () => {
-  expect(z.ZodDefault.create(z.string(), { default: "asdf" }).parse(undefined)).toEqual("asdf");
+  expect(
+    z.ZodDefault.create(z.string(), { default: "asdf" }).parse(undefined),
+  ).toEqual("asdf");
 });
 
 test("native enum", () => {

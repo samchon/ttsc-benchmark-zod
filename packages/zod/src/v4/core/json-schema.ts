@@ -57,7 +57,14 @@ export type JSONSchema = {
   $vocabulary?: Record<string, boolean>;
   $comment?: string;
   $defs?: Record<string, JSONSchema>;
-  type?: "object" | "array" | "string" | "number" | "boolean" | "null" | "integer";
+  type?:
+    | "object"
+    | "array"
+    | "string"
+    | "number"
+    | "boolean"
+    | "null"
+    | "integer";
   additionalItems?: _JSONSchema;
   unevaluatedItems?: _JSONSchema;
   prefixItems?: _JSONSchema[];
