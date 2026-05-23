@@ -228,13 +228,11 @@ test("nested codec with object containing codec property", () => {
       coordinate: z
         .codec(
           z.string().check(z.regex(/^-?\d+,-?\d+$/, "Must be 'x,y' format")), // Input: coordinate string
-          z
-            .object({ x: z.number(), y: z.number() })
-            .check(
-              z.refine((coord) => coord.x >= 0 && coord.y >= 0, {
-                error: "Coordinates must be non-negative",
-              }),
-            ), // Output: coordinate object
+          z.object({ x: z.number(), y: z.number() }).check(
+            z.refine((coord) => coord.x >= 0 && coord.y >= 0, {
+              error: "Coordinates must be non-negative",
+            }),
+          ), // Output: coordinate object
           {
             decode: (coordString: string) => {
               const [x, y] = coordString.split(",").map(Number);
