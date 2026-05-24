@@ -10,7 +10,7 @@
     "ai": "^6.0.5",
     "drizzle-orm": "^0.45.2",
     "drizzle-zod": "^0.8.3",
-    "typescript": "^5.8.2"
+    "typescript": "6.0.0-dev.20260416"
   },
   "scripts": {
     "test:all": "pnpm test:source && pnpm test:built",
