@@ -10,7 +10,7 @@ const isoDateCodec = z.codec(
   {
     decode: (isoString) => new Date(isoString), // Forward: ISO string → Date
     encode: (date) => date.toISOString(), // Backward: Date → ISO string
-  }
+  },
 );
 
 test("instanceof", () => {
@@ -21,7 +21,9 @@ test("instanceof", () => {
   expect(isoDateCodec instanceof z.core.$ZodPipe).toBe(true);
   expect(isoDateCodec instanceof z.core.$ZodType).toBe(true);
 
-  expectTypeOf(isoDateCodec.def).toEqualTypeOf<z.core.$ZodCodecDef<z.ZodMiniISODateTime, z.ZodMiniDate<Date>>>();
+  expectTypeOf(isoDateCodec.def).toEqualTypeOf<
+    z.core.$ZodCodecDef<z.ZodMiniISODateTime, z.ZodMiniDate<Date>>
+  >();
 });
 
 test("codec basic functionality", () => {
@@ -33,7 +35,9 @@ test("codec basic functionality", () => {
   // Forward decoding (ISO string -> Date)
   const decodedResult = z.decode(isoDateCodec, testIsoString);
   expect(decodedResult).toBeInstanceOf(Date);
-  expect(decodedResult.toISOString()).toMatchInlineSnapshot(`"2024-01-15T10:30:00.000Z"`);
+  expect(decodedResult.toISOString()).toMatchInlineSnapshot(
+    `"2024-01-15T10:30:00.000Z"`,
+  );
 
   // Backward encoding (Date -> ISO string)
   const encodedResult = z.encode(isoDateCodec, testDate);
@@ -62,7 +66,11 @@ test("codec with refinement", () => {
       decode: (isoString) => new Date(isoString),
       encode: (date) => date.toISOString(),
     })
-    .check(z.refine((val) => val.getFullYear() === 2024, { error: "Year must be 2024" }));
+    .check(
+      z.refine((val) => val.getFullYear() === 2024, {
+        error: "Year must be 2024",
+      }),
+    );
 
   // Valid 2024 date
   const validDate = z.decode(isoDateCodec, "2024-01-15T10:30:00.000Z");
@@ -70,7 +78,10 @@ test("codec with refinement", () => {
   expect(validDate.getTime()).toMatchInlineSnapshot(`1705314600000`);
 
   // Invalid year should fail safely
-  const invalidYearResult = z.safeDecode(isoDateCodec, "2023-01-15T10:30:00.000Z");
+  const invalidYearResult = z.safeDecode(
+    isoDateCodec,
+    "2023-01-15T10:30:00.000Z",
+  );
   expect(invalidYearResult.success).toBe(false);
   if (!invalidYearResult.success) {
     expect(invalidYearResult.error.issues).toMatchInlineSnapshot(`
@@ -110,18 +121,25 @@ test("safe codec operations", () => {
   }
 
   // Safe decode with valid input
-  const safeDecodeValid = z.safeDecode(isoDateCodec, "2024-01-15T10:30:00.000Z");
+  const safeDecodeValid = z.safeDecode(
+    isoDateCodec,
+    "2024-01-15T10:30:00.000Z",
+  );
   expect(safeDecodeValid.success).toBe(true);
   if (safeDecodeValid.success) {
     expect(safeDecodeValid.data).toBeInstanceOf(Date);
-    expect(safeDecodeValid.data.getTime()).toMatchInlineSnapshot(`1705314600000`);
+    expect(safeDecodeValid.data.getTime()).toMatchInlineSnapshot(
+      `1705314600000`,
+    );
   }
 
   // Safe encode with valid input
   const safeEncodeResult = z.safeEncode(isoDateCodec, new Date("2024-01-01"));
   expect(safeEncodeResult.success).toBe(true);
   if (safeEncodeResult.success) {
-    expect(safeEncodeResult.data).toMatchInlineSnapshot(`"2024-01-01T00:00:00.000Z"`);
+    expect(safeEncodeResult.data).toMatchInlineSnapshot(
+      `"2024-01-01T00:00:00.000Z"`,
+    );
   }
 });
 
@@ -148,26 +166,42 @@ test("async codec operations", async () => {
   });
 
   // Async decode
-  const decodedResult = await z.decodeAsync(isoDateCodec, "2024-01-15T10:30:00.000Z");
+  const decodedResult = await z.decodeAsync(
+    isoDateCodec,
+    "2024-01-15T10:30:00.000Z",
+  );
   expect(decodedResult).toBeInstanceOf(Date);
   expect(decodedResult.getTime()).toMatchInlineSnapshot(`1705314600000`);
 
   // Async encode
-  const encodedResult = await z.encodeAsync(isoDateCodec, new Date("2024-01-15T10:30:00.000Z"));
+  const encodedResult = await z.encodeAsync(
+    isoDateCodec,
+    new Date("2024-01-15T10:30:00.000Z"),
+  );
   expect(typeof encodedResult).toBe("string");
   expect(encodedResult).toMatchInlineSnapshot(`"2024-01-15T10:30:00.000Z"`);
 
   // Safe async operations
-  const safeDecodeResult = await z.safeDecodeAsync(isoDateCodec, "2024-01-15T10:30:00.000Z");
+  const safeDecodeResult = await z.safeDecodeAsync(
+    isoDateCodec,
+    "2024-01-15T10:30:00.000Z",
+  );
   expect(safeDecodeResult.success).toBe(true);
   if (safeDecodeResult.success) {
-    expect(safeDecodeResult.data.getTime()).toMatchInlineSnapshot(`1705314600000`);
+    expect(safeDecodeResult.data.getTime()).toMatchInlineSnapshot(
+      `1705314600000`,
+    );
   }
 
-  const safeEncodeResult = await z.safeEncodeAsync(isoDateCodec, new Date("2024-01-15T10:30:00.000Z"));
+  const safeEncodeResult = await z.safeEncodeAsync(
+    isoDateCodec,
+    new Date("2024-01-15T10:30:00.000Z"),
+  );
   expect(safeEncodeResult.success).toBe(true);
   if (safeEncodeResult.success) {
-    expect(safeEncodeResult.data).toMatchInlineSnapshot(`"2024-01-15T10:30:00.000Z"`);
+    expect(safeEncodeResult.data).toMatchInlineSnapshot(
+      `"2024-01-15T10:30:00.000Z"`,
+    );
   }
 });
 
@@ -193,26 +227,35 @@ test("nested codec with object containing codec property", () => {
       difficulty: z.enum(["easy", "medium", "hard"]),
       coordinate: z
         .codec(
-          z
-            .string()
-            .check(z.regex(/^-?\d+,-?\d+$/, "Must be 'x,y' format")), // Input: coordinate string
-          z
-            .object({ x: z.number(), y: z.number() })
-            .check(z.refine((coord) => coord.x >= 0 && coord.y >= 0, { error: "Coordinates must be non-negative" })), // Output: coordinate object
+          z.string().check(z.regex(/^-?\d+,-?\d+$/, "Must be 'x,y' format")), // Input: coordinate string
+          z.object({ x: z.number(), y: z.number() }).check(
+            z.refine((coord) => coord.x >= 0 && coord.y >= 0, {
+              error: "Coordinates must be non-negative",
+            }),
+          ), // Output: coordinate object
           {
             decode: (coordString: string) => {
               const [x, y] = coordString.split(",").map(Number);
               return { x, y };
             },
-            encode: (coord: { x: number; y: number }) => `${coord.x},${coord.y}`,
-          }
+            encode: (coord: { x: number; y: number }) =>
+              `${coord.x},${coord.y}`,
+          },
         )
-        .check(z.refine((coord) => coord.x <= 1000 && coord.y <= 1000, { error: "Coordinates must be within bounds" })),
+        .check(
+          z.refine((coord) => coord.x <= 1000 && coord.y <= 1000, {
+            error: "Coordinates must be within bounds",
+          }),
+        ),
     })
     .check(
-      z.refine((waypoint) => waypoint.difficulty !== "hard" || waypoint.coordinate.x >= 100, {
-        error: "Hard waypoints must be at least 100 units from origin",
-      })
+      z.refine(
+        (waypoint) =>
+          waypoint.difficulty !== "hard" || waypoint.coordinate.x >= 100,
+        {
+          error: "Hard waypoints must be at least 100 units from origin",
+        },
+      ),
     );
 
   // Test data
@@ -382,7 +425,10 @@ test("nested codec with object containing codec property", () => {
   }
 
   // Round trip test
-  const roundTripResult = z.encode(waypointSchema, z.decode(waypointSchema, inputWaypoint));
+  const roundTripResult = z.encode(
+    waypointSchema,
+    z.decode(waypointSchema, inputWaypoint),
+  );
   expect(roundTripResult).toMatchInlineSnapshot(`
     {
       "coordinate": "150,200",
@@ -410,12 +456,18 @@ test("codec type enforcement - correct encode/decode signatures", () => {
   });
 
   // These should compile without errors - correct types (async support)
-  expectTypeOf<(value: string, payload: z.core.ParsePayload<string>) => z.core.util.MaybeAsync<number>>(
-    stringToNumberCodec.def.transform
-  ).toBeFunction();
-  expectTypeOf<(value: number, payload: z.core.ParsePayload<number>) => z.core.util.MaybeAsync<string>>(
-    stringToNumberCodec.def.reverseTransform
-  ).toBeFunction();
+  expectTypeOf<
+    (
+      value: string,
+      payload: z.core.ParsePayload<string>,
+    ) => z.core.util.MaybeAsync<number>
+  >(stringToNumberCodec.def.transform).toBeFunction();
+  expectTypeOf<
+    (
+      value: number,
+      payload: z.core.ParsePayload<number>,
+    ) => z.core.util.MaybeAsync<string>
+  >(stringToNumberCodec.def.reverseTransform).toBeFunction();
 
   // Test that decode parameter type is core.output<A> (string)
   const validDecode = (value: string) => Number(value);
@@ -488,18 +540,27 @@ test("codec type enforcement - complex types", () => {
     z.object({ id: z.string(), name: z.string() }),
     z.object({ id: z.number(), name: z.string() }),
     {
-      decode: (input: UserInput) => ({ id: Number(input.id), name: input.name }),
+      decode: (input: UserInput) => ({
+        id: Number(input.id),
+        name: input.name,
+      }),
       encode: (user: User) => ({ id: String(user.id), name: user.name }),
-    }
+    },
   );
 
   // Verify correct types are inferred (async support)
-  expectTypeOf<(input: UserInput, payload: z.core.ParsePayload<UserInput>) => z.core.util.MaybeAsync<User>>(
-    userCodec.def.transform
-  ).toBeFunction();
-  expectTypeOf<(user: User, payload: z.core.ParsePayload<User>) => z.core.util.MaybeAsync<UserInput>>(
-    userCodec.def.reverseTransform
-  ).toBeFunction();
+  expectTypeOf<
+    (
+      input: UserInput,
+      payload: z.core.ParsePayload<UserInput>,
+    ) => z.core.util.MaybeAsync<User>
+  >(userCodec.def.transform).toBeFunction();
+  expectTypeOf<
+    (
+      user: User,
+      payload: z.core.ParsePayload<User>,
+    ) => z.core.util.MaybeAsync<UserInput>
+  >(userCodec.def.reverseTransform).toBeFunction();
 
   z.codec(
     z.object({
@@ -511,7 +572,7 @@ test("codec type enforcement - complex types", () => {
       // @ts-expect-error - decode parameter should be UserInput, not User
       decode: (input: User) => ({ id: Number(input.id), name: input.name }), // Wrong type
       encode: (user: User) => ({ id: String(user.id), name: user.name }),
-    }
+    },
   );
 
   z.codec(
@@ -521,10 +582,13 @@ test("codec type enforcement - complex types", () => {
     }),
     z.object({ id: z.number(), name: z.string() }),
     {
-      decode: (input: UserInput) => ({ id: Number(input.id), name: input.name }),
+      decode: (input: UserInput) => ({
+        id: Number(input.id),
+        name: input.name,
+      }),
       // @ts-expect-error - encode parameter should be User, not UserInput
       encode: (user: UserInput) => ({ id: String(user.id), name: user.name }), // Wrong type
-    }
+    },
   );
 });
 
@@ -544,5 +608,7 @@ test("invertCodec", () => {
   expect(encoded.toISOString()).toBe("2024-01-15T10:30:00.000Z");
 
   const doubleInverted = z.invertCodec(z.invertCodec(isoDateCodec));
-  expect(z.decode(doubleInverted, "2024-01-15T10:30:00.000Z")).toBeInstanceOf(Date);
+  expect(z.decode(doubleInverted, "2024-01-15T10:30:00.000Z")).toBeInstanceOf(
+    Date,
+  );
 });

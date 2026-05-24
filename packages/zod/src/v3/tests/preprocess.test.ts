@@ -38,8 +38,8 @@ test("preprocess ctx.addIssue with parse", () => {
         },
       ],
       null,
-      2
-    )
+      2,
+    ),
   );
 });
 
@@ -160,7 +160,10 @@ test("preprocess validates with sibling errors", () => {
     z.object({
       // Must be first
       missing: z.string().refine(() => false),
-      preprocess: z.preprocess((data: any) => data?.trim(), z.string().regex(/ asdf/)),
+      preprocess: z.preprocess(
+        (data: any) => data?.trim(),
+        z.string().regex(/ asdf/),
+      ),
     }).parse({ preprocess: " asdf" });
   }).toThrow(
     JSON.stringify(
@@ -180,7 +183,7 @@ test("preprocess validates with sibling errors", () => {
         },
       ],
       null,
-      2
-    )
+      2,
+    ),
   );
 });

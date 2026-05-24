@@ -65,7 +65,8 @@ const error: () => errors.$ZodErrorMap = () => {
         return `Entrée invalide : attendu ${expected}, reçu ${received}`;
       }
       case "invalid_value":
-        if (issue.values.length === 1) return `Entrée invalide : attendu ${util.stringifyPrimitive(issue.values[0])}`;
+        if (issue.values.length === 1)
+          return `Entrée invalide : attendu ${util.stringifyPrimitive(issue.values[0])}`;
         return `Option invalide : attendu l'une des valeurs suivantes ${util.joinValues(issue.values, "|")}`;
       case "too_big": {
         const adj = issue.inclusive ? "≤" : "<";
@@ -88,9 +89,12 @@ const error: () => errors.$ZodErrorMap = () => {
         if (_issue.format === "starts_with") {
           return `Chaîne invalide : doit commencer par "${_issue.prefix}"`;
         }
-        if (_issue.format === "ends_with") return `Chaîne invalide : doit se terminer par "${_issue.suffix}"`;
-        if (_issue.format === "includes") return `Chaîne invalide : doit inclure "${_issue.includes}"`;
-        if (_issue.format === "regex") return `Chaîne invalide : doit correspondre au motif ${_issue.pattern}`;
+        if (_issue.format === "ends_with")
+          return `Chaîne invalide : doit se terminer par "${_issue.suffix}"`;
+        if (_issue.format === "includes")
+          return `Chaîne invalide : doit inclure "${_issue.includes}"`;
+        if (_issue.format === "regex")
+          return `Chaîne invalide : doit correspondre au motif ${_issue.pattern}`;
         return `${FormatDictionary[_issue.format] ?? issue.format} invalide`;
       }
       case "not_multiple_of":

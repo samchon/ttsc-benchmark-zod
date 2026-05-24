@@ -28,5 +28,7 @@ test("min max getters", () => {
   expect(minCheck.min(afterBenchmarkDate).minDate).toEqual(afterBenchmarkDate);
 
   expect(maxCheck.maxDate).toEqual(benchmarkDate);
-  expect(maxCheck.max(beforeBenchmarkDate).maxDate).toEqual(beforeBenchmarkDate);
+  expect(maxCheck.max(beforeBenchmarkDate).maxDate).toEqual(
+    beforeBenchmarkDate,
+  );
 });

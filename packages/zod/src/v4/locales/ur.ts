@@ -68,7 +68,8 @@ const error: () => errors.$ZodErrorMap = () => {
         return `غلط ان پٹ: ${expected} متوقع تھا، ${received} موصول ہوا`;
       }
       case "invalid_value":
-        if (issue.values.length === 1) return `غلط ان پٹ: ${util.stringifyPrimitive(issue.values[0])} متوقع تھا`;
+        if (issue.values.length === 1)
+          return `غلط ان پٹ: ${util.stringifyPrimitive(issue.values[0])} متوقع تھا`;
         return `غلط آپشن: ${util.joinValues(issue.values, "|")} میں سے ایک متوقع تھا`;
       case "too_big": {
         const adj = issue.inclusive ? "<=" : "<";
@@ -91,9 +92,12 @@ const error: () => errors.$ZodErrorMap = () => {
         if (_issue.format === "starts_with") {
           return `غلط سٹرنگ: "${_issue.prefix}" سے شروع ہونا چاہیے`;
         }
-        if (_issue.format === "ends_with") return `غلط سٹرنگ: "${_issue.suffix}" پر ختم ہونا چاہیے`;
-        if (_issue.format === "includes") return `غلط سٹرنگ: "${_issue.includes}" شامل ہونا چاہیے`;
-        if (_issue.format === "regex") return `غلط سٹرنگ: پیٹرن ${_issue.pattern} سے میچ ہونا چاہیے`;
+        if (_issue.format === "ends_with")
+          return `غلط سٹرنگ: "${_issue.suffix}" پر ختم ہونا چاہیے`;
+        if (_issue.format === "includes")
+          return `غلط سٹرنگ: "${_issue.includes}" شامل ہونا چاہیے`;
+        if (_issue.format === "regex")
+          return `غلط سٹرنگ: پیٹرن ${_issue.pattern} سے میچ ہونا چاہیے`;
         return `غلط ${FormatDictionary[_issue.format] ?? issue.format}`;
       }
       case "not_multiple_of":

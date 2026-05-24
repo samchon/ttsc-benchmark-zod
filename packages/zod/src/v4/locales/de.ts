@@ -67,7 +67,8 @@ const error: () => errors.$ZodErrorMap = () => {
         return `Ungültige Eingabe: erwartet ${expected}, erhalten ${received}`;
       }
       case "invalid_value":
-        if (issue.values.length === 1) return `Ungültige Eingabe: erwartet ${util.stringifyPrimitive(issue.values[0])}`;
+        if (issue.values.length === 1)
+          return `Ungültige Eingabe: erwartet ${util.stringifyPrimitive(issue.values[0])}`;
         return `Ungültige Option: erwartet eine von ${util.joinValues(issue.values, "|")}`;
       case "too_big": {
         const adj = issue.inclusive ? "<=" : "<";
@@ -87,10 +88,14 @@ const error: () => errors.$ZodErrorMap = () => {
       }
       case "invalid_format": {
         const _issue = issue as errors.$ZodStringFormatIssues;
-        if (_issue.format === "starts_with") return `Ungültiger String: muss mit "${_issue.prefix}" beginnen`;
-        if (_issue.format === "ends_with") return `Ungültiger String: muss mit "${_issue.suffix}" enden`;
-        if (_issue.format === "includes") return `Ungültiger String: muss "${_issue.includes}" enthalten`;
-        if (_issue.format === "regex") return `Ungültiger String: muss dem Muster ${_issue.pattern} entsprechen`;
+        if (_issue.format === "starts_with")
+          return `Ungültiger String: muss mit "${_issue.prefix}" beginnen`;
+        if (_issue.format === "ends_with")
+          return `Ungültiger String: muss mit "${_issue.suffix}" enden`;
+        if (_issue.format === "includes")
+          return `Ungültiger String: muss "${_issue.includes}" enthalten`;
+        if (_issue.format === "regex")
+          return `Ungültiger String: muss dem Muster ${_issue.pattern} entsprechen`;
         return `Ungültig: ${FormatDictionary[_issue.format] ?? issue.format}`;
       }
       case "not_multiple_of":

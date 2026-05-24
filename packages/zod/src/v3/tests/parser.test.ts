@@ -8,20 +8,26 @@ test("parse strict object with unknown keys", () => {
     z
       .object({ name: z.string() })
       .strict()
-      .parse({ name: "bill", unknownKey: 12 } as any)
+      .parse({ name: "bill", unknownKey: 12 } as any),
   ).toThrow();
 });
 
 test("parse nonstrict object with unknown keys", () => {
-  z.object({ name: z.string() }).nonstrict().parse({ name: "bill", unknownKey: 12 });
+  z.object({ name: z.string() })
+    .nonstrict()
+    .parse({ name: "bill", unknownKey: 12 });
 });
 
 test("invalid left side of intersection", () => {
-  expect(() => z.intersection(z.string(), z.number()).parse(12 as any)).toThrow();
+  expect(() =>
+    z.intersection(z.string(), z.number()).parse(12 as any),
+  ).toThrow();
 });
 
 test("invalid right side of intersection", () => {
-  expect(() => z.intersection(z.string(), z.number()).parse("12" as any)).toThrow();
+  expect(() =>
+    z.intersection(z.string(), z.number()).parse("12" as any),
+  ).toThrow();
 });
 
 test("parsing non-array in tuple schema", () => {

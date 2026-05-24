@@ -73,12 +73,16 @@ test("stringToBigInt codec", () => {
   const codec = stringToBigInt();
 
   // Test decode
-  expect(z.decode(codec, "123456789012345678901234567890")).toBe(123456789012345678901234567890n);
+  expect(z.decode(codec, "123456789012345678901234567890")).toBe(
+    123456789012345678901234567890n,
+  );
   expect(z.decode(codec, "0")).toBe(0n);
   expect(z.decode(codec, "-999")).toBe(-999n);
 
   // Test encode
-  expect(z.encode(codec, 123456789012345678901234567890n)).toBe("123456789012345678901234567890");
+  expect(z.encode(codec, 123456789012345678901234567890n)).toBe(
+    "123456789012345678901234567890",
+  );
   expect(z.encode(codec, 0n)).toBe("0");
   expect(z.encode(codec, -999n)).toBe("-999");
 
@@ -257,7 +261,9 @@ test("utf8ToBytes codec", () => {
   // Test decode
   const decoded = z.decode(codec, "Hello, 世界!");
   expect(decoded).toBeInstanceOf(Uint8Array);
-  expect(Array.from(decoded)).toEqual([72, 101, 108, 108, 111, 44, 32, 228, 184, 150, 231, 149, 140, 33]);
+  expect(Array.from(decoded)).toEqual([
+    72, 101, 108, 108, 111, 44, 32, 228, 184, 150, 231, 149, 140, 33,
+  ]);
 
   // Test encode
   const bytes = new Uint8Array([72, 101, 108, 108, 111]);
@@ -290,10 +296,14 @@ test("bytesToUtf8 codec", () => {
   // Test encode
   const encoded = z.encode(codec, "Hello, 世界!");
   expect(encoded).toBeInstanceOf(Uint8Array);
-  expect(Array.from(encoded)).toEqual([72, 101, 108, 108, 111, 44, 32, 228, 184, 150, 231, 149, 140, 33]);
+  expect(Array.from(encoded)).toEqual([
+    72, 101, 108, 108, 111, 44, 32, 228, 184, 150, 231, 149, 140, 33,
+  ]);
 
   // Test round trip
-  const original = new Uint8Array([72, 101, 108, 108, 111, 44, 32, 228, 184, 150, 231, 149, 140, 33]);
+  const original = new Uint8Array([
+    72, 101, 108, 108, 111, 44, 32, 228, 184, 150, 231, 149, 140, 33,
+  ]);
   const roundTrip = z.encode(codec, z.decode(codec, original));
   expect(roundTrip).toEqual(original);
 });
@@ -486,7 +496,8 @@ test("uriComponent codec", () => {
 // stringToBoolean
 // ============================================================================
 
-const stringToBoolean = (options?: { truthy?: string[]; falsy?: string[] }) => z.stringbool(options);
+const stringToBoolean = (options?: { truthy?: string[]; falsy?: string[] }) =>
+  z.stringbool(options);
 
 test("stringToBoolean codec", () => {
   const codec = stringToBoolean();
@@ -506,7 +517,10 @@ test("stringToBoolean codec", () => {
   expect(z.encode(codec, false)).toBe("false");
 
   // Test custom options
-  const customCodec = stringToBoolean({ truthy: ["yes", "y"], falsy: ["no", "n"] });
+  const customCodec = stringToBoolean({
+    truthy: ["yes", "y"],
+    falsy: ["no", "n"],
+  });
   expect(z.decode(customCodec, "yes")).toBe(true);
   expect(z.decode(customCodec, "y")).toBe(true);
   expect(z.decode(customCodec, "no")).toBe(false);

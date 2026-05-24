@@ -228,7 +228,10 @@ test("preprocess as the second property of object", () => {
 test("preprocess validates with sibling errors", () => {
   const schema = z.object({
     missing: z.string().refine(() => false),
-    preprocess: z.preprocess((data: any) => data?.trim(), z.string().regex(/ asdf/)),
+    preprocess: z.preprocess(
+      (data: any) => data?.trim(),
+      z.string().regex(/ asdf/),
+    ),
   });
 
   const result = schema.safeParse({ preprocess: " asdf" });
@@ -292,15 +295,19 @@ test("preprocess accepts absent object keys (4.3 parity)", () => {
     z
       .preprocess((v) => v ?? "X", z.string())
       .optional()
-      .parse(undefined)
+      .parse(undefined),
   ).toBeUndefined();
   expect(
     z
       .preprocess((v) => v ?? "X", z.string())
       .optional()
-      .parse("hi")
+      .parse("hi"),
   ).toBe("hi");
-  expect(z.object({ a: z.preprocess((v) => v ?? "X", z.string()).optional() }).parse({})).toEqual({});
+  expect(
+    z
+      .object({ a: z.preprocess((v) => v ?? "X", z.string()).optional() })
+      .parse({}),
+  ).toEqual({});
 
   // Top-level direct call unchanged
   expect(z.preprocess((v) => v ?? "X", z.string()).parse(undefined)).toBe("X");
@@ -336,16 +343,27 @@ test("preprocess does not propagate values/propValues from inner schema", () => 
 
 test("preprocess as discriminator throws at construction (no propValues to inherit)", () => {
   const schema = z.discriminatedUnion("kind", [
-    z.object({ kind: z.preprocess((v: any) => String(v).toUpperCase(), z.literal("A")), a: z.string() }),
-    z.object({ kind: z.preprocess((v: any) => String(v).toUpperCase(), z.literal("B")), b: z.number() }),
+    z.object({
+      kind: z.preprocess((v: any) => String(v).toUpperCase(), z.literal("A")),
+      a: z.string(),
+    }),
+    z.object({
+      kind: z.preprocess((v: any) => String(v).toUpperCase(), z.literal("B")),
+      b: z.number(),
+    }),
   ]);
-  expect(() => schema.parse({ kind: "a", a: "x" })).toThrow(/Invalid discriminated union option/);
+  expect(() => schema.parse({ kind: "a", a: "x" })).toThrow(
+    /Invalid discriminated union option/,
+  );
 });
 
 test("preprocess as record key does not restrict accepted keys", () => {
   const schema = z.record(
     z.preprocess((v: any) => String(v).toLowerCase(), z.enum(["a", "b"])),
-    z.string()
+    z.string(),
   );
-  expect(schema.safeParse({ A: "x", B: "y" })).toEqual({ success: true, data: { a: "x", b: "y" } });
+  expect(schema.safeParse({ A: "x", B: "y" })).toEqual({
+    success: true,
+    data: { a: "x", b: "y" },
+  });
 });

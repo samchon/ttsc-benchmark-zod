@@ -26,7 +26,10 @@ const error: () => errors.$ZodErrorMap = () => {
   };
 
   // Sizing units for size-related messages + localized origin labels
-  const Sizable: Record<string, { unit: string; shortLabel?: string; longLabel?: string }> = {
+  const Sizable: Record<
+    string,
+    { unit: string; shortLabel?: string; longLabel?: string }
+  > = {
     string: { unit: "תווים", shortLabel: "קצר", longLabel: "ארוך" },
     file: { unit: "בייטים", shortLabel: "קטן", longLabel: "גדול" },
     array: { unit: "פריטים", shortLabel: "קטן", longLabel: "גדול" },
@@ -103,10 +106,14 @@ const error: () => errors.$ZodErrorMap = () => {
       case "invalid_type": {
         // Expected type: show without definite article for clearer Hebrew
         const expectedKey = issue.expected as string | undefined;
-        const expected = TypeDictionary[expectedKey ?? ""] ?? typeLabel(expectedKey);
+        const expected =
+          TypeDictionary[expectedKey ?? ""] ?? typeLabel(expectedKey);
         // Received: show localized label if known, otherwise constructor/raw
         const receivedType = util.parsedType(issue.input);
-        const received = TypeDictionary[receivedType] ?? TypeNames[receivedType]?.label ?? receivedType;
+        const received =
+          TypeDictionary[receivedType] ??
+          TypeNames[receivedType]?.label ??
+          receivedType;
         if (/^[A-Z]/.test(issue.expected)) {
           return `קלט לא תקין: צריך להיות instanceof ${issue.expected}, התקבל ${received}`;
         }
@@ -139,7 +146,9 @@ const error: () => errors.$ZodErrorMap = () => {
 
         if (issue.origin === "number") {
           // Natural Hebrew for numbers
-          const comparison = issue.inclusive ? `קטן או שווה ל-${issue.maximum}` : `קטן מ-${issue.maximum}`;
+          const comparison = issue.inclusive
+            ? `קטן או שווה ל-${issue.maximum}`
+            : `קטן מ-${issue.maximum}`;
           return `גדול מדי: ${subject} צריך להיות ${comparison}`;
         }
 
@@ -171,7 +180,9 @@ const error: () => errors.$ZodErrorMap = () => {
 
         if (issue.origin === "number") {
           // Natural Hebrew for numbers
-          const comparison = issue.inclusive ? `גדול או שווה ל-${issue.minimum}` : `גדול מ-${issue.minimum}`;
+          const comparison = issue.inclusive
+            ? `גדול או שווה ל-${issue.minimum}`
+            : `גדול מ-${issue.minimum}`;
           return `קטן מדי: ${subject} צריך להיות ${comparison}`;
         }
 
@@ -181,7 +192,8 @@ const error: () => errors.$ZodErrorMap = () => {
 
           // Special case for singular (minimum === 1)
           if (issue.minimum === 1 && issue.inclusive) {
-            const singularPhrase = issue.origin === "set" ? "לפחות פריט אחד" : "לפחות פריט אחד";
+            const singularPhrase =
+              issue.origin === "set" ? "לפחות פריט אחד" : "לפחות פריט אחד";
             return `קטן מדי: ${subject} ${verb} להכיל ${singularPhrase}`;
           }
 
@@ -202,10 +214,14 @@ const error: () => errors.$ZodErrorMap = () => {
       case "invalid_format": {
         const _issue = issue as errors.$ZodStringFormatIssues;
         // These apply to strings — use feminine grammar + ה׳ הידיעה
-        if (_issue.format === "starts_with") return `המחרוזת חייבת להתחיל ב "${_issue.prefix}"`;
-        if (_issue.format === "ends_with") return `המחרוזת חייבת להסתיים ב "${_issue.suffix}"`;
-        if (_issue.format === "includes") return `המחרוזת חייבת לכלול "${_issue.includes}"`;
-        if (_issue.format === "regex") return `המחרוזת חייבת להתאים לתבנית ${_issue.pattern}`;
+        if (_issue.format === "starts_with")
+          return `המחרוזת חייבת להתחיל ב "${_issue.prefix}"`;
+        if (_issue.format === "ends_with")
+          return `המחרוזת חייבת להסתיים ב "${_issue.suffix}"`;
+        if (_issue.format === "includes")
+          return `המחרוזת חייבת לכלול "${_issue.includes}"`;
+        if (_issue.format === "regex")
+          return `המחרוזת חייבת להתאים לתבנית ${_issue.pattern}`;
 
         // Handle gender agreement for formats
         const nounEntry = FormatDictionary[_issue.format];

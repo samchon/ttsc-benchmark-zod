@@ -61,7 +61,10 @@ const error: () => errors.$ZodErrorMap = () => {
         const expected = TypeDictionary[issue.expected] ?? issue.expected;
         const receivedType = util.parsedType(issue.input);
         const received = TypeDictionary[receivedType] ?? receivedType;
-        if (typeof issue.expected === "string" && /^[A-Z]/.test(issue.expected)) {
+        if (
+          typeof issue.expected === "string" &&
+          /^[A-Z]/.test(issue.expected)
+        ) {
           return `Μη έγκυρη είσοδος: αναμενόταν instanceof ${issue.expected}, λήφθηκε ${received}`;
         }
         return `Μη έγκυρη είσοδος: αναμενόταν ${expected}, λήφθηκε ${received}`;
@@ -92,8 +95,10 @@ const error: () => errors.$ZodErrorMap = () => {
         if (_issue.format === "starts_with") {
           return `Μη έγκυρη συμβολοσειρά: πρέπει να ξεκινά με "${_issue.prefix}"`;
         }
-        if (_issue.format === "ends_with") return `Μη έγκυρη συμβολοσειρά: πρέπει να τελειώνει με "${_issue.suffix}"`;
-        if (_issue.format === "includes") return `Μη έγκυρη συμβολοσειρά: πρέπει να περιέχει "${_issue.includes}"`;
+        if (_issue.format === "ends_with")
+          return `Μη έγκυρη συμβολοσειρά: πρέπει να τελειώνει με "${_issue.suffix}"`;
+        if (_issue.format === "includes")
+          return `Μη έγκυρη συμβολοσειρά: πρέπει να περιέχει "${_issue.includes}"`;
         if (_issue.format === "regex")
           return `Μη έγκυρη συμβολοσειρά: πρέπει να ταιριάζει με το μοτίβο ${_issue.pattern}`;
         return `Μη έγκυρο: ${FormatDictionary[_issue.format] ?? issue.format}`;

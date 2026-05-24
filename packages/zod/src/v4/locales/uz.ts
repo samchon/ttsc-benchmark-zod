@@ -69,7 +69,8 @@ const error: () => errors.$ZodErrorMap = () => {
         return `Noto‘g‘ri kirish: kutilgan ${expected}, qabul qilingan ${received}`;
       }
       case "invalid_value":
-        if (issue.values.length === 1) return `Noto‘g‘ri kirish: kutilgan ${util.stringifyPrimitive(issue.values[0])}`;
+        if (issue.values.length === 1)
+          return `Noto‘g‘ri kirish: kutilgan ${util.stringifyPrimitive(issue.values[0])}`;
         return `Noto‘g‘ri variant: quyidagilardan biri kutilgan ${util.joinValues(issue.values, "|")}`;
       case "too_big": {
         const adj = issue.inclusive ? "<=" : "<";
@@ -88,10 +89,14 @@ const error: () => errors.$ZodErrorMap = () => {
       }
       case "invalid_format": {
         const _issue = issue as errors.$ZodStringFormatIssues;
-        if (_issue.format === "starts_with") return `Noto‘g‘ri satr: "${_issue.prefix}" bilan boshlanishi kerak`;
-        if (_issue.format === "ends_with") return `Noto‘g‘ri satr: "${_issue.suffix}" bilan tugashi kerak`;
-        if (_issue.format === "includes") return `Noto‘g‘ri satr: "${_issue.includes}" ni o‘z ichiga olishi kerak`;
-        if (_issue.format === "regex") return `Noto‘g‘ri satr: ${_issue.pattern} shabloniga mos kelishi kerak`;
+        if (_issue.format === "starts_with")
+          return `Noto‘g‘ri satr: "${_issue.prefix}" bilan boshlanishi kerak`;
+        if (_issue.format === "ends_with")
+          return `Noto‘g‘ri satr: "${_issue.suffix}" bilan tugashi kerak`;
+        if (_issue.format === "includes")
+          return `Noto‘g‘ri satr: "${_issue.includes}" ni o‘z ichiga olishi kerak`;
+        if (_issue.format === "regex")
+          return `Noto‘g‘ri satr: ${_issue.pattern} shabloniga mos kelishi kerak`;
         return `Noto‘g‘ri ${FormatDictionary[_issue.format] ?? issue.format}`;
       }
       case "not_multiple_of":

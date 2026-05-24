@@ -82,7 +82,10 @@ test("object schema", () => {
     },
     required: ["name"],
   });
-  expect(schema.parse({ name: "John", age: 30 })).toEqual({ name: "John", age: 30 });
+  expect(schema.parse({ name: "John", age: 30 })).toEqual({
+    name: "John",
+    age: 30,
+  });
   expect(schema.parse({ name: "John" })).toEqual({ name: "John" });
   expect(() => schema.parse({ age: 30 })).toThrow(); // missing required
 });
@@ -171,11 +174,22 @@ test("anyOf schema", () => {
 test("allOf schema", () => {
   const schema = fromJSONSchema({
     allOf: [
-      { type: "object", properties: { name: { type: "string" } }, required: ["name"] },
-      { type: "object", properties: { age: { type: "number" } }, required: ["age"] },
+      {
+        type: "object",
+        properties: { name: { type: "string" } },
+        required: ["name"],
+      },
+      {
+        type: "object",
+        properties: { age: { type: "number" } },
+        required: ["age"],
+      },
     ],
   });
-  const result = schema.parse({ name: "John", age: 30 }) as { name: string; age: number };
+  const result = schema.parse({ name: "John", age: 30 }) as {
+    name: string;
+    age: number;
+  };
   expect(result.name).toBe("John");
   expect(result.age).toBe(30);
 });
@@ -331,7 +345,10 @@ test("patternProperties", () => {
       "^S_": { type: "string" },
     },
   });
-  const result = schema.parse({ S_name: "John", S_age: "30" }) as Record<string, string>;
+  const result = schema.parse({ S_name: "John", S_age: "30" }) as Record<
+    string,
+    string
+  >;
   expect(result.S_name).toBe("John");
   expect(result.S_age).toBe("30");
 });
@@ -350,7 +367,10 @@ test("patternProperties with regular properties", () => {
     },
     required: ["S_name"],
   });
-  const result = schema.parse({ S_name: "John", S_extra: "value" }) as Record<string, string>;
+  const result = schema.parse({ S_name: "John", S_extra: "value" }) as Record<
+    string,
+    string
+  >;
   expect(result.S_name).toBe("John");
   expect(result.S_extra).toBe("value");
 });
@@ -363,11 +383,18 @@ test("multiple patternProperties", () => {
       "^N_": { type: "number" },
     },
   });
-  const result = schema.parse({ S_name: "John", N_count: 123 }) as Record<string, string | number>;
+  const result = schema.parse({ S_name: "John", N_count: 123 }) as Record<
+    string,
+    string | number
+  >;
   expect(result.S_name).toBe("John");
   expect(result.N_count).toBe(123);
   // Keys not matching any pattern should pass through
-  const result2 = schema.parse({ S_name: "John", N_count: 123, other: "value" }) as Record<string, string | number>;
+  const result2 = schema.parse({
+    S_name: "John",
+    N_count: 123,
+    other: "value",
+  }) as Record<string, string | number>;
   expect(result2.other).toBe("value");
 });
 
@@ -508,7 +535,7 @@ test("nullable in OpenAPI 3.0", () => {
       type: "string",
       nullable: true,
     },
-    { defaultTarget: "openapi-3.0" }
+    { defaultTarget: "openapi-3.0" },
   );
   expect(stringSchema.parse("hello")).toBe("hello");
   expect(stringSchema.parse(null)).toBe(null);
@@ -519,7 +546,7 @@ test("nullable in OpenAPI 3.0", () => {
       type: "number",
       nullable: true,
     },
-    { defaultTarget: "openapi-3.0" }
+    { defaultTarget: "openapi-3.0" },
   );
   expect(numberSchema.parse(42)).toBe(42);
   expect(numberSchema.parse(null)).toBe(null);
@@ -531,7 +558,7 @@ test("nullable in OpenAPI 3.0", () => {
       properties: { name: { type: "string" } },
       nullable: true,
     },
-    { defaultTarget: "openapi-3.0" }
+    { defaultTarget: "openapi-3.0" },
   );
   expect(objectSchema.parse({ name: "John" })).toEqual({ name: "John" });
   expect(objectSchema.parse(null)).toBe(null);
@@ -568,7 +595,7 @@ test("unrecognized keys stored in custom registry", () => {
       title: "Age",
       deprecated: true,
     },
-    { registry: customRegistry }
+    { registry: customRegistry },
   );
 
   // Should be in custom registry
@@ -589,16 +616,18 @@ test("$id and id are captured as metadata", () => {
       $id: "https://example.com/schemas/user",
       type: "object",
     },
-    { registry: customRegistry }
+    { registry: customRegistry },
   );
-  expect(customRegistry.get(schema1)?.$id).toBe("https://example.com/schemas/user");
+  expect(customRegistry.get(schema1)?.$id).toBe(
+    "https://example.com/schemas/user",
+  );
 
   const schema2 = fromJSONSchema(
     {
       id: "legacy-id",
       type: "string",
     },
-    { registry: customRegistry }
+    { registry: customRegistry },
   );
   expect(customRegistry.get(schema2)?.id).toBe("legacy-id");
 });
@@ -613,7 +642,7 @@ test("x-* extension keys are captured as metadata", () => {
       "x-internal": true,
       "x-tags": ["api", "public"],
     },
-    { registry: customRegistry }
+    { registry: customRegistry },
   );
 
   const meta = customRegistry.get(schema);
@@ -642,7 +671,7 @@ test("metadata on nested schemas", () => {
         },
       },
     },
-    { registry: customRegistry }
+    { registry: customRegistry },
   );
 
   // Verify parent schema has its metadata
@@ -655,7 +684,7 @@ test("metadata on nested schemas", () => {
       type: "string",
       title: "Simple",
     },
-    { registry: customRegistry }
+    { registry: customRegistry },
   );
   expect(customRegistry.get(simpleSchema)?.title).toBe("Simple");
 });
@@ -670,7 +699,7 @@ test("no metadata added when no unrecognized keys", () => {
       maxLength: 100,
       description: "A regular string",
     },
-    { registry: customRegistry }
+    { registry: customRegistry },
   );
 
   // description is handled via .describe(), so it shouldn't be in metadata
@@ -679,7 +708,10 @@ test("no metadata added when no unrecognized keys", () => {
 });
 
 test("writeOnly and examples are captured as metadata", () => {
-  const customRegistry = z.registry<{ writeOnly?: boolean; examples?: unknown[] }>();
+  const customRegistry = z.registry<{
+    writeOnly?: boolean;
+    examples?: unknown[];
+  }>();
 
   const schema = fromJSONSchema(
     {
@@ -687,7 +719,7 @@ test("writeOnly and examples are captured as metadata", () => {
       writeOnly: true,
       examples: ["password123", "secret"],
     },
-    { registry: customRegistry }
+    { registry: customRegistry },
   );
 
   const meta = customRegistry.get(schema);
@@ -704,7 +736,7 @@ test("$comment and $anchor are captured as metadata", () => {
       $comment: "This is a developer note",
       $anchor: "my-anchor",
     },
-    { registry: customRegistry }
+    { registry: customRegistry },
   );
 
   const meta = customRegistry.get(schema);
@@ -713,7 +745,10 @@ test("$comment and $anchor are captured as metadata", () => {
 });
 
 test("contentEncoding and contentMediaType are stored as metadata", () => {
-  const customRegistry = z.registry<{ contentEncoding?: string; contentMediaType?: string }>();
+  const customRegistry = z.registry<{
+    contentEncoding?: string;
+    contentMediaType?: string;
+  }>();
 
   const schema = fromJSONSchema(
     {
@@ -721,7 +756,7 @@ test("contentEncoding and contentMediaType are stored as metadata", () => {
       contentEncoding: "base64",
       contentMediaType: "image/png",
     },
-    { registry: customRegistry }
+    { registry: customRegistry },
   );
 
   // Should just be a string schema
@@ -827,14 +862,17 @@ test("default on schema with anyOf is applied to the outer schema", () => {
 });
 
 test("description and unrecognized metadata coexist on the same schema", () => {
-  const customRegistry = z.registry<{ "x-custom"?: string; description?: string }>();
+  const customRegistry = z.registry<{
+    "x-custom"?: string;
+    description?: string;
+  }>();
   const schema = fromJSONSchema(
     {
       type: "string",
       description: "A custom string",
       "x-custom": "value",
     },
-    { registry: customRegistry }
+    { registry: customRegistry },
   );
   expect(schema.description).toBe("A custom string");
   expect(customRegistry.get(schema)?.["x-custom"]).toBe("value");
@@ -851,7 +889,10 @@ test("circular input throws a clear error", () => {
 });
 
 test("getter-based input that synthesizes a cycle throws", () => {
-  const root: any = { type: "object", properties: { name: { type: "string" } } };
+  const root: any = {
+    type: "object",
+    properties: { name: { type: "string" } },
+  };
   Object.defineProperty(root.properties, "self", {
     enumerable: true,
     get() {

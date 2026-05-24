@@ -10,7 +10,7 @@ test("Dutch locale error messages", () => {
       code: "invalid_type",
       expected: "string",
       input: 123,
-    })
+    }),
   ).toBe("Ongeldige invoer: verwacht string, ontving getal");
 
   // Test too_big with sizing
@@ -21,7 +21,7 @@ test("Dutch locale error messages", () => {
       maximum: 10,
       inclusive: true,
       input: "test string that is too long",
-    })
+    }),
   ).toBe("Te lang: verwacht dat string <=10 tekens heeft");
 
   // Test too_small with sizing
@@ -32,7 +32,7 @@ test("Dutch locale error messages", () => {
       minimum: 5,
       inclusive: false,
       input: [1, 2],
-    })
+    }),
   ).toBe("Te klein: verwacht dat array >5 elementen heeft");
 
   // Test invalid_format
@@ -41,6 +41,6 @@ test("Dutch locale error messages", () => {
       code: "invalid_format",
       format: "email",
       input: "invalid-email",
-    })
+    }),
   ).toBe("Ongeldig: emailadres");
 });

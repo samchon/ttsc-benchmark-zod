@@ -67,13 +67,15 @@ test("schemas conform to StandardJSONSchemaV1", async () => {
 		  "value": 42,
 		}
 	`);
-  expect(schema["~standard"].jsonSchema.input({ target: "draft-2020-12" })).toMatchInlineSnapshot(`
+  expect(schema["~standard"].jsonSchema.input({ target: "draft-2020-12" }))
+    .toMatchInlineSnapshot(`
 		{
 		  "$schema": "https://json-schema.org/draft/2020-12/schema",
 		  "type": "string",
 		}
 	`);
-  expect(schema["~standard"].jsonSchema.output({ target: "draft-2020-12" })).toMatchInlineSnapshot(`
+  expect(schema["~standard"].jsonSchema.output({ target: "draft-2020-12" }))
+    .toMatchInlineSnapshot(`
 		{
 		  "$schema": "https://json-schema.org/draft/2020-12/schema",
 		  "type": "number",
@@ -93,13 +95,15 @@ test(".toJSONSchema() returns StandardJSONSchemaV1", async () => {
 		  "value": 42,
 		}
 	`);
-  expect(result["~standard"].jsonSchema.input({ target: "draft-2020-12" })).toMatchInlineSnapshot(`
+  expect(result["~standard"].jsonSchema.input({ target: "draft-2020-12" }))
+    .toMatchInlineSnapshot(`
 		{
 		  "$schema": "https://json-schema.org/draft/2020-12/schema",
 		  "type": "string",
 		}
 	`);
-  expect(result["~standard"].jsonSchema.output({ target: "draft-2020-12" })).toMatchInlineSnapshot(`
+  expect(result["~standard"].jsonSchema.output({ target: "draft-2020-12" }))
+    .toMatchInlineSnapshot(`
 		{
 		  "$schema": "https://json-schema.org/draft/2020-12/schema",
 		  "type": "number",
@@ -119,13 +123,15 @@ test("z.toJSONSchema() returns StandardJSONSchemaV1", async () => {
 		  "value": 42,
 		}
 	`);
-  expect(result["~standard"].jsonSchema.input({ target: "draft-2020-12" })).toMatchInlineSnapshot(`
+  expect(result["~standard"].jsonSchema.input({ target: "draft-2020-12" }))
+    .toMatchInlineSnapshot(`
 		{
 		  "$schema": "https://json-schema.org/draft/2020-12/schema",
 		  "type": "string",
 		}
 	`);
-  expect(result["~standard"].jsonSchema.output({ target: "draft-2020-12" })).toMatchInlineSnapshot(`
+  expect(result["~standard"].jsonSchema.output({ target: "draft-2020-12" }))
+    .toMatchInlineSnapshot(`
 		{
 		  "$schema": "https://json-schema.org/draft/2020-12/schema",
 		  "type": "number",

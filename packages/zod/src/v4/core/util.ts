@@ -5,7 +5,13 @@ import type * as errors from "./errors.js";
 import type * as schemas from "./schemas.js";
 
 // json
-export type JSONType = string | number | boolean | null | JSONType[] | { [key: string]: JSONType };
+export type JSONType =
+  | string
+  | number
+  | boolean
+  | null
+  | JSONType[]
+  | { [key: string]: JSONType };
 export type JWTAlgorithm =
   | "HS256"
   | "HS384"
@@ -83,14 +89,22 @@ export type ParsedTypes =
   | "promise";
 
 // utils
-export type AssertEqual<T, U> = (<V>() => V extends T ? 1 : 2) extends <V>() => V extends U ? 1 : 2 ? true : false;
-export type AssertNotEqual<T, U> = (<V>() => V extends T ? 1 : 2) extends <V>() => V extends U ? 1 : 2 ? false : true;
+export type AssertEqual<T, U> =
+  (<V>() => V extends T ? 1 : 2) extends <V>() => V extends U ? 1 : 2
+    ? true
+    : false;
+export type AssertNotEqual<T, U> =
+  (<V>() => V extends T ? 1 : 2) extends <V>() => V extends U ? 1 : 2
+    ? false
+    : true;
 export type AssertExtends<T, U> = T extends U ? T : never;
 export type IsAny<T> = 0 extends 1 & T ? true : false;
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 export type OmitKeys<T, K extends string> = Pick<T, Exclude<keyof T, K>>;
-export type MakePartial<T, K extends keyof T> = Omit<T, K> & InexactPartial<Pick<T, K>>;
-export type MakeRequired<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>;
+export type MakePartial<T, K extends keyof T> = Omit<T, K> &
+  InexactPartial<Pick<T, K>>;
+export type MakeRequired<T, K extends keyof T> = Omit<T, K> &
+  Required<Pick<T, K>>;
 
 export type Exactly<T, X> = T & Record<Exclude<keyof X, keyof T>, never>;
 export type NoUndefined<T> = T extends undefined ? never : T;
@@ -112,17 +126,18 @@ export type BuiltIn =
   | Generator
   | Promise<unknown>
   | RegExp;
-export type MakeReadonly<T> = T extends Map<infer K, infer V>
-  ? ReadonlyMap<K, V>
-  : T extends Set<infer V>
-    ? ReadonlySet<V>
-    : T extends [infer Head, ...infer Tail]
-      ? readonly [Head, ...Tail]
-      : T extends Array<infer V>
-        ? ReadonlyArray<V>
-        : T extends BuiltIn
-          ? T
-          : Readonly<T>;
+export type MakeReadonly<T> =
+  T extends Map<infer K, infer V>
+    ? ReadonlyMap<K, V>
+    : T extends Set<infer V>
+      ? ReadonlySet<V>
+      : T extends [infer Head, ...infer Tail]
+        ? readonly [Head, ...Tail]
+        : T extends Array<infer V>
+          ? ReadonlyArray<V>
+          : T extends BuiltIn
+            ? T
+            : Readonly<T>;
 export type SomeObject = Record<PropertyKey, any>;
 export type Identity<T> = T;
 export type Flatten<T> = Identity<{ [k in keyof T]: T[k] }>;
@@ -155,7 +170,11 @@ export type IsProp<T, K extends keyof T> = T[K] extends AnyFunc ? never : K;
 export type MaybeAsync<T> = T | Promise<T>;
 export type KeyOf<T> = keyof OmitIndexSignature<T>;
 export type OmitIndexSignature<T> = {
-  [K in keyof T as string extends K ? never : K extends string ? K : never]: T[K];
+  [K in keyof T as string extends K
+    ? never
+    : K extends string
+      ? K
+      : never]: T[K];
 };
 export type ExtractIndexSignature<T> = {
   [K in keyof T as string extends K ? K : K extends string ? never : K]: T[K];
@@ -172,7 +191,14 @@ export type KeysEnum<T extends object> = ToEnum<Exclude<keyof T, symbol>>;
 export type KeysArray<T extends object> = Flatten<(keyof T & string)[]>;
 export type Literal = string | number | bigint | boolean | null | undefined;
 export type LiteralArray = Array<Literal>;
-export type Primitive = string | number | symbol | bigint | boolean | null | undefined;
+export type Primitive =
+  | string
+  | number
+  | symbol
+  | bigint
+  | boolean
+  | null
+  | undefined;
 export type PrimitiveArray = Array<Primitive>;
 export type HasSize = { size: number };
 export type HasLength = { length: number }; // string | Array<unknown> | Set<unknown> | File;
@@ -193,7 +219,9 @@ export function assertEqual<A, B>(val: AssertEqual<A, B>): AssertEqual<A, B> {
   return val;
 }
 
-export function assertNotEqual<A, B>(val: AssertNotEqual<A, B>): AssertNotEqual<A, B> {
+export function assertNotEqual<A, B>(
+  val: AssertNotEqual<A, B>,
+): AssertNotEqual<A, B> {
   return val;
 }
 
@@ -205,14 +233,19 @@ export function assertNever(_x: never): never {
 export function assert<T>(_: any): asserts _ is T {}
 
 export function getEnumValues(entries: EnumLike): EnumValue[] {
-  const numericValues = Object.values(entries).filter((v) => typeof v === "number");
+  const numericValues = Object.values(entries).filter(
+    (v) => typeof v === "number",
+  );
   const values = Object.entries(entries)
     .filter(([k, _]) => numericValues.indexOf(+k) === -1)
     .map(([_, v]) => v);
   return values;
 }
 
-export function joinValues<T extends Primitive[]>(array: T, separator = "|"): string {
+export function joinValues<T extends Primitive[]>(
+  array: T,
+  separator = "|",
+): string {
   return array.map((val) => stringifyPrimitive(val)).join(separator);
 }
 
@@ -256,7 +289,11 @@ export function floatSafeRemainder(val: number, step: number): number {
 
 const EVALUATING = /* @__PURE__*/ Symbol("evaluating");
 
-export function defineLazy<T, K extends keyof T>(object: T, key: K, getter: () => T[K]): void {
+export function defineLazy<T, K extends keyof T>(
+  object: T,
+  key: K,
+  getter: () => T[K],
+): void {
   let value: T[K] | typeof EVALUATING | undefined = undefined;
   Object.defineProperty(object, key, {
     get() {
@@ -282,13 +319,16 @@ export function defineLazy<T, K extends keyof T>(object: T, key: K, getter: () =
 }
 
 export function objectClone(obj: object) {
-  return Object.create(Object.getPrototypeOf(obj), Object.getOwnPropertyDescriptors(obj));
+  return Object.create(
+    Object.getPrototypeOf(obj),
+    Object.getOwnPropertyDescriptors(obj),
+  );
 }
 
 export function assignProp<T extends object, K extends PropertyKey>(
   target: T,
   prop: K,
-  value: K extends keyof T ? T[K] : any
+  value: K extends keyof T ? T[K] : any,
 ): void {
   Object.defineProperty(target, prop, {
     value,
@@ -313,12 +353,17 @@ export function cloneDef(schema: schemas.$ZodType): any {
   return mergeDefs(schema._zod.def);
 }
 
-export function getElementAtPath(obj: any, path: (string | number)[] | null | undefined): any {
+export function getElementAtPath(
+  obj: any,
+  path: (string | number)[] | null | undefined,
+): any {
   if (!path) return obj;
   return path.reduce((acc, key) => acc?.[key], obj);
 }
 
-export function promiseAllObject<T extends object>(promisesObj: T): Promise<{ [k in keyof T]: Awaited<T[k]> }> {
+export function promiseAllObject<T extends object>(
+  promisesObj: T,
+): Promise<{ [k in keyof T]: Awaited<T[k]> }> {
   const keys = Object.keys(promisesObj);
   const promises = keys.map((key) => (promisesObj as any)[key]);
 
@@ -353,8 +398,13 @@ export function slugify(input: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
-export const captureStackTrace: (targetObject: object, constructorOpt?: Function) => void = (
-  "captureStackTrace" in Error ? Error.captureStackTrace : (..._args: any[]) => {}
+export const captureStackTrace: (
+  targetObject: object,
+  constructorOpt?: Function,
+) => void = (
+  "captureStackTrace" in Error
+    ? Error.captureStackTrace
+    : (..._args: any[]) => {}
 ) as any;
 
 export function isObject(data: any): data is Record<PropertyKey, unknown> {
@@ -369,7 +419,10 @@ export const allowsEval: { value: boolean } = /* @__PURE__*/ cached(() => {
   }
 
   // @ts-ignore
-  if (typeof navigator !== "undefined" && navigator?.userAgent?.includes("Cloudflare")) {
+  if (
+    typeof navigator !== "undefined" &&
+    navigator?.userAgent?.includes("Cloudflare")
+  ) {
     return false;
   }
 
@@ -453,7 +506,12 @@ export const getParsedType = (data: any): ParsedTypes => {
       if (data === null) {
         return "null";
       }
-      if (data.then && typeof data.then === "function" && data.catch && typeof data.catch === "function") {
+      if (
+        data.then &&
+        typeof data.then === "function" &&
+        data.catch &&
+        typeof data.catch === "function"
+      ) {
         return "promise";
       }
       if (typeof Map !== "undefined" && data instanceof Map) {
@@ -476,7 +534,11 @@ export const getParsedType = (data: any): ParsedTypes => {
   }
 };
 
-export const propertyKeyTypes: Set<string> = /* @__PURE__*/ new Set(["string", "number", "symbol"]);
+export const propertyKeyTypes: Set<string> = /* @__PURE__*/ new Set([
+  "string",
+  "number",
+  "symbol",
+]);
 export const primitiveTypes: Set<string> = /* @__PURE__*/ new Set([
   "string",
   "number",
@@ -490,7 +552,11 @@ export function escapeRegex(str: string): string {
 }
 
 // zod-specific utils
-export function clone<T extends schemas.$ZodType>(inst: T, def?: T["_zod"]["def"], params?: { parent: boolean }): T {
+export function clone<T extends schemas.$ZodType>(
+  inst: T,
+  def?: T["_zod"]["def"],
+  params?: { parent: boolean },
+): T {
   const cl = new inst._zod.constr(def ?? inst._zod.def);
   if (!def || params?.parent) cl._zod.parent = inst;
   return cl as any;
@@ -520,11 +586,13 @@ export function normalizeParams<T>(_params: T): Normalize<T> {
   if (!params) return {} as any;
   if (typeof params === "string") return { error: () => params } as any;
   if (params?.message !== undefined) {
-    if (params?.error !== undefined) throw new Error("Cannot specify both `message` and `error` params");
+    if (params?.error !== undefined)
+      throw new Error("Cannot specify both `message` and `error` params");
     params.error = params.message;
   }
   delete params.message;
-  if (typeof params.error === "string") return { ...params, error: () => params.error } as any;
+  if (typeof params.error === "string")
+    return { ...params, error: () => params.error } as any;
   return params;
 }
 
@@ -561,31 +629,45 @@ export function createTransparentProxy<T extends object>(getter: () => T): T {
         target ??= getter();
         return Reflect.defineProperty(target, prop, descriptor);
       },
-    }
+    },
   ) as T;
 }
 
 export function stringifyPrimitive(value: any): string {
-  if (typeof value === "bigint") return value.toString() + "n";
+  if (typeof value === "bigint") return `${value.toString()}n`;
   if (typeof value === "string") return `"${value}"`;
   return `${value}`;
 }
 
 export function optionalKeys(shape: schemas.$ZodShape): string[] {
   return Object.keys(shape).filter((k) => {
-    return shape[k]!._zod.optin === "optional" && shape[k]!._zod.optout === "optional";
+    return (
+      shape[k]!._zod.optin === "optional" &&
+      shape[k]!._zod.optout === "optional"
+    );
   });
 }
 
-export type CleanKey<T extends PropertyKey> = T extends `?${infer K}` ? K : T extends `${infer K}?` ? K : T;
+export type CleanKey<T extends PropertyKey> = T extends `?${infer K}`
+  ? K
+  : T extends `${infer K}?`
+    ? K
+    : T;
 export type ToCleanMap<T extends schemas.$ZodLooseShape> = {
   [k in keyof T]: k extends `?${infer K}` ? K : k extends `${infer K}?` ? K : k;
 };
 export type FromCleanMap<T extends schemas.$ZodLooseShape> = {
-  [k in keyof T as k extends `?${infer K}` ? K : k extends `${infer K}?` ? K : k]: k;
+  [k in keyof T as k extends `?${infer K}`
+    ? K
+    : k extends `${infer K}?`
+      ? K
+      : k]: k;
 };
 
-export const NUMBER_FORMAT_RANGES: Record<checks.$ZodNumberFormats, [number, number]> = {
+export const NUMBER_FORMAT_RANGES: Record<
+  checks.$ZodNumberFormats,
+  [number, number]
+> = {
   safeint: [Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER],
   int32: [-2147483648, 2147483647],
   uint32: [0, 4294967295],
@@ -593,18 +675,32 @@ export const NUMBER_FORMAT_RANGES: Record<checks.$ZodNumberFormats, [number, num
   float64: [-Number.MAX_VALUE, Number.MAX_VALUE],
 };
 
-export const BIGINT_FORMAT_RANGES: Record<checks.$ZodBigIntFormats, [bigint, bigint]> = {
-  int64: [/* @__PURE__*/ BigInt("-9223372036854775808"), /* @__PURE__*/ BigInt("9223372036854775807")],
-  uint64: [/* @__PURE__*/ BigInt(0), /* @__PURE__*/ BigInt("18446744073709551615")],
+export const BIGINT_FORMAT_RANGES: Record<
+  checks.$ZodBigIntFormats,
+  [bigint, bigint]
+> = {
+  int64: [
+    /* @__PURE__*/ BigInt("-9223372036854775808"),
+    /* @__PURE__*/ BigInt("9223372036854775807"),
+  ],
+  uint64: [
+    /* @__PURE__*/ BigInt(0),
+    /* @__PURE__*/ BigInt("18446744073709551615"),
+  ],
 };
 
-export function pick(schema: schemas.$ZodObject, mask: Record<string, unknown>): any {
+export function pick(
+  schema: schemas.$ZodObject,
+  mask: Record<string, unknown>,
+): any {
   const currDef = schema._zod.def;
 
   const checks = currDef.checks;
   const hasChecks = checks && checks.length > 0;
   if (hasChecks) {
-    throw new Error(".pick() cannot be used on object schemas containing refinements");
+    throw new Error(
+      ".pick() cannot be used on object schemas containing refinements",
+    );
   }
 
   const def = mergeDefs(schema._zod.def, {
@@ -633,12 +729,16 @@ export function omit(schema: schemas.$ZodObject, mask: object): any {
   const checks = currDef.checks;
   const hasChecks = checks && checks.length > 0;
   if (hasChecks) {
-    throw new Error(".omit() cannot be used on object schemas containing refinements");
+    throw new Error(
+      ".omit() cannot be used on object schemas containing refinements",
+    );
   }
 
   const def = mergeDefs(schema._zod.def, {
     get shape() {
-      const newShape: Writeable<schemas.$ZodShape> = { ...schema._zod.def.shape };
+      const newShape: Writeable<schemas.$ZodShape> = {
+        ...schema._zod.def.shape,
+      };
       for (const key in mask) {
         if (!(key in currDef.shape)) {
           throw new Error(`Unrecognized key: "${key}"`);
@@ -656,7 +756,10 @@ export function omit(schema: schemas.$ZodObject, mask: object): any {
   return clone(schema, def);
 }
 
-export function extend(schema: schemas.$ZodObject, shape: schemas.$ZodShape): any {
+export function extend(
+  schema: schemas.$ZodObject,
+  shape: schemas.$ZodShape,
+): any {
   if (!isPlainObject(shape)) {
     throw new Error("Invalid input to extend: expected a plain object");
   }
@@ -669,7 +772,9 @@ export function extend(schema: schemas.$ZodObject, shape: schemas.$ZodShape): an
     const existingShape = schema._zod.def.shape;
     for (const key in shape) {
       if (Object.getOwnPropertyDescriptor(existingShape, key) !== undefined) {
-        throw new Error("Cannot overwrite keys on object schemas containing refinements. Use `.safeExtend()` instead.");
+        throw new Error(
+          "Cannot overwrite keys on object schemas containing refinements. Use `.safeExtend()` instead.",
+        );
       }
     }
   }
@@ -684,7 +789,10 @@ export function extend(schema: schemas.$ZodObject, shape: schemas.$ZodShape): an
   return clone(schema, def) as any;
 }
 
-export function safeExtend(schema: schemas.$ZodObject, shape: schemas.$ZodShape): any {
+export function safeExtend(
+  schema: schemas.$ZodObject,
+  shape: schemas.$ZodShape,
+): any {
   if (!isPlainObject(shape)) {
     throw new Error("Invalid input to safeExtend: expected a plain object");
   }
@@ -700,7 +808,9 @@ export function safeExtend(schema: schemas.$ZodObject, shape: schemas.$ZodShape)
 
 export function merge(a: schemas.$ZodObject, b: schemas.$ZodObject): any {
   if (a._zod.def.checks?.length) {
-    throw new Error(".merge() cannot be used on object schemas containing refinements. Use .safeExtend() instead.");
+    throw new Error(
+      ".merge() cannot be used on object schemas containing refinements. Use .safeExtend() instead.",
+    );
   }
   const def = mergeDefs(a._zod.def, {
     get shape() {
@@ -720,13 +830,15 @@ export function merge(a: schemas.$ZodObject, b: schemas.$ZodObject): any {
 export function partial(
   Class: SchemaClass<schemas.$ZodOptional> | null,
   schema: schemas.$ZodObject,
-  mask: object | undefined
+  mask: object | undefined,
 ): any {
   const currDef = schema._zod.def;
   const checks = currDef.checks;
   const hasChecks = checks && checks.length > 0;
   if (hasChecks) {
-    throw new Error(".partial() cannot be used on object schemas containing refinements");
+    throw new Error(
+      ".partial() cannot be used on object schemas containing refinements",
+    );
   }
 
   const def = mergeDefs(schema._zod.def, {
@@ -772,7 +884,7 @@ export function partial(
 export function required(
   Class: SchemaClass<schemas.$ZodNonOptional>,
   schema: schemas.$ZodObject,
-  mask: object | undefined
+  mask: object | undefined,
 ): any {
   const def = mergeDefs(schema._zod.def, {
     get shape() {
@@ -824,7 +936,10 @@ export function aborted(x: schemas.ParsePayload, startIndex = 0): boolean {
 
 // Checks for explicit abort (continue === false), as opposed to implicit abort (continue === undefined).
 // Used to respect `abort: true` in .refine() even for checks that have a `when` function.
-export function explicitlyAborted(x: schemas.ParsePayload, startIndex = 0): boolean {
+export function explicitlyAborted(
+  x: schemas.ParsePayload,
+  startIndex = 0,
+): boolean {
   if (x.aborted === true) return true;
   for (let i = startIndex; i < x.issues.length; i++) {
     if (x.issues[i]?.continue === false) {
@@ -834,7 +949,10 @@ export function explicitlyAborted(x: schemas.ParsePayload, startIndex = 0): bool
   return false;
 }
 
-export function prefixIssues(path: PropertyKey, issues: errors.$ZodRawIssue[]): errors.$ZodRawIssue[] {
+export function prefixIssues(
+  path: PropertyKey,
+  issues: errors.$ZodRawIssue[],
+): errors.$ZodRawIssue[] {
   return issues.map((iss) => {
     (iss as any).path ??= [];
     (iss as any).path.unshift(path);
@@ -842,14 +960,16 @@ export function prefixIssues(path: PropertyKey, issues: errors.$ZodRawIssue[]): 
   });
 }
 
-export function unwrapMessage(message: string | { message: string } | undefined | null): string | undefined {
+export function unwrapMessage(
+  message: string | { message: string } | undefined | null,
+): string | undefined {
   return typeof message === "string" ? message : message?.message;
 }
 
 export function finalizeIssue(
   iss: errors.$ZodRawIssue,
   ctx: schemas.ParseContextInternal | undefined,
-  config: $ZodConfig
+  config: $ZodConfig,
 ): errors.$ZodIssue {
   const message = iss.message
     ? iss.message
@@ -859,7 +979,12 @@ export function finalizeIssue(
       unwrapMessage(config.localeError?.(iss)) ??
       "Invalid input");
 
-  const { inst: _inst, continue: _continue, input: _input, ...rest } = iss as any;
+  const {
+    inst: _inst,
+    continue: _continue,
+    input: _input,
+    ...rest
+  } = iss as any;
   rest.path ??= [];
   rest.message = message;
   if (ctx?.reportInput) {
@@ -868,7 +993,9 @@ export function finalizeIssue(
   return rest;
 }
 
-export function getSizableOrigin(input: any): "set" | "map" | "file" | "unknown" {
+export function getSizableOrigin(
+  input: any,
+): "set" | "map" | "file" | "unknown" {
   if (input instanceof Set) return "set";
   if (input instanceof Map) return "map";
   // @ts-ignore
@@ -876,7 +1003,9 @@ export function getSizableOrigin(input: any): "set" | "map" | "file" | "unknown"
   return "unknown";
 }
 
-export function getLengthableOrigin(input: any): "array" | "string" | "unknown" {
+export function getLengthableOrigin(
+  input: any,
+): "array" | "string" | "unknown" {
   if (Array.isArray(input)) return "array";
   if (typeof input === "string") return "string";
   return "unknown";
@@ -897,7 +1026,12 @@ export function parsedType(data: unknown): errors.$ZodInvalidTypeExpected {
       }
 
       const obj = data as object;
-      if (obj && Object.getPrototypeOf(obj) !== Object.prototype && "constructor" in obj && obj.constructor) {
+      if (
+        obj &&
+        Object.getPrototypeOf(obj) !== Object.prototype &&
+        "constructor" in obj &&
+        obj.constructor
+      ) {
         return (obj.constructor as { name: string }).name;
       }
     }
@@ -908,7 +1042,9 @@ export function parsedType(data: unknown): errors.$ZodInvalidTypeExpected {
 //////////    REFINES     //////////
 export function issue(_iss: string, input: any, inst: any): errors.$ZodRawIssue;
 export function issue(_iss: errors.$ZodRawIssue): errors.$ZodRawIssue;
-export function issue(...args: [string | errors.$ZodRawIssue, any?, any?]): errors.$ZodRawIssue {
+export function issue(
+  ...args: [string | errors.$ZodRawIssue, any?, any?]
+): errors.$ZodRawIssue {
   const [iss, input, inst] = args;
   if (typeof iss === "string") {
     return {
@@ -932,7 +1068,9 @@ export function cleanEnum(obj: Record<string, EnumValue>): EnumValue[] {
 }
 
 // Codec utility functions
-export function base64ToUint8Array(base64: string): InstanceType<typeof Uint8Array> {
+export function base64ToUint8Array(
+  base64: string,
+): InstanceType<typeof Uint8Array> {
   const binaryString = atob(base64);
   const bytes = new Uint8Array(binaryString.length);
   for (let i = 0; i < binaryString.length; i++) {
@@ -949,14 +1087,19 @@ export function uint8ArrayToBase64(bytes: Uint8Array): string {
   return btoa(binaryString);
 }
 
-export function base64urlToUint8Array(base64url: string): InstanceType<typeof Uint8Array> {
+export function base64urlToUint8Array(
+  base64url: string,
+): InstanceType<typeof Uint8Array> {
   const base64 = base64url.replace(/-/g, "+").replace(/_/g, "/");
   const padding = "=".repeat((4 - (base64.length % 4)) % 4);
   return base64ToUint8Array(base64 + padding);
 }
 
 export function uint8ArrayToBase64url(bytes: Uint8Array): string {
-  return uint8ArrayToBase64(bytes).replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "");
+  return uint8ArrayToBase64(bytes)
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=/g, "");
 }
 
 export function hexToUint8Array(hex: string): InstanceType<typeof Uint8Array> {

@@ -67,7 +67,8 @@ const error: () => errors.$ZodErrorMap = () => {
         return `Tipo inválido: esperado ${expected}, recebido ${received}`;
       }
       case "invalid_value":
-        if (issue.values.length === 1) return `Entrada inválida: esperado ${util.stringifyPrimitive(issue.values[0])}`;
+        if (issue.values.length === 1)
+          return `Entrada inválida: esperado ${util.stringifyPrimitive(issue.values[0])}`;
         return `Opção inválida: esperada uma das ${util.joinValues(issue.values, "|")}`;
       case "too_big": {
         const adj = issue.inclusive ? "<=" : "<";
@@ -87,10 +88,14 @@ const error: () => errors.$ZodErrorMap = () => {
       }
       case "invalid_format": {
         const _issue = issue as errors.$ZodStringFormatIssues;
-        if (_issue.format === "starts_with") return `Texto inválido: deve começar com "${_issue.prefix}"`;
-        if (_issue.format === "ends_with") return `Texto inválido: deve terminar com "${_issue.suffix}"`;
-        if (_issue.format === "includes") return `Texto inválido: deve incluir "${_issue.includes}"`;
-        if (_issue.format === "regex") return `Texto inválido: deve corresponder ao padrão ${_issue.pattern}`;
+        if (_issue.format === "starts_with")
+          return `Texto inválido: deve começar com "${_issue.prefix}"`;
+        if (_issue.format === "ends_with")
+          return `Texto inválido: deve terminar com "${_issue.suffix}"`;
+        if (_issue.format === "includes")
+          return `Texto inválido: deve incluir "${_issue.includes}"`;
+        if (_issue.format === "regex")
+          return `Texto inválido: deve corresponder ao padrão ${_issue.pattern}`;
         return `${FormatDictionary[_issue.format] ?? issue.format} inválido`;
       }
       case "not_multiple_of":

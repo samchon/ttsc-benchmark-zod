@@ -4,7 +4,9 @@ import * as z from "zod/v4";
 test("record should parse objects with non-function constructor field", () => {
   const schema = z.record(z.string(), z.any());
 
-  expect(() => schema.parse({ constructor: "string", key: "value" })).not.toThrow();
+  expect(() =>
+    schema.parse({ constructor: "string", key: "value" }),
+  ).not.toThrow();
 
   const result1 = schema.parse({ constructor: "string", key: "value" });
   expect(result1).toEqual({ constructor: "string", key: "value" });
@@ -52,15 +54,21 @@ test("record should still work with normal objects", () => {
 test("record should validate values according to schema even with constructor field", () => {
   const stringSchema = z.record(z.string(), z.string());
 
-  expect(() => stringSchema.parse({ constructor: "string", key: "value" })).not.toThrow();
+  expect(() =>
+    stringSchema.parse({ constructor: "string", key: "value" }),
+  ).not.toThrow();
 
-  expect(() => stringSchema.parse({ constructor: 123, key: "value" })).toThrow();
+  expect(() =>
+    stringSchema.parse({ constructor: 123, key: "value" }),
+  ).toThrow();
 });
 
 test("record should work with different key types and constructor field", () => {
   const enumSchema = z.record(z.enum(["constructor", "key"]), z.string());
 
-  expect(() => enumSchema.parse({ constructor: "value1", key: "value2" })).not.toThrow();
+  expect(() =>
+    enumSchema.parse({ constructor: "value1", key: "value2" }),
+  ).not.toThrow();
 
   const result = enumSchema.parse({ constructor: "value1", key: "value2" });
   expect(result).toEqual({ constructor: "value1", key: "value2" });
@@ -113,7 +121,9 @@ test("record validates enumerable Symbol keys and skips non-enumerable Symbol ke
   expect(result.success).toBe(true);
   if (result.success) {
     expect(result.data[enumerableSym]).toBe("value");
-    expect(Object.prototype.hasOwnProperty.call(result.data, nonEnumerableSym)).toBe(false);
+    expect(
+      Object.prototype.hasOwnProperty.call(result.data, nonEnumerableSym),
+    ).toBe(false);
   }
 });
 

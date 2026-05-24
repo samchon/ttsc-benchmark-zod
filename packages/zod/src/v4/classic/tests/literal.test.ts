@@ -78,7 +78,9 @@ test("literal bigint default error message", () => {
   expect(result.success).toBe(false);
 
   expect(result.error!.issues.length).toEqual(1);
-  expect(result.error!.issues[0].message).toEqual(`Invalid input: expected 12n`);
+  expect(result.error!.issues[0].message).toEqual(
+    `Invalid input: expected 12n`,
+  );
 });
 
 test(".value getter", () => {
@@ -92,15 +94,19 @@ test("readonly", () => {
 });
 
 test("literal pattern", () => {
-  expect(z.literal(1.1)._zod.pattern).toMatchInlineSnapshot(`/\\^\\(1\\\\\\.1\\)\\$/`);
+  expect(z.literal(1.1)._zod.pattern).toMatchInlineSnapshot(
+    `/\\^\\(1\\\\\\.1\\)\\$/`,
+  );
 
-  expect(z.templateLiteral([z.literal(1.1)]).safeParse("1.1")).toMatchInlineSnapshot(`
+  expect(z.templateLiteral([z.literal(1.1)]).safeParse("1.1"))
+    .toMatchInlineSnapshot(`
     {
       "data": "1.1",
       "success": true,
     }
   `);
-  expect(z.templateLiteral([z.literal(1.1)]).safeParse("1n1")).toMatchInlineSnapshot(`
+  expect(z.templateLiteral([z.literal(1.1)]).safeParse("1n1"))
+    .toMatchInlineSnapshot(`
     {
       "error": [ZodError: [
       {

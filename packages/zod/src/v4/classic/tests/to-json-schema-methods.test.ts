@@ -2,7 +2,10 @@ import { describe, expect, test } from "vitest";
 import * as z from "zod/v4";
 
 // Utility functions
-function expectMethodMatch(schema: z.ZodType, params?: z.core.ToJSONSchemaParams): void {
+function expectMethodMatch(
+  schema: z.ZodType,
+  params?: z.core.ToJSONSchemaParams,
+): void {
   const staticResult = z.toJSONSchema(schema, params);
   const methodResult = schema.toJSONSchema(params);
   expect(methodResult).toEqual(staticResult);
@@ -135,7 +138,7 @@ describe("toJSONSchema method", () => {
         z
           .string()
           .regex(/^[A-Z]+$/)
-          .regex(/^[0-9]+$/)
+          .regex(/^[0-9]+$/),
       );
     });
 
@@ -247,7 +250,9 @@ describe("toJSONSchema method", () => {
     });
 
     test("object with optional", () => {
-      expectMethodMatch(z.object({ name: z.string(), age: z.number().optional() }));
+      expectMethodMatch(
+        z.object({ name: z.string(), age: z.number().optional() }),
+      );
     });
 
     test("strict object", () => {
@@ -283,12 +288,17 @@ describe("toJSONSchema method", () => {
         z.discriminatedUnion("type", [
           z.object({ type: z.literal("a"), value: z.string() }),
           z.object({ type: z.literal("b"), value: z.number() }),
-        ])
+        ]),
       );
     });
 
     test("intersection", () => {
-      expectMethodMatch(z.intersection(z.object({ a: z.string() }), z.object({ b: z.number() })));
+      expectMethodMatch(
+        z.intersection(
+          z.object({ a: z.string() }),
+          z.object({ b: z.number() }),
+        ),
+      );
     });
   });
 
@@ -344,7 +354,7 @@ describe("toJSONSchema method", () => {
         z.object({
           value: z.string(),
           children: z.array(Node).optional(),
-        })
+        }),
       ) as z.ZodType<Node>;
       expectMethodMatch(Node);
     });
@@ -358,14 +368,14 @@ describe("toJSONSchema method", () => {
         z
           .string()
           .transform((val) => val.length)
-          .pipe(z.number())
+          .pipe(z.number()),
       );
     });
 
     test("transform", () => {
       expectMethodMatch(
         z.string().transform((val) => val.length),
-        { unrepresentable: "any" }
+        { unrepresentable: "any" },
       );
     });
 

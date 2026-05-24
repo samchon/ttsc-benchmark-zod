@@ -32,7 +32,9 @@ test("globalConfig.jitless=true short-circuits the allowsEval probe", () => {
   // @ts-expect-error assigning a stub to the Function global for the test
   globalThis.Function = function StubFunction(..._args: unknown[]): never {
     probeAttempted = true;
-    throw new Error("allowsEval probe should have been skipped under jitless=true");
+    throw new Error(
+      "allowsEval probe should have been skipped under jitless=true",
+    );
   };
 
   try {

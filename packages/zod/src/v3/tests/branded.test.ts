@@ -13,7 +13,10 @@ test("branded types", () => {
 
   // simple branding
   type MySchema = z.infer<typeof mySchema>;
-  util.assertEqual<MySchema, { name: string } & { [z.BRAND]: { superschema: true } }>(true);
+  util.assertEqual<
+    MySchema,
+    { name: string } & { [z.BRAND]: { superschema: true } }
+  >(true);
 
   const doStuff = (arg: MySchema) => arg;
   doStuff(mySchema.parse({ name: "hello there" }));
@@ -21,7 +24,10 @@ test("branded types", () => {
   // inheritance
   const extendedSchema = mySchema.brand<"subschema">();
   type ExtendedSchema = z.infer<typeof extendedSchema>;
-  util.assertEqual<ExtendedSchema, { name: string } & z.BRAND<"superschema"> & z.BRAND<"subschema">>(true);
+  util.assertEqual<
+    ExtendedSchema,
+    { name: string } & z.BRAND<"superschema"> & z.BRAND<"subschema">
+  >(true);
 
   doStuff(extendedSchema.parse({ name: "hello again" }));
 
@@ -36,7 +42,9 @@ test("branded types", () => {
   const symbolBrand = z.number().brand<"sup">().brand<typeof MyBrand>();
   type SymbolBrand = z.infer<typeof symbolBrand>;
   // number & { [z.BRAND]: { sup: true, [MyBrand]: true } }
-  util.assertEqual<SymbolBrand, number & z.BRAND<"sup"> & z.BRAND<MyBrand>>(true);
+  util.assertEqual<SymbolBrand, number & z.BRAND<"sup"> & z.BRAND<MyBrand>>(
+    true,
+  );
 
   // keeping brands out of input types
   const age = z.number().brand<"age">();
