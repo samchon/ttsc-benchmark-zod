@@ -9,13 +9,11 @@ export default {
     eqeqeq: "error",
     "object-shorthand": "error",
     "no-unneeded-ternary": "error",
-    // The test corpus intentionally keeps string-concat and invalid-email
-    // escape cases that legacy ESLint did not inspect.
-    "prefer-template": "off",
+    "prefer-template": "error",
     "no-useless-rename": "error",
     "dot-notation": "error",
     "no-extra-boolean-cast": "error",
-    "no-useless-escape": "off",
+    "no-useless-escape": "error",
     "typescript/prefer-as-const": "error",
     "typescript/prefer-namespace-keyword": "error",
   },
