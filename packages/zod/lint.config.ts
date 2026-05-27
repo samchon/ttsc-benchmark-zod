@@ -16,7 +16,7 @@ export default {
     "dot-notation": "error",
     "no-extra-boolean-cast": "error",
     "no-useless-escape": "off",
-    "prefer-as-const": "error",
-    "prefer-namespace-keyword": "error",
+    "typescript/prefer-as-const": "error",
+    "typescript/prefer-namespace-keyword": "error",
   },
 } satisfies ITtscLintConfig;
