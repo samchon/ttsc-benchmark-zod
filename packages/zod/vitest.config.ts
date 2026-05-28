@@ -12,5 +12,5 @@ export default mergeConfig(
         tsconfig: "./tsconfig.test.json",
       },
     },
-  })
+  }),
 );

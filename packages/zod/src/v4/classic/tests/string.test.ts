@@ -107,7 +107,7 @@ test("email validations", () => {
     `"e asdf sadf ?<>ail"@domain.com`,
     `" "@example.org`,
     `"john..doe"@example.org`,
-    `"very.(),:;<>[]\".VERY.\"very@\\ \"very\".unusual"@strange.example.com`,
+    `"very.(),:;<>[]".VERY."very@\\ "very".unusual"@strange.example.com`,
     // do not support comma
     `a,b@domain.com`,
 
@@ -151,7 +151,7 @@ test("email validations", () => {
     `a"b(c)d,e:f;g<h>i[jk]l@example.com`,
     `just"not"right@example.com`,
     `this is"notallowed@example.com`,
-    `this still\"not\\allowed@example.com`,
+    `this still"not\\allowed@example.com`,
 
     // random
     `i_like_underscore@but_its_not_allowed_in_this_part.example.com`,
