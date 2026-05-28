@@ -36,7 +36,7 @@ test("method parsing", () => {
   });
   const methodInstance = {
     property: 3,
-    method: function (s: string) {
+    method(s: string) {
       return s.length + this.property;
     },
   };
@@ -51,7 +51,7 @@ test("async method parsing", async () => {
   });
   const methodInstance = {
     property: 3,
-    method: async function (s: string) {
+    async method(s: string) {
       return s.length + this.property;
     },
   };
