@@ -122,10 +122,10 @@ test("email validations", () => {
     `Abc.example.com`,
     `A@b@c@example.com`,
     `colin..hacks@domain.com`,
-    `a"b(c)d,e:f;g<h>i[j\k]l@example.com`,
+    `a"b(c)d,e:f;g<h>i[jk]l@example.com`,
     `just"not"right@example.com`,
-    `this is"not\allowed@example.com`,
-    `this\ still\"not\\allowed@example.com`,
+    `this is"notallowed@example.com`,
+    `this still\"not\\allowed@example.com`,
 
     // random
     `i_like_underscore@but_its_not_allowed_in_this_part.example.com`,

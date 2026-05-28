@@ -324,6 +324,6 @@ test("negative zero edge case", () => {
 });
 
 test("error customization", () => {
-  z.number().gte(5, { error: (iss) => "Min: " + iss.minimum.valueOf() });
-  z.number().lte(5, { error: (iss) => "Max: " + iss.maximum.valueOf() });
+  z.number().gte(5, { error: (iss) => `Min: ${iss.minimum.valueOf()}` });
+  z.number().lte(5, { error: (iss) => `Max: ${iss.maximum.valueOf()}` });
 });

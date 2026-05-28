@@ -70,10 +70,10 @@ test("hash() API — types and runtime across all alg/enc combinations", async (
 
     // base64url: adding padding or using invalid characters should fail
     expect(() =>
-      hash(alg, { enc: "base64url" }).parse(base64url + "="),
+      hash(alg, { enc: "base64url" }).parse(`${base64url}=`),
     ).toThrow();
     expect(() =>
-      hash(alg, { enc: "base64url" }).parse(base64url + "!"),
+      hash(alg, { enc: "base64url" }).parse(`${base64url}!`),
     ).toThrow();
 
     // Param object present but enc omitted should still default to hex at runtime
